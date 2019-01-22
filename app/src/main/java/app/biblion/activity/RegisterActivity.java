@@ -2,8 +2,8 @@ package app.biblion.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,28 +16,34 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import app.biblion.R;
+import app.biblion.model.RegisterModel;
+import app.biblion.util.Constant;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText edtRFullname, edtRUsername,edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd;
+    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd;
     Button btnRegistration;
     Calendar myCalendar;
     TextView txt_Login;
     RadioButton radioMale, radioFemale;
     DatePickerDialog.OnDateSetListener date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        edtRFullname =findViewById(R.id.edt_regfullname);
+        edtRFullname = findViewById(R.id.edt_regfullname);
         edtRUsername = findViewById(R.id.edt_username);
         edtRBirtthdate = findViewById(R.id.edt_birthdate);
         edtREmail = findViewById(R.id.edt_email);
-        edtRpwd =findViewById(R.id.edt_pwd);
+        edtRpwd = findViewById(R.id.edt_pwd);
         edtRConfPwd = findViewById(R.id.edt_cnfpwd);
 
-        btnRegistration=findViewById(R.id.btn_registration);
+        btnRegistration = findViewById(R.id.btn_registration);
 
         txt_Login = findViewById(R.id.txt_login_text);
 
@@ -46,8 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         btnRegistrationClick();
 
-         myCalendar = Calendar.getInstance();
-         date = new DatePickerDialog.OnDateSetListener() {
+        myCalendar = Calendar.getInstance();
+        date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -76,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 finish();
+                Constant.progressBar.dismiss();
             }
         });
 
@@ -85,10 +92,32 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this,NavigationActivity.class));
-                finish();
+
+                RegistrationAPI_CAll();
+                getValue();
             }
         });
+    }
+
+    private void getValue() {
+
+    }
+
+    private void RegistrationAPI_CAll() {
+        Constant.progressDialog(RegisterActivity.this);
+        Call<RegisterModel> modelCall = Constant.apiService.getRegisterDetails("", "", "", "", "", "", "", "", "");
+        modelCall.enqueue(new Callback<RegisterModel>() {
+            @Override
+            public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<RegisterModel> call, Throwable t) {
+
+            }
+        });
+
     }
 
     private void updateLabel() {

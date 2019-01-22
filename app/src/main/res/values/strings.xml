@@ -14,6 +14,9 @@
     <string name="elibary" translatable="false">E Liabary</string>
     <string name="articles" translatable="false">Articles</string>
     <string name="settings" translatable="false">Settings</string>
+    <string name="progress_dialog_msg" translatable="false">Please Wait...</string>
+    <string name="progress_dialog_tital" translatable="false">Loading</string>
+
     <string name="register_links" translatable="false">By Clicking Register Now, You agree to our
         <a href="Terms and Condition links"><b>Terms &amp; Condition</b></a>
         and <a href="Privacy policy links"><b>Privacy Policy</b></a></string>
