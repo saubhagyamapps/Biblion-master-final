@@ -14,7 +14,7 @@ import app.biblion.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText edtEmail, edtPwd;
+    EditText edtEmail, edtPwd,Test;
     Button btnLogin, btnFb;
     TextView txtForgotPwd, txtSignup;
 
