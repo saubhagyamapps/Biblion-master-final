@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        icon="@drawable/home"
+        id="@+id/tab_home"
+        title="@string/home" />
+    <tab
+        icon="@drawable/quiz"
+        id="@+id/tab_quiz"
+        title="@string/quiz" />
+    <tab
+        icon="@drawable/songbook"
+        id="@+id/tab_song_book"
+        title="@string/song_book" />
+    <tab
+        icon="@drawable/ebooks"
+        id="@+id/tab_elibrary"
+        title="@string/elibary" />
+    <tab
+        icon="@drawable/articles"
+        id="@+id/tab_articles"
+        title="@string/articles" />
+</tabs>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="50dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".fragment.DetailELibraryFragment">
+
+        <LinearLayout
+            android:id="@+id/tital"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:background="@color/colorPrimaryDark"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_book_name"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp"
+                android:layout_marginTop="35dp"
+                android:text="The Book Of Mormon"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txt_book_volume"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp"
+                android:layout_marginTop="8dp"
+                android:text="Book 1"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txt_book_author"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp"
+                android:layout_marginTop="8dp"
+                android:text="By.D.wallace Peach(Author)"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="180dp"
+                android:layout_height="0.5dp"
+                android:layout_marginLeft="200dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white" />
+
+            <RatingBar
+                android:id="@+id/book_rating"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="165dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                android:theme="@style/RatingBar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/book_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="250dp"
+                android:src="@drawable/abcdemo" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/txt_book_pages"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/book_layout"
+            android:layout_marginLeft="50dp"
+            android:text="216 Pages"
+            android:textColor="#91bce3"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txt_art_heading"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_book_pages"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Synopsis/Description"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/txt_art_heading"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/txtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:text="" />
+
+        <TextView
+            android:layout_marginBottom="15dp"
+            android:id="@+id/fhasd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="120dp"
+            android:background="@drawable/download_button"
+            android:drawableLeft="@drawable/download_logo"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="3dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="3dp"
+            android:singleLine="true"
+            android:text="Download Book"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+</ScrollView>

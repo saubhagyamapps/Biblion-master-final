@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contant_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activity.NavigationActivity"
+    tools:showIn="@layout/app_bar_navigation">
+
+    <!--  <com.roughike.bottombar.BottomBar
+          android:id="@+id/bottomBar"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:layout_alignParentBottom="true"
+          app:bb_tabXmlResource="@xml/bottombar_tabs_five" />-->
+    <com.luseen.spacenavigation.SpaceNavigationView
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        app:active_item_color="@color/gray_text"
+        app:centre_button_color="@color/white"
+        app:centre_button_icon="@drawable/app_logo_vector"
+        app:inactive_item_color="@color/white"
+        app:layout_behavior="com.luseen.spacenavigation.SpaceNavigationViewBehavior"
+        app:space_background_color="@color/colorPrimary"
+        app:space_item_text_size="10dp" />
+
+</RelativeLayout>

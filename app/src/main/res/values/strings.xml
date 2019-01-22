@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name" translatable="false">Biblion</string>
+    <string name="title_activity_navigation" translatable="false">NavigationActivity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="home" translatable="false">Home</string>
+    <string name="bible_book" translatable="false">Bible Book</string>
+    <string name="quiz" translatable="false">Quiz</string>
+    <string name="song_book" translatable="false">Song Book</string>
+    <string name="elibary" translatable="false">E Liabary</string>
+    <string name="articles" translatable="false">Articles</string>
+    <string name="settings" translatable="false">Settings</string>
+    <string name="register_links" translatable="false">By Clicking Register Now, You agree to our
+        <a href="Terms and Condition links"><b>Terms &amp; Condition</b></a>
+        and <a href="Privacy policy links"><b>Privacy Policy</b></a></string>
+    <string name="login_links" translatable="false">Already have an account<a href="login link"><b> Login</b></a></string>
+    <string name="signup_links" translatable="false">Dont have an account <b>Signup</b></string>
+    <string name="long_desc" translatable="false">From the#1 New York times bestselling author of Zealot
+comes a though-provoking look at the human desire to
+understand the divine.A book that will prompt reflection
+and shatter assumptions(Bart d.Ehrman). with nearly 700
+five star Goodreads ratings and all that</string>
+
+    <string name="slide_1_title" translatable="false">Biblion Android App!</string>
+    <string name="slide_1_desc" translatable="false">The easiest way to read bible in your phone!</string>
+
+    <string name="slide_2_title" translatable="false">Quiz</string>
+    <string name="slide_2_desc" translatable="false">Start the quiz in the mobile app!</string>
+
+    <string name="slide_3_title" translatable="false">Song Book</string>
+    <string name="slide_3_desc" translatable="false">view list of all songs in the mobile app!</string>
+
+    <string name="slide_4_title" translatable="false">E Library</string>
+    <string name="slide_4_desc" translatable="false">Download e books from the mobile app!</string>
+    <string name="description" translatable="false">"From the#1 New York times bestselling author of Zealotcomes a though-provoking look at the human desire tounderstand the divine.A book that will prompt reflectionand shatter assumptions(Bart d.Ehrman). with nearly 700five star Goodreads ratings and thats all...From the#1 New York times bestselling author of Zealotcomes a though-provoking look at the human desire tounderstand the divine.A book that will prompt reflectionand shatter assumptions(Bart d.Ehrman). with nearly 700five star Goodreads ratings and thats all..."</string>
+    <string name="bhaktiyoga" translatable="false">
+         <u>BHAKTI YOGA</u>.
+    </string>
+</resources>

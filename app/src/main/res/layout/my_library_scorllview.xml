@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/titleMyLiabary"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/lianerTital"
+            app:cardElevation="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="My Library"
+                android:textColor="@color/colorAccent" />
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:id="@+id/boaderLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/titleMyLiabary"
+            android:background="@color/colorAccent"
+            android:elevation="5dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerviewMyLibrary"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/titleMyLiabary"
+            android:layout_marginLeft="10dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/titalTopDownload"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/recyclerviewMyLibrary"
+            android:elevation="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="Top Download"
+                android:textColor="@color/colorAccent" />
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:id="@+id/boaderLine1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/titalTopDownload"
+            android:background="@color/colorAccent"
+            android:elevation="5dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleviewTopDownload"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/titalTopDownload"
+            android:layout_marginLeft="10dp" />
+
+    </RelativeLayout>
+</ScrollView>
