@@ -3,12 +3,12 @@ package app.biblion.adpater;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,22 +28,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.biblion.R;
-import app.biblion.model.ArticalModel;
+import app.biblion.interfacea.BookClick;
+import app.biblion.model.MyLibraryBookModel;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context mContext;
+    private static final String TAG = "MyLibraryBookAdepter";
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
-    private List<ArticalModel.ResultBean> dataBean;
+    private List<MyLibraryBookModel.ResultBean> dataBean;
     private boolean isLoadingAdded = false;
-
-    public ArticlesAdapter(Context mContext) {
+    BookClick bookClick;
+    public MyLibraryBookAdepter(Context mContext,BookClick bookClick) {
         this.mContext = mContext;
         dataBean = new ArrayList<>();
-
+        this.bookClick=bookClick;
     }
+
 
 
     @NotNull
@@ -66,7 +69,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @NonNull
     private RecyclerView.ViewHolder getViewHolder(ViewGroup parent, LayoutInflater inflater) {
         RecyclerView.ViewHolder viewHolder;
-        View v1 = inflater.inflate(R.layout.article_card_list, parent, false);
+        View v1 = inflater.inflate(R.layout.my_library_list, parent, false);
         viewHolder = new MovieVH(v1);
         return viewHolder;
     }
@@ -77,19 +80,21 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (getItemViewType(i)) {
             case ITEM:
                 final MovieVH movieVH = (MovieVH) holder;
-                movieVH.txt_heading_Art.setText(dataBean.get(i).getHeading());
-                movieVH.txt_Title_Art.setText(dataBean.get(i).getTitle());
-                movieVH.txt_Desc_Art.setText(dataBean.get(i).getDescription());
-               /* Bitmap myImage = getBitmapFromURL("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage());
-                Drawable dr = new BitmapDrawable(myImage);*/
+                movieVH.txtBookName.setText(dataBean.get(i).getBookname());
+                Log.e(TAG, "onBindViewHolder: "+dataBean.get(i).getBookname() );
                 Glide.with(mContext).load("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(movieVH.imageView);
-              //  movieVH.imageView.setBackgroundDrawable(dr);
+                        .into(movieVH.imageViewBook);
 
+                movieVH.imageViewBook.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bookClick.bookClick();
+                    }
+                });
             case LOADING:
                 break;
         }
@@ -110,26 +115,28 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    public void add(ArticalModel.ResultBean r) {
+    public void add(MyLibraryBookModel.ResultBean r) {
         dataBean.add(r);
         notifyItemInserted(dataBean.size() - 1);
     }
 
-    public void addAll(List<ArticalModel.ResultBean> Results) {
-        for (ArticalModel.ResultBean result : Results) {
+    public void addAll(List<MyLibraryBookModel.ResultBean> Results) {
+        for (MyLibraryBookModel.ResultBean result : Results) {
             add(result);
         }
     }
+
+
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new ArticalModel.ResultBean());
+        add(new MyLibraryBookModel.ResultBean());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = dataBean.size() - 1;
-        ArticalModel.ResultBean result = getItem(position);
+        MyLibraryBookModel.ResultBean result = getItem(position);
 
         if (result != null) {
             dataBean.remove(position);
@@ -137,24 +144,22 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public ArticalModel.ResultBean getItem(int position) {
+    public MyLibraryBookModel.ResultBean getItem(int position) {
         return dataBean.get(position);
     }
 
     public class MovieVH extends RecyclerView.ViewHolder {
 
-        CardView card_Article;
-        TextView txt_heading_Art, txt_Title_Art, txt_Desc_Art;
-        ImageView imageView;
+
+        TextView txtBookName;
+        ImageView imageViewBook;
 
         public MovieVH(@NonNull View itemView) {
             super(itemView);
 
-            card_Article = itemView.findViewById(R.id.card_article);
-            txt_heading_Art = itemView.findViewById(R.id.txt_heading_art);
-            txt_Title_Art = itemView.findViewById(R.id.txt_title_art);
-            txt_Desc_Art = itemView.findViewById(R.id.txt_desc_art);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageViewBook = itemView.findViewById(R.id.imageViewBook);
+            txtBookName = itemView.findViewById(R.id.txtBookName);
+
 
         }
     }
@@ -165,18 +170,5 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
         }
     }
-    private Bitmap getBitmapFromURL(String s) {
-        try {
-            URL url = new URL(s);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+
 }

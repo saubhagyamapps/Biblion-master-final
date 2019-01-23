@@ -4,6 +4,7 @@ package app.biblion.retrofit;
 import app.biblion.model.ArticalModel;
 import app.biblion.model.HomeModel;
 import app.biblion.model.LoginModel;
+import app.biblion.model.MyLibraryBookModel;
 import app.biblion.model.RegisterModel;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -35,6 +36,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("articals")
     Call<ArticalModel> getArticalList(@Field("page") int page);
+
+    @FormUrlEncoded
+    @POST("getbooks")
+    Call<MyLibraryBookModel> getMyLibraryBook(@Field("page") int page);
 
     @FormUrlEncoded
     @POST("home")
