@@ -60,6 +60,11 @@ public class ELibraryFragment extends Fragment {
             }
         });
         recyclerView_article.setAdapter(myLibraryAdapter);
+
+        recycleviewTopDownload = mView.findViewById(R.id.recycleviewTopDownload);
+        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        recycleviewTopDownload.setLayoutManager(layoutManager1);
+        recycleviewTopDownload.setAdapter(myLibraryAdapter);
         recyclerView_article.addOnScrollListener(new PaginationScrollListenerLinear((LinearLayoutManager) layoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -90,10 +95,36 @@ public class ELibraryFragment extends Fragment {
             }
         });
 
+        recycleviewTopDownload.addOnScrollListener(new PaginationScrollListenerLinear((LinearLayoutManager) layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage += 1;
 
-        recycleviewTopDownload = mView.findViewById(R.id.recycleviewTopDownload);
-        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        recycleviewTopDownload.setLayoutManager(layoutManager1);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadNextPage();
+                    }
+                }, 1000);
+            }
+
+            @Override
+            public int getTotalPageCount() {
+                return TOTAL_PAGES;
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
 
 
         loadFirstPage();
