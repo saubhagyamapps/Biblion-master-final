@@ -2,6 +2,8 @@ package app.biblion.util;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
 
 import app.biblion.R;
 import app.biblion.retrofit.ApiClient;
@@ -19,6 +21,16 @@ public class Constant {
         progressBar.setTitle(applicationContext.getResources().getString(R.string.progress_dialog_tital));
         progressBar.setMessage(applicationContext.getResources().getString(R.string.progress_dialog_msg));
         progressBar.show();
+
+    }
+
+    public static void toast(String message, Context applicationContext) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void intent(Context classOne, Class classTwo) {
+        Intent intent = new Intent(classOne, classTwo);
+        classOne.startActivity(intent);
 
     }
 }

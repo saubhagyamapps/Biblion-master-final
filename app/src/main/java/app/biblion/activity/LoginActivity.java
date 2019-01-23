@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 import app.biblion.R;
 import app.biblion.model.LoginModel;
-import app.biblion.model.RegisterModel;
+import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtForgotPwd, txtSignup;
     String mEmail, mPassword, mDevice_id;
     private static final String TAG = "LoginActivity";
+    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void init() {
+        session = new SessionManager(getApplicationContext());
         edtEmail = findViewById(R.id.input_email);
         edtPwd = findViewById(R.id.input_password);
 
@@ -93,8 +95,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
                 Constant.progressBar.dismiss();
-                Log.e(TAG, "onResponse: " +""+response.body().getStatus());
+                Log.e(TAG, "onResponse: " + "" + response.body().getStatus());
+                if (response.body().getStatus().equals("1")) {
+                    Constant.toast(getResources().getString(R.string.email_or_password_dont_matched), LoginActivity.this);
+                } else {
 
+                    session.createLoginSession(mEmail, mPassword, response.body().getResult().get(0).getName(),
+                            response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
+                            response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
+                            response.body().getResult().get(0).getFirebase_id());
+                    Constant.intent(LoginActivity.this, NavigationActivity.class);
+                    finish();
+                }
 
             }
 

@@ -16,6 +16,8 @@
     <string name="settings" translatable="false">Settings</string>
     <string name="progress_dialog_msg" translatable="false">Please Wait...</string>
     <string name="progress_dialog_tital" translatable="false">Loading</string>
+    <string name="password_is_not_matched" translatable="false">password is not matched</string>
+    <string name="email_or_password_dont_matched" translatable="false">Email or Password Don\'t matched</string>
 
     <string name="register_links" translatable="false">By Clicking Register Now, You agree to our
         <a href="Terms and Condition links"><b>Terms &amp; Condition</b></a>
@@ -27,6 +29,7 @@ comes a though-provoking look at the human desire to
 understand the divine.A book that will prompt reflection
 and shatter assumptions(Bart d.Ehrman). with nearly 700
 five star Goodreads ratings and all that</string>
+
 
     <string name="slide_1_title" translatable="false">Biblion Android App!</string>
     <string name="slide_1_desc" translatable="false">The easiest way to read bible in your phone!</string>

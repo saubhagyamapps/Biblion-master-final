@@ -1,6 +1,7 @@
 package app.biblion.retrofit;
 
 
+import app.biblion.model.ArticalModel;
 import app.biblion.model.LoginModel;
 import app.biblion.model.RegisterModel;
 import retrofit2.Call;
@@ -24,9 +25,13 @@ public interface ApiInterface {
 
 
     @FormUrlEncoded
-    @POST("login")
-    Call<LoginModel> getLoginDetails (@Field("email") String email,
-                                      @Field("password") String password,
-                                      @Field("device_id") String device_id,
-                                      @Field("firebase_id") String firebase_id);
+    @POST("signin")
+    Call<LoginModel> getLoginDetails(@Field("email") String email,
+                                     @Field("password") String password,
+                                     @Field("device_id") String device_id,
+                                     @Field("firebase_id") String firebase_id);
+
+    @FormUrlEncoded
+    @POST("articals")
+    Call<ArticalModel> getArticalList(@Field("page") int page);
 }

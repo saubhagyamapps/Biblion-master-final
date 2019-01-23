@@ -30,6 +30,7 @@ import app.biblion.fragment.ELibraryFragment;
 import app.biblion.fragment.HomeBookFragment;
 import app.biblion.fragment.QuizFragment;
 import app.biblion.fragment.SongBookFragment;
+import app.biblion.sessionmanager.SessionManager;
 
 
 public class NavigationActivity extends AppCompatActivity
@@ -42,6 +43,8 @@ public class NavigationActivity extends AppCompatActivity
     NavigationView navigationView;
     FragmentTransaction fragmentTransaction;
     // BottomBar bottomBar;
+    SessionManager session;
+
     private SpaceNavigationView spaceNavigationView;
 
     @Override
@@ -56,6 +59,8 @@ public class NavigationActivity extends AppCompatActivity
 
     private void initialization(Bundle savedInstanceState) {
         //bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
 
         spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
