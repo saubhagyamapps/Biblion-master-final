@@ -2,6 +2,7 @@ package app.biblion.retrofit;
 
 
 import app.biblion.model.ArticalModel;
+import app.biblion.model.HomeModel;
 import app.biblion.model.LoginModel;
 import app.biblion.model.RegisterModel;
 import retrofit2.Call;
@@ -34,4 +35,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("articals")
     Call<ArticalModel> getArticalList(@Field("page") int page);
+
+    @FormUrlEncoded
+    @POST("home")
+    Call<HomeModel> getHomeList(@Field("page") int page);
 }

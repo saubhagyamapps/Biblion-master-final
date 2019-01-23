@@ -3,8 +3,6 @@ package app.biblion.adpater;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -18,8 +16,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -29,26 +25,25 @@ import java.util.List;
 
 import app.biblion.R;
 import app.biblion.model.ArticalModel;
+import app.biblion.model.HomeModel;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context mContext;
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
-    private List<ArticalModel.ResultBean> dataBean;
     private boolean isLoadingAdded = false;
+    private List<HomeModel.ResultBean> dataBean;
 
-    public ArticlesAdapter(Context mContext) {
+    public HomeAdapter(Context mContext) {
         this.mContext = mContext;
         dataBean = new ArrayList<>();
-
     }
 
-
-    @NotNull
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
@@ -63,32 +58,28 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         return viewHolder;
     }
-    @NonNull
+
     private RecyclerView.ViewHolder getViewHolder(ViewGroup parent, LayoutInflater inflater) {
         RecyclerView.ViewHolder viewHolder;
-        View v1 = inflater.inflate(R.layout.article_card_list, parent, false);
-        viewHolder = new MovieVH(v1);
+        View v1 = inflater.inflate(R.layout.home_card_list, parent, false);
+        viewHolder = new HomeAdapter.MovieVH(v1);
         return viewHolder;
     }
+
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         switch (getItemViewType(i)) {
             case ITEM:
-                final MovieVH movieVH = (MovieVH) holder;
-                movieVH.txt_heading_Art.setText(dataBean.get(i).getHeading());
-                movieVH.txt_Title_Art.setText(dataBean.get(i).getTitle());
-                movieVH.txt_Desc_Art.setText(dataBean.get(i).getDescription());
-               /* Bitmap myImage = getBitmapFromURL("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage());
-                Drawable dr = new BitmapDrawable(myImage);*/
+                MovieVH movieVH = (MovieVH) holder;
                 Glide.with(mContext).load("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(movieVH.imageView);
-              //  movieVH.imageView.setBackgroundDrawable(dr);
+                        .into(movieVH.image_Home);
 
             case LOADING:
                 break;
@@ -96,67 +87,64 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-
-
     @Override
     public int getItemCount() {
-        return dataBean == null ? 0 : dataBean.size();
-
+        return dataBean  == null ? 0 : dataBean.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (position == dataBean.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        return (position == dataBean.size()-1 && isLoadingAdded) ? LOADING :ITEM;
     }
 
-
-    public void add(ArticalModel.ResultBean r) {
+    public void add(HomeModel.ResultBean r) {
         dataBean.add(r);
         notifyItemInserted(dataBean.size() - 1);
     }
 
-    public void addAll(List<ArticalModel.ResultBean> Results) {
-        for (ArticalModel.ResultBean result : Results) {
+    public void addAll(List<HomeModel.ResultBean> Results) {
+        for (HomeModel.ResultBean result : Results) {
             add(result);
         }
     }
 
+
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new ArticalModel.ResultBean());
+        add(new HomeModel.ResultBean());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = dataBean.size() - 1;
-        ArticalModel.ResultBean result = getItem(position);
+        HomeModel.ResultBean result = getItem(position);
 
         if (result != null) {
             dataBean.remove(position);
             notifyItemRemoved(position);
         }
     }
-
-    public ArticalModel.ResultBean getItem(int position) {
+    public HomeModel.ResultBean getItem(int position)
+    {
         return dataBean.get(position);
     }
 
+  /*  public HomeModel.ResultBean getItem(int position) {
+        return getItem(position);
+    }*/
+
+
     public class MovieVH extends RecyclerView.ViewHolder {
 
-        CardView card_Article;
-        TextView txt_heading_Art, txt_Title_Art, txt_Desc_Art;
-        ImageView imageView;
+        CardView card_Home;
+        ImageView image_Home;
 
-        public MovieVH(@NonNull View itemView) {
+        public MovieVH(View itemView) {
             super(itemView);
 
-            card_Article = itemView.findViewById(R.id.card_article);
-            txt_heading_Art = itemView.findViewById(R.id.txt_heading_art);
-            txt_Title_Art = itemView.findViewById(R.id.txt_title_art);
-            txt_Desc_Art = itemView.findViewById(R.id.txt_desc_art);
-            imageView = itemView.findViewById(R.id.imageView);
-
+            card_Home = itemView.findViewById(R.id.card_home);
+            image_Home = itemView.findViewById(R.id.home_image);
         }
     }
 
@@ -166,6 +154,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
         }
     }
+
     private Bitmap getBitmapFromURL(String s) {
         try {
             URL url = new URL(s);
