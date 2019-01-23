@@ -129,11 +129,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     {
         return dataBean.get(position);
     }
-
-  /*  public HomeModel.ResultBean getItem(int position) {
-        return getItem(position);
-    }*/
-
+    
 
     public class MovieVH extends RecyclerView.ViewHolder {
 
