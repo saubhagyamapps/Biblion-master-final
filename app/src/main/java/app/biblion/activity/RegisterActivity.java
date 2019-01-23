@@ -1,6 +1,5 @@
 package app.biblion.activity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -68,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         radioMale = findViewById(R.id.radiobtn_male);
         radioFemale = findViewById(R.id.radiobtn_female);
         radio_group = findViewById(R.id.radio_group);
-        sessionManager=new SessionManager(RegisterActivity.this);
+        sessionManager = new SessionManager(RegisterActivity.this);
         datePicker();
         setDateTimeField();
         btnRegistrationClick();
@@ -118,6 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setDateTimeField() {
 
         Calendar newCalendar = Calendar.getInstance();
@@ -137,6 +136,7 @@ public class RegisterActivity extends AppCompatActivity {
         mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
     }
+
     private void getValue() {
 
         mFullName = edtRUsername.getText().toString().trim();
@@ -173,7 +173,6 @@ public class RegisterActivity extends AppCompatActivity {
             edtREmail.setFocusable(true);
         } else {
             RegistrationAPI_CAll();
-           // Constant.toast("okkkkkkkkkkkk", RegisterActivity.this);
         }
 
     }
