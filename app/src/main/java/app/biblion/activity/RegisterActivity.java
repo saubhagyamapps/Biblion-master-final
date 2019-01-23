@@ -173,6 +173,7 @@ public class RegisterActivity extends AppCompatActivity {
             edtREmail.setFocusable(true);
         } else {
             RegistrationAPI_CAll();
+
         }
 
     }
