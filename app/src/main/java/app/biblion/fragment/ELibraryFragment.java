@@ -91,23 +91,10 @@ public class ELibraryFragment extends Fragment {
         });
 
 
-   /*     myLibraryAdapter = new MyLibraryBookAdepter(context, num, new BookClick() {
-            @Override
-            public void bookClick() {
-                getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
-            }
-        });
-        */
         recycleviewTopDownload = mView.findViewById(R.id.recycleviewTopDownload);
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recycleviewTopDownload.setLayoutManager(layoutManager1);
-      /*  myLibraryAdapter = new MyLibraryAdapter(context, num, new BookClick() {
-            @Override
-            public void bookClick() {
-                getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
 
-            }
-        });*/
 
         loadFirstPage();
     }
