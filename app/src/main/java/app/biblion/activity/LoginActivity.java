@@ -26,7 +26,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     EditText edtEmail, edtPwd;
-    Button btnLogin, btnFb;
+    Button btnLogin;
     TextView txtForgotPwd, txtSignup;
     String mEmail, mPassword, mDevice_id;
     private static final String TAG = "LoginActivity";
