@@ -42,21 +42,13 @@ public class ArticlesFragment extends Fragment {
     ArticlesAdapter articlesAdapter;
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView_article;
-    int[] num = new int[]{1,2,3,4,5,6,7,8,9,10};
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.articals_fragment, container, false);
         getActivity().setTitle("Articles");
         init();
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "Fab Button Clicked", Snackbar.LENGTH_SHORT)
-                        .show();
-
-            }
-        });
         return mView;
     }
 
