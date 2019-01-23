@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
         clicked();
 
     }
-
     public void clicked() {
 
         txtSignup.setOnClickListener(new View.OnClickListener() {
