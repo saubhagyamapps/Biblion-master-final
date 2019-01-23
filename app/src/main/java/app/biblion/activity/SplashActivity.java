@@ -10,7 +10,7 @@ import app.biblion.sessionmanager.SessionManager;
 
 public class SplashActivity extends AppCompatActivity {
     Handler handler;
-    private final int SPLASH_TIME = 2500;
+    private final int SPLASH_TIME = 100;
     SessionManager securityManager;
     Intent intent;
     @Override
@@ -19,16 +19,19 @@ public class SplashActivity extends AppCompatActivity {
         securityManager = new SessionManager(SplashActivity.this);
         if(securityManager.checkLogin()){
             intent=new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }else {
             intent=new Intent(SplashActivity.this, NavigationActivity.class);
+            startActivity(intent);
+            finish();
         }
         setContentView(R.layout.activity_splash);
         new Handler().postDelayed(
                 new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(intent);
-                        finish();
+
                     }
                 }, SPLASH_TIME);
       /*  addSlide(AppIntroFragment.newInstance("STEP 1", "Tap to open instagram.", R.drawable.instaintro1, Color.parseColor("#e91e63")));
