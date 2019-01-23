@@ -120,7 +120,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             add(result);
         }
     }
-
     public void addLoadingFooter() {
         isLoadingAdded = true;
         add(new ArticalModel.ResultBean());
