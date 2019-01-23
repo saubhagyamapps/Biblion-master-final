@@ -7,6 +7,7 @@
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_logout" translatable="false">Logout</string>
     <string name="home" translatable="false">Home</string>
     <string name="bible_book" translatable="false">Bible Book</string>
     <string name="quiz" translatable="false">Quiz</string>
@@ -22,7 +23,7 @@
     <string name="register_links" translatable="false">By Clicking Register Now, You agree to our
         <a href="Terms and Condition links"><b>Terms &amp; Condition</b></a>
         and <a href="Privacy policy links"><b>Privacy Policy</b></a></string>
-    <string name="login_links" translatable="false">Already have an account<a href="login link"><b> Login</b></a></string>
+    <string name="login_links" translatable="false">Already have an account? <a href="login link"><b><u>Log in</u></b></a></string>
     <string name="signup_links" translatable="false">Dont have an account <b>Signup</b></string>
     <string name="long_desc" translatable="false">From the#1 New York times bestselling author of Zealot
 comes a though-provoking look at the human desire to

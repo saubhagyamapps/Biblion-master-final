@@ -19,8 +19,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:background="@color/colorPrimaryDark">
-            </RelativeLayout>
+                android:background="@color/colorPrimaryDark"></RelativeLayout>
 
             <LinearLayout
                 android:layout_width="220dp"
@@ -73,14 +72,14 @@
 
 
                 <EditText
-                    android:id="@+id/edt_regfullname"
+                    android:id="@+id/edt_username"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:background="#FFFF"
                     android:hint="  Your Name"
                     android:inputType="text"
-                    android:padding="5dp"
+                    android:paddingLeft="10dp"
                     android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
@@ -91,14 +90,14 @@
                 app:cardCornerRadius="3dp">
 
                 <EditText
-                    android:id="@+id/edt_username"
+                    android:id="@+id/edt_email"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:background="#FFFF"
                     android:hint="  Email address"
                     android:inputType="textEmailAddress"
-                    android:padding="5dp"
+                    android:paddingLeft="10dp"
                     android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
@@ -116,7 +115,7 @@
                     android:background="#FFFF"
                     android:hint="  Mobile number"
                     android:inputType="number"
-                    android:padding="5dp"
+                    android:paddingLeft="10dp"
                     android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
@@ -169,58 +168,31 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFF"
-                    android:hint="  Birth Date"
-                    android:inputType="date"
+                    android:hint="DOB"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:paddingLeft="10dp"
                     android:singleLine="true"
                     android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
-
-            <EditText
-                android:id="@+id/edt_email"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_style"
-                android:hint="  Email *"
-                android:inputType="textEmailAddress"
-                android:padding="5dp"
-                android:singleLine="true" />
-
-            <EditText
-                android:id="@+id/edt_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_style"
-                android:hint="  Password *"
-                android:inputType="numberPassword"
-                android:padding="5dp"
-                android:singleLine="true" />
-
-            <EditText
-                android:id="@+id/edt_cnfpwd"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/edittext_style"
-                android:hint="  Confrim Password *"
-                android:inputType="numberPassword"
-                android:padding="5dp"
-                android:singleLine="true" />
-
-            <TextView
-                android:id="@+id/txt_terms_text"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/register_links"
-                android:textSize="16sp" />
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="3dp">
+
+                <EditText
+                    android:id="@+id/edt_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#FFFF"
+                    android:hint="  Password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:textSize="15sp" />
+            </android.support.v7.widget.CardView>
 
 
             <android.support.v7.widget.AppCompatButton
@@ -229,9 +201,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/loginbutton"
                 android:padding="15dp"
-                android:text="REGISTRATION"
+                android:text="SIGN UP"
+                android:textAllCaps="false"
                 android:textColor="#ffffff" />
 
             <TextView
@@ -243,6 +216,57 @@
                 android:gravity="center_horizontal"
                 android:text="@string/login_links"
                 android:textSize="15dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:background="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/btn_fb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/loginwith"
+                    android:text="Register With"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/twitter" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/facebook" />
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/google" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

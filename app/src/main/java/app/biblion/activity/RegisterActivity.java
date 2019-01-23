@@ -6,36 +6,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import app.biblion.R;
 import app.biblion.model.RegisterModel;
+import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd;
+    private static final String TAG = "RegisterActivity";
+    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd, edtRmobileno;
     Button btnRegistration;
     Calendar myCalendar;
     TextView txt_Login;
+    private DatePickerDialog mDatePickerDialog;
     RadioButton radioMale, radioFemale;
     DatePickerDialog.OnDateSetListener date;
-    String mUserName, mFullName, mGnder, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd;
+    String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+    String mGnder = "Male";
+    RadioGroup radio_group;
+    int mslectedGander;
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,52 +58,49 @@ public class RegisterActivity extends AppCompatActivity {
     private void initialization() {
         mDevice_id = Settings.Secure.getString(RegisterActivity.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        edtRFullname = findViewById(R.id.edt_regfullname);
+        edtRmobileno = findViewById(R.id.txt_mobileno);
         edtRUsername = findViewById(R.id.edt_username);
         edtRBirtthdate = findViewById(R.id.edt_birthdate);
         edtREmail = findViewById(R.id.edt_email);
         edtRpwd = findViewById(R.id.edt_pwd);
-        edtRConfPwd = findViewById(R.id.edt_cnfpwd);
-
         btnRegistration = findViewById(R.id.btn_registration);
-
         txt_Login = findViewById(R.id.txt_login_text);
-
         radioMale = findViewById(R.id.radiobtn_male);
         radioFemale = findViewById(R.id.radiobtn_female);
+        radio_group = findViewById(R.id.radio_group);
+        sessionManager=new SessionManager(RegisterActivity.this);
         datePicker();
+        setDateTimeField();
         btnRegistrationClick();
+        mslectedGander = radio_group.getCheckedRadioButtonId();
+        Log.e(TAG, "initialization: " + mslectedGander);
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radiobtn_male:
+                        mGnder = "Male";
+                        break;
+                    case R.id.radiobtn_female:
+                        mGnder = "Female";
+                        break;
+
+                }
+            }
+        });
     }
 
     private void datePicker() {
-        myCalendar = Calendar.getInstance();
-        date = new DatePickerDialog.OnDateSetListener() {
 
+        edtRBirtthdate.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                updateLabel();
-            }
-
-        };
-
-        edtRBirtthdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                // TODO Auto-generated method stub
-                new DatePickerDialog(RegisterActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            public boolean onTouch(View v, MotionEvent event) {
+                mDatePickerDialog.show();
+                return false;
             }
         });
+
+
         txt_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,16 +118,34 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+    private void setDateTimeField() {
 
+        Calendar newCalendar = Calendar.getInstance();
+        mDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+                final Date startDate = newDate.getTime();
+                String fdate = sd.format(startDate);
+
+                edtRBirtthdate.setText(fdate);
+
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+
+    }
     private void getValue() {
-        mFullName = edtRFullname.getText().toString().trim();
+
+        mFullName = edtRUsername.getText().toString().trim();
         mUserName = edtRUsername.getText().toString().trim();
         mEmail = edtREmail.getText().toString().trim();
         mPassword = edtRpwd.getText().toString().trim();
-        mMobile_Number = edtREmail.getText().toString().trim();
-        mGnder = edtREmail.getText().toString().trim();
+        mMobile_Number = edtRmobileno.getText().toString().trim();
         mBrithdate = edtRBirtthdate.getText().toString().trim();
-        mConfPwd = edtRConfPwd.getText().toString().trim();
+
         validation();
     }
 
@@ -143,17 +168,12 @@ public class RegisterActivity extends AppCompatActivity {
         } else if (mPassword.equalsIgnoreCase("")) {
             edtRpwd.setError("Required");
             edtRpwd.setFocusable(true);
-        } else if (mConfPwd.equalsIgnoreCase("")) {
-            edtRConfPwd.setError("Required");
-            edtRConfPwd.setFocusable(true);
-        } else if (!mConfPwd.equals(mPassword)) {
-            edtRpwd.setFocusable(true);
-            Constant.toast(getResources().getString(R.string.password_is_not_matched), RegisterActivity.this);
-        }else if (!mEmail.matches(emailPattern)) {
+        } else if (!mEmail.matches(emailPattern)) {
             edtREmail.setError("invalid email");
             edtREmail.setFocusable(true);
-        }else {
-            Constant.toast("okkkkkkkkkkkk",RegisterActivity.this);
+        } else {
+            RegistrationAPI_CAll();
+           // Constant.toast("okkkkkkkkkkkk", RegisterActivity.this);
         }
 
     }
@@ -161,11 +181,24 @@ public class RegisterActivity extends AppCompatActivity {
     private void RegistrationAPI_CAll() {
         Constant.progressDialog(RegisterActivity.this);
         Call<RegisterModel> modelCall = Constant.apiService.
-                getRegisterDetails(mEmail, mPassword, mFirebase_id, mDevice_id, mFullName, mBrithdate, mGnder, mGnder, mMobile_Number);
+                getRegisterDetails(mEmail, mPassword, "fgdjsgjgha", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number);
         modelCall.enqueue(new Callback<RegisterModel>() {
             @Override
             public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
-                Constant.progressBar.dismiss();
+
+                if (response.body().getStatus().equals("1")) {
+                    Constant.toast(response.body().getMessage(), RegisterActivity.this);
+                    Constant.progressBar.dismiss();
+                } else {
+                    sessionManager.createLoginSession(mEmail, mPassword, response.body().getResult().getName(),
+                            response.body().getResult().getGender(), response.body().getResult().getDob(),
+                            response.body().getResult().getDevice_id(), response.body().getResult().getMobile(),
+                            response.body().getResult().getFirebase_id());
+                    Constant.intent(RegisterActivity.this, NavigationActivity.class);
+                    Constant.progressBar.dismiss();
+                    finish();
+                }
+
 
             }
 
@@ -179,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edtRBirtthdate.setText(sdf.format(myCalendar.getTime()));

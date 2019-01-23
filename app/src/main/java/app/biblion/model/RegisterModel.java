@@ -2,10 +2,11 @@ package app.biblion.model;
 
 public class RegisterModel {
 
+
     /**
      * status : 0
      * message : signup successful
-     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hph@hffp.com","password":"password","device_id":"1234567890","firebase_id":"1234567890"}
+     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"ahdpdddddddf@asdhp.com","password":"password","device_id":"1234567890","firebase_id":"1234567890"}
      */
 
     private String status;
@@ -43,7 +44,7 @@ public class RegisterModel {
          * gender : male
          * dob : 1988-11-23
          * mobile : 55566644777
-         * email : hph@hffp.com
+         * email : ahdpdddddddf@asdhp.com
          * password : password
          * device_id : 1234567890
          * firebase_id : 1234567890

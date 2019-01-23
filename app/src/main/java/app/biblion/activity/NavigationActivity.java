@@ -60,7 +60,7 @@ public class NavigationActivity extends AppCompatActivity
     private void initialization(Bundle savedInstanceState) {
         //bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         session = new SessionManager(getApplicationContext());
-        session.checkLogin();
+       // session.checkLogin();
 
         spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
@@ -204,7 +204,8 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            session.logoutUser();
             finish();
             return true;
         }
