@@ -2,8 +2,10 @@ package app.biblion.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -23,12 +25,14 @@ import java.util.Locale;
 import app.biblion.R;
 import app.biblion.model.RegisterModel;
 import app.biblion.sessionmanager.SessionManager;
+import app.biblion.util.Biblion;
+import app.biblion.util.ConnectivityReceiver;
 import app.biblion.util.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "RegisterActivity";
     EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd, edtRmobileno;
     Button btnRegistration;
@@ -113,6 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getValue();
+                //checkConnection();
             }
         });
     }
@@ -145,7 +150,6 @@ public class RegisterActivity extends AppCompatActivity {
         mPassword = edtRpwd.getText().toString().trim();
         mMobile_Number = edtRmobileno.getText().toString().trim();
         mBrithdate = edtRBirtthdate.getText().toString().trim();
-
         validation();
     }
 
@@ -216,5 +220,39 @@ public class RegisterActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         edtRBirtthdate.setText(sdf.format(myCalendar.getTime()));
+    }
+
+    // Method to manually check connection status
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    // Showing the status in Snackbar
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (!isConnected) {
+            message ="Internet Not Connected! Please Connect";
+            color = Color.RED;
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.rviewsnack), message, Snackbar.LENGTH_LONG);
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(color);
+            snackbar.show();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        Biblion.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
     }
 }
