@@ -122,14 +122,14 @@
             android:text="" />
 
         <TextView
-            android:layout_marginBottom="15dp"
-            android:id="@+id/fhasd"
+            android:id="@+id/btnBookDownload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtDescription"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:layout_marginRight="120dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/download_button"
             android:drawableLeft="@drawable/download_logo"
             android:gravity="center"
