@@ -154,10 +154,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     }
 
     private void validation() {
-        if (mFullName.equalsIgnoreCase("")) {
-            edtRFullname.setError("Required");
-            edtRFullname.setFocusable(true);
-        } else if (mUserName.equalsIgnoreCase("")) {
+        if (mUserName.equalsIgnoreCase("")) {
             edtRUsername.setError("Required");
             edtRUsername.setFocusable(true);
         } else if (mBrithdate.equalsIgnoreCase("")) {
