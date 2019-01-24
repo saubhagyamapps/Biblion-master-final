@@ -117,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             @Override
             public void onClick(View view) {
                 getValue();
-                //checkConnection();
+                checkConnection();
             }
         });
     }
