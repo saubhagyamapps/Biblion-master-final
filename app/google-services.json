@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "842551068386",
+    "firebase_url": "https://biblion-c9530.firebaseio.com",
+    "project_id": "biblion-c9530",
+    "storage_bucket": "biblion-c9530.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842551068386:android:1f89eb79e2f98e97",
+        "android_client_info": {
+          "package_name": "app.biblion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842551068386-d7ftjems0jdf1lru1apdrb4qbhhsbbv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvIAAhlHjMtQeZlDFlBYwHHcxVcPtJ5N8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
