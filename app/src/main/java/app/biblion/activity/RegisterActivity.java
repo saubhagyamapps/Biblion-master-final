@@ -1,11 +1,13 @@
 package app.biblion.activity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,8 +20,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import app.biblion.R;
@@ -34,11 +38,12 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "RegisterActivity";
-    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd, edtRmobileno;
+    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd, edtRmobileno,edtRCountry,edtRState,edtRCity;
     Button btnRegistration;
     Calendar myCalendar;
     TextView txt_Login;
     private DatePickerDialog mDatePickerDialog;
+    private  AlertDialog alertDialogObjectCountry,alertDialogObjectState,alertDialogObjectCity ;
     RadioButton radioMale, radioFemale;
     DatePickerDialog.OnDateSetListener date;
     String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd;
@@ -47,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     RadioGroup radio_group;
     int mslectedGander;
     SessionManager sessionManager;
+    String selectedCountry, selectedState,selectedCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,10 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         edtRBirtthdate = findViewById(R.id.edt_birthdate);
         edtREmail = findViewById(R.id.edt_email);
         edtRpwd = findViewById(R.id.edt_pwd);
+        edtRConfPwd = findViewById(R.id.edt_cnfpwd);
+        edtRCountry = findViewById(R.id.edt_country);
+        edtRState = findViewById(R.id.edt_state);
+        edtRCity = findViewById(R.id.edt_city);
         btnRegistration = findViewById(R.id.btn_registration);
         txt_Login = findViewById(R.id.txt_login_text);
         radioMale = findViewById(R.id.radiobtn_male);
@@ -73,6 +83,9 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         sessionManager = new SessionManager(RegisterActivity.this);
         datePicker();
         setDateTimeField();
+        ShowCountryList();
+        ShowStateList();
+        ShowCityList();
         btnRegistrationClick();
         mslectedGander = radio_group.getCheckedRadioButtonId();
         Log.e(TAG, "initialization: " + mslectedGander);
@@ -92,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         });
     }
 
+
     private void datePicker() {
 
         edtRBirtthdate.setOnTouchListener(new View.OnTouchListener() {
@@ -102,12 +116,32 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             }
         });
 
-
         txt_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                 finish();
+            }
+        });
+        edtRCountry.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                alertDialogObjectCountry.show();
+                return false;
+            }
+        });
+        edtRState.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                alertDialogObjectState.show();
+                return false;
+            }
+        });
+        edtRCity.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                alertDialogObjectCity.show();
+                return false;
             }
         });
     }
@@ -251,5 +285,91 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         showSnack(isConnected);
+    }
+
+    public void ShowCountryList()
+    {
+        List<String> mCountrylist = new ArrayList<String>();
+        mCountrylist.add("USA");
+        mCountrylist.add("RUSSIA");
+        mCountrylist.add("INDIA");
+        mCountrylist.add("UK");
+        mCountrylist.add("AUSTRALIA");
+        mCountrylist.add("SPAIN");
+        //Create sequence of items
+        final CharSequence[] Animals = mCountrylist.toArray(new String[mCountrylist.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("Country");
+        dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                selectedCountry = Animals[item].toString();  //Selected item in listview
+                edtRCountry.setText(selectedCountry);
+            }
+        });
+        //Create alert dialog object via builder
+        alertDialogObjectCountry = dialogBuilder.create();
+        //Show the dialog
+        //alertDialogObject.show();
+    }
+
+    public void ShowStateList()
+    {
+        List<String> mStatelist = new ArrayList<String>();
+        mStatelist.add("Gujarat");
+        mStatelist.add("Maharashtra");
+        mStatelist.add("Madhya Pradesh");
+        mStatelist.add("Rajsthan");
+        mStatelist.add("Punjab");
+        mStatelist.add("Haryan");
+        mStatelist.add("Delhi");
+        mStatelist.add("Uttar Pradesh");
+        mStatelist.add("Karnataka");
+        mStatelist.add("Delhi");
+        mStatelist.add("Andhra Pradesh");
+        mStatelist.add("Himachal Pradesh");
+        //Create sequence of items
+        final CharSequence[] Animals = mStatelist.toArray(new String[mStatelist.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("State");
+        dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                selectedState = Animals[item].toString();  //Selected item in listview
+                edtRState.setText(selectedState);
+            }
+        });
+        //Create alert dialog object via builder
+        alertDialogObjectState = dialogBuilder.create();
+        //Show the dialog
+        //alertDialogObject.show();
+    }
+    public void ShowCityList()
+    {
+        List<String> mCitylist = new ArrayList<String>();
+        mCitylist.add("Ahmedabad");
+        mCitylist.add("Surat");
+        mCitylist.add("Vadodara");
+        mCitylist.add("Rajkot");
+        mCitylist.add("Bhavnagar");
+        mCitylist.add("Jamnagar");
+        mCitylist.add("Junagadh");
+        mCitylist.add("Anand");
+        mCitylist.add("Surendranagar");
+        mCitylist.add("Navsari");
+        mCitylist.add("Anand");
+        mCitylist.add("Kheda");
+        //Create sequence of items
+        final CharSequence[] Animals = mCitylist.toArray(new String[mCitylist.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setTitle("City");
+        dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                selectedCity = Animals[item].toString();  //Selected item in listview
+                edtRCity.setText(selectedCity);
+            }
+        });
+        //Create alert dialog object via builder
+        alertDialogObjectCity = dialogBuilder.create();
+        //Show the dialog
+        //alertDialogObject.show();
     }
 }
