@@ -146,18 +146,21 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/btn_sign_in_twitter"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
                 android:src="@drawable/twitter" />
 
             <ImageView
+                android:id="@+id/btn_sign_in_fb"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
                 android:src="@drawable/facebook" />
 
             <ImageView
+                android:id="@+id/btn_sign_in_gmail"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"

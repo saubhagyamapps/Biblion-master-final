@@ -1,19 +1,32 @@
 package app.biblion.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,21 +34,25 @@ import java.util.regex.Pattern;
 import app.biblion.R;
 import app.biblion.model.LoginModel;
 import app.biblion.sessionmanager.SessionManager;
+import app.biblion.util.Biblion;
 import app.biblion.util.ConnectivityReceiver;
 import app.biblion.util.Constant;
-import app.biblion.util.Biblion;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "LoginActivity";
+    private GoogleApiClient mGoogleApiClient;
     EditText edtEmail, edtPwd;
     Button btnLogin;
     TextView txtForgotPwd, txtSignup;
     String mEmail, mPassword, mDevice_id;
-    private static final String TAG = "LoginActivity";
+    private static final int RC_SIGN_IN = 007;
     SessionManager session;
+    ImageView btn_sign_in_gmail,btn_sign_in_fb,btn_sign_in_twitter;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +70,58 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityRece
         session = new SessionManager(getApplicationContext());
         edtEmail = findViewById(R.id.input_email);
         edtPwd = findViewById(R.id.input_password);
-
+        btn_sign_in_gmail = findViewById(R.id.btn_sign_in_gmail);
+        btn_sign_in_fb = findViewById(R.id.btn_sign_in_fb);
+        btn_sign_in_twitter = findViewById(R.id.btn_sign_in_twitter);
         btnLogin = findViewById(R.id.btn_login);
         //btnFb = findViewById(R.id.btn_fb);
 
         txtForgotPwd = findViewById(R.id.link_forgotpwd);
         txtSignup = findViewById(R.id.link_signup);
         clicked();
+        btn_sign_in_gmail.setOnClickListener(this);
+        btn_sign_in_fb.setOnClickListener(this);
+        btn_sign_in_twitter.setOnClickListener(this);
+
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
     }
+
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                    }
+                });
+    }
+
+    private void revokeAccess() {
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+
+                    }
+                });
+    }
+
+
+
     public void clicked() {
 
         txtSignup.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityRece
         String message;
         int color;
         if (!isConnected) {
-            message ="Sorry! Not connected to internet";
+            message = "Sorry! Not connected to internet";
             color = Color.RED;
             Snackbar snackbar = Snackbar.make(findViewById(R.id.viewSnackbar), message, Snackbar.LENGTH_LONG);
             View sbView = snackbar.getView();
@@ -166,8 +226,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityRece
     @Override
     protected void onResume() {
         super.onResume();
-
-        // register connection status listener
         Biblion.getInstance().setConnectivityListener(this);
     }
 
@@ -176,4 +234,92 @@ public class LoginActivity extends AppCompatActivity implements ConnectivityRece
     public void onNetworkConnectionChanged(boolean isConnected) {
         showSnack(isConnected);
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.e(TAG, "display name: " + acct.getDisplayName());
+
+            String personName = acct.getDisplayName();
+            String personPhotoUrl = acct.getPhotoUrl().toString();
+            String email = acct.getEmail();
+
+            Log.e(TAG, "Name: " + personName + ", email: " + email
+                    + ", Image: " + personPhotoUrl);
+
+            // txtName.setText(personName);
+            // txtEmail.setText(email);
+           /* Glide.with(getApplicationContext()).load(personPhotoUrl)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgProfilePic);*/
+
+         //   updateUI(true);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.btn_sign_in_gmail:
+                signOut();
+                signIn();
+                break;
+            case R.id.btn_sign_in_fb:
+                signOut();
+                break;
+
+            case R.id.btn_sign_in_twitter:
+                revokeAccess();
+                break;
+        }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            //showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                  //  hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
+        }
+    }
+
 }
