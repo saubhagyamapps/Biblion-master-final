@@ -90,5 +90,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
