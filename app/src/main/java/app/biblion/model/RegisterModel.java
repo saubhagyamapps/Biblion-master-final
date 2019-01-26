@@ -2,15 +2,16 @@ package app.biblion.model;
 
 public class RegisterModel {
 
-
     /**
      * status : 0
      * message : signup successful
-     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"ahdpdddddddf@asdhp.com","password":"password","device_id":"1234567890","firebase_id":"1234567890"}
+     * path : http://192.168.1.200/biblion-API/public/profile_image/
+     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hpdpgd@hpp.com","password":"4297f44b13955235245b2497399d7a93","device_id":"1234567890","firebase_id":"1234567890","image":"1548420341.png","country":"India","state":"gujarat","city":"ahmedabad"}
      */
 
     private String status;
     private String message;
+    private String path;
     private ResultBean result;
 
     public String getStatus() {
@@ -29,6 +30,14 @@ public class RegisterModel {
         this.message = message;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public ResultBean getResult() {
         return result;
     }
@@ -44,10 +53,14 @@ public class RegisterModel {
          * gender : male
          * dob : 1988-11-23
          * mobile : 55566644777
-         * email : ahdpdddddddf@asdhp.com
-         * password : password
+         * email : hpdpgd@hpp.com
+         * password : 4297f44b13955235245b2497399d7a93
          * device_id : 1234567890
          * firebase_id : 1234567890
+         * image : 1548420341.png
+         * country : India
+         * state : gujarat
+         * city : ahmedabad
          */
 
         private String name;
@@ -59,6 +72,10 @@ public class RegisterModel {
         private String password;
         private String device_id;
         private String firebase_id;
+        private String image;
+        private String country;
+        private String state;
+        private String city;
 
         public String getName() {
             return name;
@@ -130,6 +147,38 @@ public class RegisterModel {
 
         public void setFirebase_id(String firebase_id) {
             this.firebase_id = firebase_id;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
         }
     }
 }
