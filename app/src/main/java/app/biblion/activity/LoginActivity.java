@@ -21,11 +21,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 
 import java.util.regex.Matcher;
@@ -51,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String mEmail, mPassword, mDevice_id;
     private static final int RC_SIGN_IN = 007;
     SessionManager session;
-    ImageView btn_sign_in_gmail,btn_sign_in_fb,btn_sign_in_twitter;
+    ImageView btn_sign_in_gmail, btn_sign_in_fb, btn_sign_in_twitter;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -93,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+
     }
 
     private void signIn() {
@@ -119,7 +118,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
-
 
 
     public void clicked() {
@@ -226,6 +224,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
+
         Biblion.getInstance().setConnectivityListener(this);
     }
 
@@ -256,6 +255,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);
 
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            intent.putExtra("name", personName);
+            intent.putExtra("email", email);
+            intent.putExtra("images", personPhotoUrl);
+            startActivity(intent);
+
             // txtName.setText(personName);
             // txtEmail.setText(email);
            /* Glide.with(getApplicationContext()).load(personPhotoUrl)
@@ -264,7 +269,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imgProfilePic);*/
 
-         //   updateUI(true);
+            //   updateUI(true);
         }
     }
 
@@ -304,9 +309,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            Log.d(TAG, "Got cached sign-in");
+          //  revokeAccess();
+          /*  Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
+            handleSignInResult(result);*/
         } else {
             // If the user has not previously signed in on this device or the sign-in has expired,
             // this asynchronous branch will attempt to sign in the user silently.  Cross-device
@@ -315,8 +321,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
                 public void onResult(GoogleSignInResult googleSignInResult) {
-                  //  hideProgressDialog();
-                    handleSignInResult(googleSignInResult);
+                    //  hideProgressDialog();
+
+                  //  handleSignInResult(googleSignInResult);
                 }
             });
         }

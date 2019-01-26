@@ -1,23 +1,38 @@
 package app.biblion.activity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -33,6 +48,7 @@ import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Biblion;
 import app.biblion.util.ConnectivityReceiver;
 import app.biblion.util.Constant;
+import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -46,10 +62,12 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     Button btnRegistration;
     Calendar myCalendar;
     TextView txt_Login;
+    String filePath="null";
     private DatePickerDialog mDatePickerDialog;
     private AlertDialog alertDialogObjectCountry, alertDialogObjectState, alertDialogObjectCity;
     RadioButton radioMale, radioFemale;
     DatePickerDialog.OnDateSetListener date;
+    ImageView camera_image;
     String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd, mCountry, mState, mCity;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     String mGnder = "Male";
@@ -57,17 +75,20 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     int mslectedGander;
     SessionManager sessionManager;
     String selectedCountry, selectedState, selectedCity;
-
+    private final static int ALL_PERMISSIONS_RESULT = 107;
+    Uri picUri;
+    CircleImageView imageView;
+    private final static int IMAGE_RESULT = 200;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        initialization();
+        initialization(savedInstanceState);
 
     }
 
-    private void initialization() {
+    private void initialization(Bundle savedInstanceState) {
         mDevice_id = Settings.Secure.getString(RegisterActivity.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         edtRmobileno = findViewById(R.id.txt_mobileno);
@@ -84,6 +105,8 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         radioMale = findViewById(R.id.radiobtn_male);
         radioFemale = findViewById(R.id.radiobtn_female);
         radio_group = findViewById(R.id.radio_group);
+        camera_image = findViewById(R.id.camera_image);
+        imageView = findViewById(R.id.profile_image);
         sessionManager = new SessionManager(RegisterActivity.this);
         datePicker();
         setDateTimeField();
@@ -91,6 +114,8 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         ShowStateList();
         ShowCityList();
         btnRegistrationClick();
+        getCemaraImages();
+        loginWithGmailData(savedInstanceState);
         mslectedGander = radio_group.getCheckedRadioButtonId();
         Log.e(TAG, "initialization: " + mslectedGander);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -109,7 +134,144 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         });
     }
 
+    private void loginWithGmailData(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
 
+            } else {
+                camera_image.setClickable(false);
+                edtRUsername.setInputType(InputType.TYPE_NULL);
+                edtREmail.setInputType(InputType.TYPE_NULL);
+                edtRUsername.setText(extras.getString("name"));
+                edtREmail.setText(extras.getString("email"));
+                filePath=extras.getString("images");
+                Glide.with(getApplicationContext()).load(extras.getString("images"))
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageView);
+
+                Log.e(TAG, "loginWithGmailData: "+mUserName );
+            }
+        } else {
+
+        }
+    }
+
+    private void getCemaraImages() {
+        camera_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
+            }
+        });
+    }
+
+    private Intent getPickImageChooserIntent() {
+        Uri outputFileUri = getCaptureImageOutputUri();
+
+        List<Intent> allIntents = new ArrayList<>();
+        PackageManager packageManager = getPackageManager();
+
+        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for (ResolveInfo res : listCam) {
+            Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            if (outputFileUri != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            }
+            allIntents.add(intent);
+        }
+
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
+        for (ResolveInfo res : listGallery) {
+            Intent intent = new Intent(galleryIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            allIntents.add(intent);
+        }
+
+        Intent mainIntent = allIntents.get(allIntents.size() - 1);
+        for (Intent intent : allIntents) {
+            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+                mainIntent = intent;
+                break;
+            }
+        }
+        allIntents.remove(mainIntent);
+
+        Intent chooserIntent = Intent.createChooser(mainIntent, "Select source");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
+
+        return chooserIntent;
+    }
+
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getExternalFilesDir("");
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
+        }
+        return outputFileUri;
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (resultCode == Activity.RESULT_OK) {
+
+
+            if (requestCode == IMAGE_RESULT) {
+
+                 filePath = getImageFilePath(data);
+                if (filePath != null) {
+                    Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+                    imageView.setImageBitmap(selectedImage);
+                }
+            }
+
+        }
+
+    }
+
+
+    public String getImageFilePath(Intent data) {
+        return getImageFromFilePath(data);
+    }
+
+    private String getImageFromFilePath(Intent data) {
+        boolean isCamera = data == null || data.getData() == null;
+
+        if (isCamera) return getCaptureImageOutputUri().getPath();
+        else return getPathFromURI(data.getData());
+    }
+
+    private String getPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Audio.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("pic_uri", picUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // get the file url
+        picUri = savedInstanceState.getParcelable("pic_uri");
+    }
     private void datePicker() {
 
         edtRBirtthdate.setOnTouchListener(new View.OnTouchListener() {
@@ -228,6 +390,8 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             edtRCity.setFocusable(true);
         } else if (!mPassword.equals(mConfPwd)) {
             Constant.toast("Password not match", RegisterActivity.this);
+        } else if (filePath.equals("null")) {
+            Constant.toast("Please Select Profile Picture", RegisterActivity.this);
         } else {
             RegistrationAPI_CAll();
         }
@@ -236,7 +400,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
     private void RegistrationAPI_CAll() {
 
-        File file = new File("/storage/emulated/0/Download/abc.jpg");
+        File file = new File(filePath);
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
@@ -292,6 +456,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
             @Override
             public void onFailure(Call<RegisterModel> call, Throwable t) {
+                Log.e(TAG, "onFailure: "+t.getMessage() );
                 Constant.progressBar.dismiss();
 
             }
