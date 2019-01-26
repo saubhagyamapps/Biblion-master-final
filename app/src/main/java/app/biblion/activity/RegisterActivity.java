@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,27 +33,30 @@ import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Biblion;
 import app.biblion.util.ConnectivityReceiver;
 import app.biblion.util.Constant;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "RegisterActivity";
-    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd, edtRmobileno,edtRCountry,edtRState,edtRCity;
+    EditText edtRFullname, edtRUsername, edtRBirtthdate, edtREmail, edtRpwd, edtRConfPwd, edtRmobileno, edtRCountry, edtRState, edtRCity;
     Button btnRegistration;
     Calendar myCalendar;
     TextView txt_Login;
     private DatePickerDialog mDatePickerDialog;
-    private  AlertDialog alertDialogObjectCountry,alertDialogObjectState,alertDialogObjectCity ;
+    private AlertDialog alertDialogObjectCountry, alertDialogObjectState, alertDialogObjectCity;
     RadioButton radioMale, radioFemale;
     DatePickerDialog.OnDateSetListener date;
-    String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd;
+    String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd, mCountry, mState, mCity;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     String mGnder = "Male";
     RadioGroup radio_group;
     int mslectedGander;
     SessionManager sessionManager;
-    String selectedCountry, selectedState,selectedCity;
+    String selectedCountry, selectedState, selectedCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +188,10 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         mPassword = edtRpwd.getText().toString().trim();
         mMobile_Number = edtRmobileno.getText().toString().trim();
         mBrithdate = edtRBirtthdate.getText().toString().trim();
+        mCountry = edtRCountry.getText().toString().trim();
+        mState = edtRState.getText().toString().trim();
+        mCity = edtRCity.getText().toString().trim();
+        mConfPwd = edtRConfPwd.getText().toString().trim();
         validation();
     }
 
@@ -203,20 +211,65 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         } else if (mPassword.equalsIgnoreCase("")) {
             edtRpwd.setError("Required");
             edtRpwd.setFocusable(true);
+        }  else if (mConfPwd.equalsIgnoreCase("")) {
+            edtRConfPwd.setError("Required");
+            edtRConfPwd.setFocusable(true);
         } else if (!mEmail.matches(emailPattern)) {
             edtREmail.setError("invalid email");
             edtREmail.setFocusable(true);
+        } else if (mCountry.equals("")) {
+            edtRCountry.setError("Required");
+            edtRCountry.setFocusable(true);
+        } else if (mState.equals("")) {
+            edtRState.setError("Required");
+            edtRState.setFocusable(true);
+        } else if (mCity.equals("")) {
+            edtRCity.setError("Required");
+            edtRCity.setFocusable(true);
+        } else if (!mPassword.equals(mConfPwd)) {
+            Constant.toast("Password not match", RegisterActivity.this);
         } else {
             RegistrationAPI_CAll();
-
         }
 
     }
 
     private void RegistrationAPI_CAll() {
+
+        File file = new File("/storage/emulated/0/Download/abc.jpg");
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        RequestBody Email =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mEmail);
+        RequestBody Password =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mPassword);
+        RequestBody firebase_id =
+                RequestBody.create(MediaType.parse("multipart/form-data"), "fgdjsgjgha");
+        RequestBody Device_id =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mDevice_id);
+        RequestBody FullName =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mFullName);
+        RequestBody Brithdate =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mBrithdate);
+        RequestBody Gnder =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mGnder);
+        RequestBody UserName =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mUserName);
+        RequestBody Mobile_Number =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mMobile_Number);
+        RequestBody country =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mCountry);
+        RequestBody State =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mState);
+        RequestBody city =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mCity);
+
         Constant.progressDialog(RegisterActivity.this);
         Call<RegisterModel> modelCall = Constant.apiService.
-                getRegisterDetails(mEmail, mPassword, "fgdjsgjgha", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number);
+                getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
         modelCall.enqueue(new Callback<RegisterModel>() {
             @Override
             public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
@@ -264,7 +317,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         String message;
         int color;
         if (!isConnected) {
-            message ="Internet Not Connected! Please Connect";
+            message = "Internet Not Connected! Please Connect";
             color = Color.RED;
             Snackbar snackbar = Snackbar.make(findViewById(R.id.rviewsnack), message, Snackbar.LENGTH_LONG);
             View sbView = snackbar.getView();
@@ -287,8 +340,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         showSnack(isConnected);
     }
 
-    public void ShowCountryList()
-    {
+    public void ShowCountryList() {
         List<String> mCountrylist = new ArrayList<String>();
         mCountrylist.add("USA");
         mCountrylist.add("RUSSIA");
@@ -312,8 +364,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         //alertDialogObject.show();
     }
 
-    public void ShowStateList()
-    {
+    public void ShowStateList() {
         List<String> mStatelist = new ArrayList<String>();
         mStatelist.add("Gujarat");
         mStatelist.add("Maharashtra");
@@ -342,8 +393,8 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         //Show the dialog
         //alertDialogObject.show();
     }
-    public void ShowCityList()
-    {
+
+    public void ShowCityList() {
         List<String> mCitylist = new ArrayList<String>();
         mCitylist.add("Ahmedabad");
         mCitylist.add("Surat");
