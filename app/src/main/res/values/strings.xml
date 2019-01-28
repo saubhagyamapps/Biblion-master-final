@@ -47,4 +47,7 @@ five star Goodreads ratings and all that</string>
     <string name="bhaktiyoga" translatable="false">
          <u>BHAKTI YOGA</u>.
     </string>
+
+    <string name="facebook_app_id" translatable="false">600108270439990</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb600108270439990</string>
 </resources>
