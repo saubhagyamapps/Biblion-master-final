@@ -3,14 +3,16 @@ package app.biblion.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.view.View;
 
 import app.biblion.R;
 import app.biblion.sessionmanager.SessionManager;
@@ -20,25 +22,16 @@ public class SplashActivity extends AppCompatActivity {
     private final int SPLASH_TIME = 100;
     SessionManager securityManager;
     Intent intent;
+    int Flag;
+    public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
 
-    public static final int MULTIPLE_PERMISSIONS = 10;
-    String[] permissions = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         securityManager = new SessionManager(SplashActivity.this);
-        if (securityManager.checkLogin()) {
-            intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            intent = new Intent(SplashActivity.this, NavigationActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        checkLoginSession();
+
         setContentView(R.layout.activity_splash);
         new Handler().postDelayed(
                 new Runnable() {
@@ -47,44 +40,110 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
                 }, SPLASH_TIME);
-        call_permissions();
-      /*  addSlide(AppIntroFragment.newInstance("STEP 1", "Tap to open instagram.", R.drawable.instaintro1, Color.parseColor("#e91e63")));
-        addSlide(AppIntroFragment.newInstance("STEP 2", "Tap on more option icon over instagram post.", R.drawable.instaintro2, Color.parseColor("#4caf50")));
-        addSlide(AppIntroFragment.newInstance("STEP 3", "Tap on 'Copy Share URL' option. NOTE : If users profile is private 'Copy share URL' option is not available", R.drawable.instaintro3, Color.parseColor("#00bcd4")));
-        addSlide(AppIntroFragment.newInstance("STEP 4", "Yeah! Photo or Video is Automatically Saved to your device.", R.drawable.instaintro4, Color.parseColor("#9c27b0")));
-        showSkipButton(false);*/
+
     }
 
 
-    private void call_permissions() {
-        int result;
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        for (String p : permissions) {
-            result = ContextCompat.checkSelfPermission(getApplicationContext(), p);
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                listPermissionsNeeded.add(p);
+    private void checkLoginSession() {
+        if (securityManager.checkLogin()) {
+            Flag = 1;
+        } else {
+            Flag = 0;
+
+        }
+        checkAndroidVersion();
+
+    }
+
+    private void checkAndroidVersion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkPermission();
+
+        } else {
+            openNewScreen();
+
+        }
+
+    }
+
+    private void openNewScreen() {
+        if (Flag == 1) {
+            intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            intent = new Intent(SplashActivity.this, NavigationActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) +
+                ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) +
+                ContextCompat.checkSelfPermission(SplashActivity.this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(SplashActivity.this, Manifest.permission.CAMERA)) {
+
+                Snackbar.make(SplashActivity.this.findViewById(android.R.id.content),
+                        "Please Grant Permissions to upload profile photo",
+                        Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                requestPermissions(
+                                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.CAMERA},
+                                        PERMISSIONS_MULTIPLE_REQUEST);
+                            }
+                        }).show();
+            } else {
+                requestPermissions(
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.CAMERA},
+                        PERMISSIONS_MULTIPLE_REQUEST);
             }
+        } else {
+            openNewScreen();
         }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray
-                    (new String[listPermissionsNeeded.size()]), MULTIPLE_PERMISSIONS);
-        }
-        return;
-    }
-  /*  @Override
-    public void onSkipPressed(Fragment currentFragment) {
-
     }
 
     @Override
-    public void onDonePressed(Fragment currentFragment) {
-        SharedPreferences.Editor editor = getSharedPreferences("MyPREFERENCES", Context.MODE_PRIVATE).edit();
-        editor.putBoolean("AppIntro", false);
-        editor.apply();
-        finish();
-    }
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-    @Override
-    public void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
-    }*/
+        switch (requestCode) {
+            case PERMISSIONS_MULTIPLE_REQUEST:
+                if (grantResults.length > 0) {
+                    boolean cameraPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean readExternalFile = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+
+                    if (cameraPermission && readExternalFile) {
+                        openNewScreen();
+                    } else {
+                        Snackbar.make(findViewById(android.R.id.content),
+                                "Please Grant Permissions to upload profile photo",
+                                Snackbar.LENGTH_INDEFINITE).setAction("ENABLE",
+                                new View.OnClickListener() {
+                                    @RequiresApi(api = Build.VERSION_CODES.M)
+                                    @Override
+                                    public void onClick(View v) {
+                                        requestPermissions(
+                                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                                                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                        Manifest.permission.CAMERA},
+                                                PERMISSIONS_MULTIPLE_REQUEST);
+                                    }
+                                }).show();
+                    }
+                }
+                break;
+        }
+    }
 }
