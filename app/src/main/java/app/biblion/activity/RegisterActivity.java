@@ -365,8 +365,8 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             edtRBirtthdate.setError("Required");
             edtRBirtthdate.setFocusable(true);
         } else if (mMobile_Number.equalsIgnoreCase("")) {
-            edtREmail.setError("Required");
-            edtREmail.setFocusable(true);
+            edtRmobileno.setError("Required");
+            edtRmobileno.setFocusable(true);
         } else if (mEmail.equalsIgnoreCase("")) {
             edtREmail.setError("Required");
             edtREmail.setFocusable(true);
