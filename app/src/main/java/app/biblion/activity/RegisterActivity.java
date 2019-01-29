@@ -63,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     Calendar myCalendar;
     TextView txt_Login;
     String filePath="null";
+    String mGoogleimage="null";
     private DatePickerDialog mDatePickerDialog;
     private AlertDialog alertDialogObjectCountry, alertDialogObjectState, alertDialogObjectCity;
     RadioButton radioMale, radioFemale;
@@ -79,6 +80,8 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     Uri picUri;
     CircleImageView imageView;
     private final static int IMAGE_RESULT = 200;
+    Call<RegisterModel> modelCall;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +110,9 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         radio_group = findViewById(R.id.radio_group);
         camera_image = findViewById(R.id.camera_image);
         imageView = findViewById(R.id.profile_image);
+        camera_image.setClickable(true);
+        edtRUsername.setInputType(InputType.TYPE_CLASS_TEXT);
+        edtREmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         sessionManager = new SessionManager(RegisterActivity.this);
         datePicker();
         setDateTimeField();
@@ -137,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     private void loginWithGmailData(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
+            if (extras == null) {
 
             } else {
                 camera_image.setClickable(false);
@@ -145,14 +151,20 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 edtREmail.setInputType(InputType.TYPE_NULL);
                 edtRUsername.setText(extras.getString("name"));
                 edtREmail.setText(extras.getString("email"));
-                filePath=extras.getString("images");
+                mGoogleimage = extras.getString("images");
                 Glide.with(getApplicationContext()).load(extras.getString("images"))
                         .thumbnail(0.5f)
                         .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(imageView);
 
-                Log.e(TAG, "loginWithGmailData: "+mUserName );
+                Log.e(TAG, "loginWithGmailData: " + mUserName);
+                if(extras.getString("name") == null){
+                    camera_image.setClickable(true);
+                    edtRUsername.setInputType(InputType.TYPE_CLASS_TEXT);
+                    edtREmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                   // imageView.setBackground(R.drawable.abcdedemoimage);
+                }
             }
         } else {
 
@@ -219,6 +231,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         }
         return outputFileUri;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -228,7 +241,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
             if (requestCode == IMAGE_RESULT) {
 
-                 filePath = getImageFilePath(data);
+                filePath = getImageFilePath(data);
                 if (filePath != null) {
                     Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
                     imageView.setImageBitmap(selectedImage);
@@ -258,6 +271,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -272,6 +286,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         // get the file url
         picUri = savedInstanceState.getParcelable("pic_uri");
     }
+
     private void datePicker() {
 
         edtRBirtthdate.setOnTouchListener(new View.OnTouchListener() {
@@ -365,15 +380,15 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             edtRBirtthdate.setError("Required");
             edtRBirtthdate.setFocusable(true);
         } else if (mMobile_Number.equalsIgnoreCase("")) {
-            edtREmail.setError("Required");
-            edtREmail.setFocusable(true);
+            edtRmobileno.setError("Required");
+            edtRmobileno.setFocusable(true);
         } else if (mEmail.equalsIgnoreCase("")) {
             edtREmail.setError("Required");
             edtREmail.setFocusable(true);
         } else if (mPassword.equalsIgnoreCase("")) {
             edtRpwd.setError("Required");
             edtRpwd.setFocusable(true);
-        }  else if (mConfPwd.equalsIgnoreCase("")) {
+        } else if (mConfPwd.equalsIgnoreCase("")) {
             edtRConfPwd.setError("Required");
             edtRConfPwd.setFocusable(true);
         } else if (!mEmail.matches(emailPattern)) {
@@ -390,7 +405,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             edtRCity.setFocusable(true);
         } else if (!mPassword.equals(mConfPwd)) {
             Constant.toast("Password not match", RegisterActivity.this);
-        } else if (filePath.equals("null")) {
+        } else if (filePath.equals("null")&&mGoogleimage.equals("null")) {
             Constant.toast("Please Select Profile Picture", RegisterActivity.this);
         } else {
             RegistrationAPI_CAll();
@@ -432,8 +447,13 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 RequestBody.create(MediaType.parse("multipart/form-data"), mCity);
 
         Constant.progressDialog(RegisterActivity.this);
-        Call<RegisterModel> modelCall = Constant.apiService.
-                getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
+        if(mGoogleimage.equals("null")) {
+            modelCall = Constant.apiService.
+                    getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
+        }else {
+            modelCall = Constant.apiService.
+                    getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity,mGoogleimage);
+        }
         modelCall.enqueue(new Callback<RegisterModel>() {
             @Override
             public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
@@ -456,7 +476,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
             @Override
             public void onFailure(Call<RegisterModel> call, Throwable t) {
-                Log.e(TAG, "onFailure: "+t.getMessage() );
+                Log.e(TAG, "onFailure: " + t.getMessage());
                 Constant.progressBar.dismiss();
 
             }

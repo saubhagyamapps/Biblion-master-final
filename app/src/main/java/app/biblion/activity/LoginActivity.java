@@ -22,7 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
@@ -107,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onResult(Status status) {
                     }
                 });
+        signIn();
     }
 
     private void revokeAccess() {
@@ -260,16 +260,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             intent.putExtra("email", email);
             intent.putExtra("images", personPhotoUrl);
             startActivity(intent);
-
-            // txtName.setText(personName);
-            // txtEmail.setText(email);
-           /* Glide.with(getApplicationContext()).load(personPhotoUrl)
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imgProfilePic);*/
-
-            //   updateUI(true);
         }
     }
 
@@ -277,7 +267,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -290,7 +279,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (id) {
             case R.id.btn_sign_in_gmail:
                 signOut();
-                signIn();
+
                 break;
             case R.id.btn_sign_in_fb:
                 signOut();
@@ -299,33 +288,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_sign_in_twitter:
                 revokeAccess();
                 break;
-        }
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-          //  revokeAccess();
-          /*  Log.d(TAG, "Got cached sign-in");
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);*/
-        } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
-            //showProgressDialog();
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    //  hideProgressDialog();
-
-                  //  handleSignInResult(googleSignInResult);
-                }
-            });
         }
     }
 

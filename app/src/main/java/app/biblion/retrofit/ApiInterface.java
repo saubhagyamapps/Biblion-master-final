@@ -24,18 +24,34 @@ public interface ApiInterface {
     @Multipart
     @POST("signup")
     Call<RegisterModel> getRegisterDetails(@Part("email") RequestBody email,
-                                           @Part("password") RequestBody  password,
-                                           @Part("firebase_id") RequestBody  firebase_id,
-                                           @Part("device_id") RequestBody   device_id,
-                                           @Part("myname") RequestBody  myname,
-                                           @Part("dob") RequestBody  dob,
-                                           @Part("gender") RequestBody  gender,
-                                           @Part("username") RequestBody   username,
+                                           @Part("password") RequestBody password,
+                                           @Part("firebase_id") RequestBody firebase_id,
+                                           @Part("device_id") RequestBody device_id,
+                                           @Part("myname") RequestBody myname,
+                                           @Part("dob") RequestBody dob,
+                                           @Part("gender") RequestBody gender,
+                                           @Part("username") RequestBody username,
                                            @Part("mobile") RequestBody mobile,
                                            @Part("country") RequestBody country,
                                            @Part("state") RequestBody state,
                                            @Part("city") RequestBody city,
                                            @Part MultipartBody.Part file);
+
+    @FormUrlEncoded
+    @POST("signup")
+    Call<RegisterModel> getRegisterDetailsGoogle(@Field("email") String email,
+                                                 @Field("password") String password,
+                                                 @Field("firebase_id") String firebase_id,
+                                                 @Field("device_id") String device_id,
+                                                 @Field("myname") String myname,
+                                                 @Field("dob") String dob,
+                                                 @Field("gender") String gender,
+                                                 @Field("username") String username,
+                                                 @Field("mobile") String mobile,
+                                                 @Field("country") String country,
+                                                 @Field("state") String state,
+                                                 @Field("city") String city,
+                                                 @Field("googleimage") String googleimage);
 
 
     @FormUrlEncoded
