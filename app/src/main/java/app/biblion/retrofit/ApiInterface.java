@@ -7,6 +7,7 @@ import app.biblion.model.HomeModel;
 import app.biblion.model.LoginModel;
 import app.biblion.model.MyLibraryBookModel;
 import app.biblion.model.RegisterModel;
+import app.biblion.model.ResetPasswordModel;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -78,7 +79,14 @@ public interface ApiInterface {
     @Streaming
     Call<ResponseBody> downloadImage(@Url String fileUrl);
 
-    @Multipart
+
+    @FormUrlEncoded
+    @POST("reset")
+    Call<ResetPasswordModel> resetPassword(@Field("id") String id,
+                                           @Field("oldpass") String oldpass,
+                                           @Field("newpass") String newpass);
+
+    @FormUrlEncoded
     @POST("editprofile")
     Call<EditProfileModel> getEditDetails(@Part("name") RequestBody name,
                                           @Part("username") RequestBody username,
