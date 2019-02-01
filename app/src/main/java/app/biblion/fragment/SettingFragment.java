@@ -67,7 +67,7 @@ public class SettingFragment extends Fragment {
         modelCall.enqueue(new Callback<ResetPasswordModel>() {
             @Override
             public void onResponse(Call<ResetPasswordModel> call, Response<ResetPasswordModel> response) {
-            
+
             }
 
             @Override
