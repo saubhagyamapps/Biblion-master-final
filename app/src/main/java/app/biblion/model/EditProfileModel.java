@@ -58,7 +58,7 @@ public class EditProfileModel {
          * city : ahmedbad
          */
 
-        private int id;
+        private String id;
         private String name;
         private String username;
         private String gender;
@@ -74,11 +74,11 @@ public class EditProfileModel {
         private String state;
         private String city;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

@@ -8,7 +8,7 @@ public class LoginModel {
     /**
      * status : 0
      * messgae : login success
-     * result : [{"id":1,"name":"hello","username":"username","gender":"female","dob":"1980-01-01","mobile":"55566644777","email":"hp@hp.com","password":"password","device_id":"1234567890","firebase_id":"1234567890"}]
+     * result : [{"id":15,"name":"abcd","username":"abcd","gender":"Male","dob":"2019-01-23","mobile":1234567891,"email":"abcd@gmail.com","password":"f5bb0c8de146c67b44babbf4e6584cc0","device_id":"13b7029855e22101","firebase_id":"fgdjsgjgha","image":"","googleimage":null,"country":"","state":"","city":""}]
      */
 
     private String status;
@@ -41,16 +41,21 @@ public class LoginModel {
 
     public static class ResultBean {
         /**
-         * id : 1
-         * name : hello
-         * username : username
-         * gender : female
-         * dob : 1980-01-01
-         * mobile : 55566644777
-         * email : hp@hp.com
-         * password : password
-         * device_id : 1234567890
-         * firebase_id : 1234567890
+         * id : 15
+         * name : abcd
+         * username : abcd
+         * gender : Male
+         * dob : 2019-01-23
+         * mobile : 1234567891
+         * email : abcd@gmail.com
+         * password : f5bb0c8de146c67b44babbf4e6584cc0
+         * device_id : 13b7029855e22101
+         * firebase_id : fgdjsgjgha
+         * image :
+         * googleimage : null
+         * country :
+         * state :
+         * city :
          */
 
         private String id;
@@ -63,6 +68,11 @@ public class LoginModel {
         private String password;
         private String device_id;
         private String firebase_id;
+        private String image;
+        private String googleimage;
+        private String country;
+        private String state;
+        private String city;
 
         public String getId() {
             return id;
@@ -142,6 +152,46 @@ public class LoginModel {
 
         public void setFirebase_id(String firebase_id) {
             this.firebase_id = firebase_id;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getGoogleimage() {
+            return googleimage;
+        }
+
+        public void setGoogleimage(String googleimage) {
+            this.googleimage = googleimage;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public void setState(String state) {
+            this.state = state;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
         }
     }
 }

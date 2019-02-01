@@ -72,7 +72,7 @@ public interface ApiInterface {
     Call<MyLibraryBookModel> getMyLibraryBook(@Field("page") int page);
 
     @FormUrlEncoded
-        @POST("home")
+    @POST("home")
     Call<HomeModel> getHomeList(@Field("page") int page);
 
     @GET()
@@ -88,17 +88,26 @@ public interface ApiInterface {
 
     @Multipart
     @POST("editprofile")
-    Call<EditProfileModel> getEditDetails(@Part("name") RequestBody name,
-                                          @Part("username") RequestBody username,
-                                          @Part("gender") RequestBody gender,
-                                          @Part("dob") RequestBody dob,
-                                          @Part("mobile") RequestBody mobile,
-                                          @Part("email") RequestBody email,
-                                          @Part("password") RequestBody password,
-                                          @Part("device_id") RequestBody device_id,
-                                          @Part("firebase_id") RequestBody firebase_id,
-                                          @Part("country") RequestBody country,
-                                          @Part("state") RequestBody state,
-                                          @Part("city") RequestBody city,
-                                          @Part MultipartBody.Part file);
+    Call<EditProfileModel> getEditDetailsWithImag(@Part("id") RequestBody id,
+                                                  @Part("name") RequestBody name,
+                                                  @Part("email") RequestBody email,
+                                                  @Part("gender") RequestBody gender,
+                                                  @Part("dob") RequestBody dob,
+                                                  @Part("mobile") RequestBody mobile,
+                                                  @Part("country") RequestBody country,
+                                                  @Part("state") RequestBody state,
+                                                  @Part("city") RequestBody city,
+                                                  @Part MultipartBody.Part file);
+
+    @FormUrlEncoded
+    @POST("editprofile")
+    Call<EditProfileModel> getEditDetails(@Field("id") String id,
+                                          @Field("name") String name,
+                                          @Field("email") String email,
+                                          @Field("gender") String gender,
+                                          @Field("dob") String dob,
+                                          @Field("mobile") String mobile,
+                                          @Field("country") String country,
+                                          @Field("state") String state,
+                                          @Field("city") String city);
 }
