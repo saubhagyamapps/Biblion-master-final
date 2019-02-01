@@ -67,8 +67,6 @@ public class SessionManager {
 
     }
 
-
-
     /**
      * Get stored session data
      * */
@@ -76,9 +74,21 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        //user password
+        user.put(KEY_PASSWORD,pref.getString(KEY_PASSWORD,null));
+        //user DOB
+        user.put(KEY_DOB, pref.getString(KEY_DOB,null));
+        //user gender
+        user.put(KEY_GENDER, pref.getString(KEY_GENDER, null));
+        //user mobile
+        user.put(KEY_MOBILE, pref.getString(KEY_MOBILE, null));
+        //user deviceid
+        user.put(KEY_DEVICE_ID, pref.getString(KEY_DEVICE_ID, null));
+        //user firebaseid
+        user.put(KEY_FIREBASE_ID, pref.getString(KEY_FIREBASE_ID, null));
+
 
         // return user
         return user;

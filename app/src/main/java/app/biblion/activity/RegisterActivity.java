@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -48,6 +49,7 @@ import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Biblion;
 import app.biblion.util.ConnectivityReceiver;
 import app.biblion.util.Constant;
+import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -69,11 +71,13 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     RadioButton radioMale, radioFemale;
     DatePickerDialog.OnDateSetListener date;
     ImageView camera_image;
-    String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mConfPwd, mCountry, mState, mCity;
+    String mUserName, mFullName, mDevice_id, mFirebase_id, mPassword, mEmail, mBrithdate, mMobile_Number, mCountry, mState, mCity;
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     String mGnder = "Male";
     RadioGroup radio_group;
-    int mslectedGander;
+   // int mslectedGander;
+    ToggleSwitch toggleSwitch;
+    int mslectedGender = 0;
     SessionManager sessionManager;
     String selectedCountry, selectedState, selectedCity;
     private final static int ALL_PERMISSIONS_RESULT = 107;
@@ -99,21 +103,23 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         edtRBirtthdate = findViewById(R.id.edt_birthdate);
         edtREmail = findViewById(R.id.edt_email);
         edtRpwd = findViewById(R.id.edt_pwd);
-        edtRConfPwd = findViewById(R.id.edt_cnfpwd);
+
         edtRCountry = findViewById(R.id.edt_country);
         edtRState = findViewById(R.id.edt_state);
         edtRCity = findViewById(R.id.edt_city);
         btnRegistration = findViewById(R.id.btn_registration);
         txt_Login = findViewById(R.id.txt_login_text);
-        radioMale = findViewById(R.id.radiobtn_male);
+       /* radioMale = findViewById(R.id.radiobtn_male);
         radioFemale = findViewById(R.id.radiobtn_female);
-        radio_group = findViewById(R.id.radio_group);
+        radio_group = findViewById(R.id.radio_group);*/
         camera_image = findViewById(R.id.camera_image);
         imageView = findViewById(R.id.profile_image);
         camera_image.setClickable(true);
         edtRUsername.setInputType(InputType.TYPE_CLASS_TEXT);
         edtREmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         sessionManager = new SessionManager(RegisterActivity.this);
+
+        toggleSwitch = findViewById(R.id.r_gender_switch);
         datePicker();
         setDateTimeField();
         ShowCountryList();
@@ -122,7 +128,24 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         btnRegistrationClick();
         getCemaraImages();
         loginWithGmailData(savedInstanceState);
-        mslectedGander = radio_group.getCheckedRadioButtonId();
+
+        mslectedGender = toggleSwitch.getCheckedTogglePosition();
+        toggleSwitch.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener() {
+            @Override
+            public void onToggleSwitchChangeListener(int position, boolean isChecked) {
+
+                switch (position)
+                {
+                    case 0:
+                        mGnder = "Male";
+                        break;
+                    case 1:
+                        mGnder = "Female";
+                }
+            }
+        });
+      ///  loginWithFacebook(savedInstanceState);
+        /*mslectedGander = radio_group.getCheckedRadioButtonId();
         Log.e(TAG, "initialization: " + mslectedGander);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -137,7 +160,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
                 }
             }
-        });
+        });*/
     }
 
     private void loginWithGmailData(Bundle savedInstanceState) {
@@ -152,22 +175,49 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 edtRUsername.setText(extras.getString("name"));
                 edtREmail.setText(extras.getString("email"));
                 mGoogleimage = extras.getString("images");
-                Glide.with(getApplicationContext()).load(extras.getString("images"))
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(imageView);
+
 
                 Log.e(TAG, "loginWithGmailData: " + mUserName);
                 if(extras.getString("name") == null){
                     camera_image.setClickable(true);
                     edtRUsername.setInputType(InputType.TYPE_CLASS_TEXT);
                     edtREmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                   // imageView.setBackground(R.drawable.abcdedemoimage);
+                    //imageView.setBackgroundResource(R.drawable.abcdedemoimage);
+                }else {
+                    Glide.with(getApplicationContext()).load(extras.getString("images"))
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imageView);
                 }
             }
         } else {
 
+        }
+
+
+    }
+    private void loginWithFacebook(Bundle bundle)
+    {
+        if(bundle == null)
+        {
+            Bundle fbextras = getIntent().getExtras();
+            if (fbextras == null) {
+
+            }
+        else {
+                camera_image.setClickable(false);
+                edtRUsername.setInputType(InputType.TYPE_NULL);
+                edtREmail.setInputType(InputType.TYPE_NULL);
+                edtRUsername.setText(fbextras.getString("name"));
+                edtREmail.setText(fbextras.getString("email"));
+                //edtRBirtthdate.setText(fbextras.getString("birthday"));
+                Glide.with(getApplicationContext()).load(fbextras.getString("images"))
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageView);
+            }
         }
     }
 
@@ -368,7 +418,6 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         mCountry = edtRCountry.getText().toString().trim();
         mState = edtRState.getText().toString().trim();
         mCity = edtRCity.getText().toString().trim();
-        mConfPwd = edtRConfPwd.getText().toString().trim();
         validation();
     }
 
@@ -388,9 +437,6 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         } else if (mPassword.equalsIgnoreCase("")) {
             edtRpwd.setError("Required");
             edtRpwd.setFocusable(true);
-        } else if (mConfPwd.equalsIgnoreCase("")) {
-            edtRConfPwd.setError("Required");
-            edtRConfPwd.setFocusable(true);
         } else if (!mEmail.matches(emailPattern)) {
             edtREmail.setError("invalid email");
             edtREmail.setFocusable(true);
@@ -403,14 +449,11 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         } else if (mCity.equals("")) {
             edtRCity.setError("Required");
             edtRCity.setFocusable(true);
-        } else if (!mPassword.equals(mConfPwd)) {
-            Constant.toast("Password not match", RegisterActivity.this);
-        } else if (filePath.equals("null")&&mGoogleimage.equals("null")) {
+        }else if (filePath.equals("null")&&mGoogleimage.equals("null")) {
             Constant.toast("Please Select Profile Picture", RegisterActivity.this);
         } else {
             RegistrationAPI_CAll();
         }
-
     }
 
     private void RegistrationAPI_CAll() {
@@ -554,7 +597,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         mStatelist.add("Gujarat");
         mStatelist.add("Maharashtra");
         mStatelist.add("Madhya Pradesh");
-        mStatelist.add("Rajsthan");
+        mStatelist.add("Rajasthan");
         mStatelist.add("Punjab");
         mStatelist.add("Haryan");
         mStatelist.add("Delhi");
