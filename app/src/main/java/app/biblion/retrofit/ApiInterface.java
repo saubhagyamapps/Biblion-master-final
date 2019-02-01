@@ -2,6 +2,7 @@ package app.biblion.retrofit;
 
 
 import app.biblion.model.ArticalModel;
+import app.biblion.model.EditProfileModel;
 import app.biblion.model.HomeModel;
 import app.biblion.model.LoginModel;
 import app.biblion.model.MyLibraryBookModel;
@@ -70,10 +71,26 @@ public interface ApiInterface {
     Call<MyLibraryBookModel> getMyLibraryBook(@Field("page") int page);
 
     @FormUrlEncoded
-    @POST("home")
+        @POST("home")
     Call<HomeModel> getHomeList(@Field("page") int page);
 
     @GET()
     @Streaming
     Call<ResponseBody> downloadImage(@Url String fileUrl);
+
+    @FormUrlEncoded
+    @POST("editprofile")
+    Call<EditProfileModel> getEditDetails(@Part("name") RequestBody name,
+                                          @Part("username") RequestBody username,
+                                          @Part("gender") RequestBody gender,
+                                          @Part("dob") RequestBody dob,
+                                          @Part("mobile") RequestBody mobile,
+                                          @Part("email") RequestBody email,
+                                          @Part("password") RequestBody password,
+                                          @Part("device_id") RequestBody device_id,
+                                          @Part("firebase_id") RequestBody firebase_id,
+                                          @Part("country") RequestBody country,
+                                          @Part("state") RequestBody state,
+                                          @Part("city") RequestBody city,
+                                          @Part MultipartBody.Part file);
 }

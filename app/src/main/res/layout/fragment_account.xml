@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/accountviewsnack"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginBottom="80dp"
+    tools:context=".fragment.AccountFragment"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@color/colorPrimaryDark"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/acc_profile_image"
+            android:layout_width="150dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="match_parent"
+            app:civ_border_width="1.5dp"
+            android:src="@drawable/abcdedemoimage"
+            android:layout_centerHorizontal="true"
+            app:civ_border_color="#ffff"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/prof_camera_image"
+            android:layout_width="40dp"
+            android:layout_marginTop="115dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_camera"
+            android:layout_centerHorizontal="true" />
+        <!--<LinearLayout
+            android:layout_width="220dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/linear_shape"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="35dp"
+                android:gravity="center"
+                android:text="Join Biblion Today!"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Create an account to"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Start reading"
+                android:textColor="@color/white" />
+        </LinearLayout>-->
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="3dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                <EditText
+                    android:id="@+id/edt_profusername"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="#FFFF"
+                    android:hint="User Name"
+                    android:inputType="text"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="15dp"
+                    android:textSize="15sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:layout_marginLeft="20dp">
+            <ImageView
+                android:id="@+id/username_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/edit"
+                android:layout_weight="4"/>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
+
+            <EditText
+                android:id="@+id/edt_profemail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#FFFF"
+                android:hint="Email address"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:editable="false"
+                android:textSize="15sp" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edt_profmobileno"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#FFFF"
+                android:hint="Mobile Number"
+                android:inputType="number"
+                android:paddingRight="15dp"
+                android:paddingLeft="10dp"
+                android:textSize="15sp" />
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    >
+                    <ImageView
+                        android:id="@+id/mobileno_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"/>
+            <belka.us.androidtoggleswitch.widgets.ToggleSwitch
+                android:id="@+id/gender_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:textToggleLeft="Male"
+                custom:textToggleRight="Female"
+                custom:toggleWidth="100dp"
+                custom:activeBgColor="@color/colorPrimary"
+                custom:inactiveBgColor="#FFF"
+                android:layout_marginLeft="50dp"
+                android:layout_gravity="center"
+                custom:separatorColor="@color/black"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="6"
+                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edt_profbirthdate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFF"
+                android:hint="DOB"
+                android:clickable="true"
+                android:editable="false"
+                android:paddingLeft="10dp"
+                android:paddingRight="5dp"
+                android:singleLine="true"
+                android:textSize="15sp"
+                android:drawableRight="@drawable/calendar"/>
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:layout_marginLeft="7dp"
+                    >
+                    <ImageView
+                        android:id="@+id/birthdate_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit"
+                        android:layout_weight="4" />
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="2"
+            android:elevation="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="3dp"
+                    >
+                    <EditText
+                        android:id="@+id/edt_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#FFFF"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp">
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="3dp">
+                    <EditText
+                        android:id="@+id/edt_cnfpwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#FFFF"
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>-->
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:cardCornerRadius="3dp"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+            <EditText
+                android:id="@+id/edt_profcountry"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFF"
+                android:hint="Country"
+                android:clickable="true"
+                android:editable="false"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:layout_marginLeft="20dp">
+                    <ImageView
+                        android:id="@+id/country_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edt_profstate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFF"
+                android:hint="State"
+                android:clickable="true"
+                android:editable="false"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="center"
+                    android:layout_marginLeft="20dp">
+                    <ImageView
+                        android:id="@+id/state_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="3dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            <EditText
+                android:id="@+id/edt_profcity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#FFFF"
+                android:hint="City"
+                android:editable="false"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center">
+                    <ImageView
+                        android:id="@+id/city_edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_profupdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/loginbutton"
+            android:padding="15dp"
+            android:text="UPDATE"
+            android:textAllCaps="false"
+            android:textColor="#ffffff" />
+
+        <!--<TextView
+            android:id="@+id/txt_login_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/login_links"
+            android:textSize="15dp" />-->
+
+        <!-- <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
+
+             <View
+                 android:layout_width="match_parent"
+                 android:layout_height="1dp"
+                 android:layout_centerInParent="true"
+                 android:layout_marginLeft="0dp"
+                 android:layout_marginRight="0dp"
+                 android:background="@color/colorPrimaryDark" />
+
+             <TextView
+                 android:id="@+id/btn_fb"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"
+                 android:background="@drawable/loginwith"
+                 android:text="Register With"
+                 android:textAllCaps="false"
+                 android:textColor="#ffffff"
+                 android:textStyle="bold" />
+
+         </RelativeLayout>-->
+
+        <!--<LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/twitter" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/facebook" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/google" />
+        </LinearLayout>-->
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

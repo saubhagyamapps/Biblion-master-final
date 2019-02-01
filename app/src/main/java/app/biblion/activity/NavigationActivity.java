@@ -23,12 +23,14 @@ import com.luseen.spacenavigation.SpaceOnClickListener;
 import com.luseen.spacenavigation.SpaceOnLongClickListener;
 
 import app.biblion.R;
+import app.biblion.fragment.AccountFragment;
 import app.biblion.fragment.ArticlesFragment;
 import app.biblion.fragment.BibleBookFragment;
 import app.biblion.fragment.DetailELibraryFragment;
 import app.biblion.fragment.ELibraryFragment;
 import app.biblion.fragment.HomeBookFragment;
 import app.biblion.fragment.QuizFragment;
+import app.biblion.fragment.SettingFragment;
 import app.biblion.fragment.SongBookFragment;
 import app.biblion.sessionmanager.SessionManager;
 
@@ -60,7 +62,7 @@ public class NavigationActivity extends AppCompatActivity
     private void initialization(Bundle savedInstanceState) {
         //bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         session = new SessionManager(getApplicationContext());
-       // session.checkLogin();
+        // session.checkLogin();
 
         spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
@@ -93,7 +95,7 @@ public class NavigationActivity extends AppCompatActivity
                         fragment = new ELibraryFragment();
                         break;
                     case 3:
-                        fragment = new ArticlesFragment();
+                        fragment = new AccountFragment();
                         break;
                 }
 
@@ -192,26 +194,6 @@ public class NavigationActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-
-        if (id == R.id.action_logout) {
-            session.logoutUser();
-            finish();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -241,6 +223,13 @@ public class NavigationActivity extends AppCompatActivity
             case R.id.nav_articles:
                 fragment = new ArticlesFragment();
                 break;
+            case R.id.nav_settings:
+                fragment = new SettingFragment();
+                break;
+            case R.id.nav_logout:
+                session.logoutUser();
+                finish();
+                break;
         }
 
         if (fragment != null) {
@@ -250,6 +239,16 @@ public class NavigationActivity extends AppCompatActivity
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        try {
+            onCreate(savedInstanceState);
+        } catch (Exception e) {
+
+        }
     }
 
 }

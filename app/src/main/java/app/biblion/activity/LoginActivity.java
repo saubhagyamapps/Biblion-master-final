@@ -14,8 +14,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -25,6 +38,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import org.json.JSONObject;
+
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,11 +66,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     SessionManager session;
     ImageView btn_sign_in_gmail, btn_sign_in_fb, btn_sign_in_twitter;
     private ProgressDialog mProgressDialog;
+    CallbackManager callbackManager;
+    AccessToken accessToken;
+
+
+    String fbName, fbEmail, fbId, fbBirthday, fbLoaction,fbImageurl;
+    boolean boolean_login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().logOut();
+        accessToken = AccessToken.getCurrentAccessToken();
         setContentView(R.layout.activity_login);
         mDevice_id = Settings.Secure.getString(LoginActivity.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
@@ -265,12 +291,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -282,7 +311,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.btn_sign_in_fb:
-                signOut();
+
+                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email"));
+                    facebookLogin();
+
                 break;
 
             case R.id.btn_sign_in_twitter:
@@ -290,5 +322,79 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    private void facebookLogin() {
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                {
+                                    try {
+
+                                        boolean_login = true;
+                                        Log.e("object", object.toString());
+                                        fbName = object.getString("name");
+                                        fbEmail = object.getString("email");
+                                        fbId = object.getString("id");
+
+                                        fbImageurl = "https://graph.facebook.com/" + fbId + "/picture?type=normal";
+                                        Log.e("Picture", fbImageurl);
+                                        Log.e(TAG, "Name: " + fbName + ", email: " + fbEmail
+                                        + ", DOB " + fbBirthday );
+
+                                        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                                        intent.putExtra("name", fbName);
+                                        intent.putExtra("email", fbEmail);
+                                        intent.putExtra("images",fbImageurl);
+                                        startActivity(intent);
+
+                                    } catch (Exception e) {
+                                            e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id, name, email");
+                request.setParameters(parameters);
+                request.executeAsync();
+
+            }
+
+            @Override
+            public void onCancel() {
+
+                Log.d(TAG, "Login attempt cancelled.");
+                if (AccessToken.getCurrentAccessToken() == null) {
+                    return; // already logged out
+                }
+                new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                        .Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse graphResponse) {
+                        LoginManager.getInstance().logOut();
+                        accessToken.setCurrentAccessToken(null);
+                        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email"));
+                        facebookLogin();
+
+                    }
+                }); //.executeAsync();
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+                Log.e("ON ERROR", "Login attempt failed.");
+
+                AccessToken.setCurrentAccessToken(null);
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email,user_birthday"));
+            }
+        });
+    }
+
 
 }
