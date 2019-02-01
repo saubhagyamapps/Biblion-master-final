@@ -1,11 +1,22 @@
 package app.biblion.fragment;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -27,18 +38,13 @@ import com.facebook.login.LoginManager;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import app.biblion.R;
-import app.biblion.activity.LoginActivity;
-import app.biblion.activity.NavigationActivity;
-import app.biblion.activity.RegisterActivity;
 import app.biblion.model.EditProfileModel;
-import app.biblion.model.RegisterModel;
 import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Constant;
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
@@ -60,6 +66,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     EditText edtPFullname, edtPUsername, edtPBirtthdate, edtPEmail, edtPpwd, edtPConfPwd, edtPMobileno, edtPCountry, edtPState, edtPCity;
     Button btnUpdate;
     Calendar myCalendar;
+    ImageView camera_image;
     RadioButton prof_radioMale, prof_radioFemale;
     ImageView prof_camera_image,  edit_Username, edit_MobileNo, edit_DOB, edit_Country, edit_State, edit_City;
     CircleImageView prof_imageView;
@@ -70,14 +77,17 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     String mGnder = "Male";
     String profselectedCountry, profselectedState, profselectedCity;
     int mslectedGender;
-    ToggleSwitchButton toggleSwitchButton;
     ToggleSwitch toggleSwitch;
     int togglePosition = 0;
     private SessionManager sessionManager;
     String pUserName, pFullName, pFirebase_id, pEmail, pBrithdate, pMobile_Number, pCountry, pState, pCity;
+    String A_Name, A_Email,A_MobileNo,A_DOB, A_Gender, A_DeviceId,A_FirebaseID,A_Password;
     private DatePickerDialog profDatePickerDialog;
     private AlertDialog prof_alertDialogObjectCountry, prof_alertDialogObjectState, prof_alertDialogObjectCity;
     Call<EditProfileModel> editProfileModelCall;
+    private final static int IMAGE_RESULT = 200;
+    CircleImageView imageView;
+    Uri picUri;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,7 +122,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edtPUsername.setInputType(InputType.TYPE_CLASS_TEXT);
 
         toggleSwitch = mView.findViewById(R.id.gender_switch);
-
+        imageView = mView.findViewById(R.id.acc_profile_image);
         edit_Username = mView.findViewById(R.id.username_edit);
         edit_MobileNo = mView.findViewById(R.id.mobileno_edit);
         edit_DOB =mView.findViewById(R.id.birthdate_edit);
@@ -132,7 +142,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         ShowProfileCountryList();
         ShowProfileStateList();
         ShowProfileCityList();
+       // getCemaraImages();
         updateClicked();
+
 
        togglePosition = toggleSwitch.getCheckedTogglePosition();
 
@@ -179,11 +191,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     {
         HashMap<String, String> user = sessionManager.getUserDetails();
 
-        String A_Name = user.get(sessionManager.KEY_NAME);
-        String A_Email = user.get(sessionManager.KEY_EMAIL);
-        String A_MobileNo = user.get(sessionManager.KEY_MOBILE);
-        String A_DOB = user.get(sessionManager.KEY_DOB);
-        String A_Gender = user.get(sessionManager.KEY_GENDER);
+        A_Name = user.get(sessionManager.KEY_NAME);
+        A_Email = user.get(sessionManager.KEY_EMAIL);
+        A_MobileNo = user.get(sessionManager.KEY_MOBILE);
+        A_Password = user.get(sessionManager.KEY_PASSWORD);
+        A_DOB = user.get(sessionManager.KEY_DOB);
+        A_Gender = user.get(sessionManager.KEY_GENDER);
+        A_DeviceId = user.get(sessionManager.KEY_DEVICE_ID);
+        A_FirebaseID = user.get(sessionManager.KEY_FIREBASE_ID);
 
         edtPUsername.setText(A_Name);
         edtPEmail.setText(A_Email);
@@ -219,7 +234,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 edtPCountry.setEnabled(false);
                 edtPState.setEnabled(false);
                 edtPCity.setEnabled(false);
-                Toast.makeText(getActivity(), "Updated" + mGnder, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Updated" , Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -256,7 +271,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private void getValue() {
 
         pUserName = edtPUsername.getText().toString().trim();
-        pEmail = edtPEmail.getText().toString().trim();
+        pFullName = edtPUsername.getText().toString().trim();
         pMobile_Number = edtPMobileno.getText().toString().trim();
         pBrithdate = edtPBirtthdate.getText().toString().trim();
         pCountry = edtPCountry.getText().toString().trim();
@@ -264,6 +279,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         pCity = edtPCity.getText().toString().trim();
         validation();
     }
+
+
+
     private void validation() {
         if (pUserName.equalsIgnoreCase("")) {
             edtPUsername.setError("Required");
@@ -284,6 +302,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             edtPCity.setError("Required");
             edtPCity.setFocusable(true);
         }*/
+        UpdatedAPI_Call();
     }
     @Override
     public void onClick(View v) {
@@ -318,16 +337,133 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 edit_City.setVisibility(View.INVISIBLE);
                 break;
         }
+
     }
+
+    private void getCemaraImages() {
+        camera_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
+            }
+        });
+    }
+
+    private Intent getPickImageChooserIntent() {
+        Uri outputFileUri = getCaptureImageOutputUri();
+
+        List<Intent> allIntents = new ArrayList<>();
+
+        PackageManager packageManager = getActivity().getPackageManager();
+
+        Intent captureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+        for (ResolveInfo res : listCam) {
+            Intent intent = new Intent(captureIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            if (outputFileUri != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+            }
+            allIntents.add(intent);
+        }
+
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        List<ResolveInfo> listGallery = packageManager.queryIntentActivities(galleryIntent, 0);
+        for (ResolveInfo res : listGallery) {
+            Intent intent = new Intent(galleryIntent);
+            intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+            intent.setPackage(res.activityInfo.packageName);
+            allIntents.add(intent);
+        }
+
+        Intent mainIntent = allIntents.get(allIntents.size() - 1);
+        for (Intent intent : allIntents) {
+            if (intent.getComponent().getClassName().equals("com.android.documentsui.DocumentsActivity")) {
+                mainIntent = intent;
+                break;
+            }
+        }
+        allIntents.remove(mainIntent);
+
+        Intent chooserIntent = Intent.createChooser(mainIntent, "Select source");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, allIntents.toArray(new Parcelable[allIntents.size()]));
+
+        return chooserIntent;
+    }
+
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getActivity().getExternalFilesDir("");
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "profile.png"));
+        }
+        return outputFileUri;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+
+
+            if (requestCode == IMAGE_RESULT) {
+
+                filePath = getImageFilePath(data);
+                if (filePath != null) {
+                    Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+                    imageView.setImageBitmap(selectedImage);
+                }
+            }
+
+        }
+    }
+    public String getImageFilePath(Intent data) {
+        return getImageFromFilePath(data);
+    }
+    private String getImageFromFilePath(Intent data) {
+        boolean isCamera = data == null || data.getData() == null;
+
+        if (isCamera) return getCaptureImageOutputUri().getPath();
+        else return getPathFromURI(data.getData());
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("pic_uri", picUri);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+       // picUri = savedInstanceState.getParcelable("pic_uri");
+    }
+
+    private String getPathFromURI(Uri contentUri) {
+        String[] proj = {MediaStore.Audio.Media.DATA};
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
     private void UpdatedAPI_Call()
     {
         File file = new File(filePath);
-        RequestBody requestfile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+        final RequestBody requestfile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
 
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestfile);
 
-        RequestBody u_Username =
+        final RequestBody u_Username =
                 RequestBody.create(MediaType.parse("multipart/form-data"), pUserName);
+        RequestBody u_Fullname =
+                RequestBody.create(MediaType.parse("multipart/form-data"), pFullName);
+        RequestBody u_Email =
+                MultipartBody.create(MediaType.parse("multipart/form-data"),A_Email);
+        RequestBody u_Password =
+                MultipartBody.create(MediaType.parse("multipart/form-data"),A_Password);
         RequestBody u_MobileNo =
                 MultipartBody.create(MediaType.parse("multipart/form-data"),pMobile_Number);
         RequestBody u_Birthdate =
@@ -346,32 +482,36 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 RequestBody.create(MediaType.parse("multipart/form-data"), pCity);
 
         Constant.progressDialog(getActivity());
-        /*if(mGoogleimage.equals("null")) {
+        if (mGoogleimage.equals("null"))
+        {
             editProfileModelCall = Constant.apiService.
-                    getEditDetails(u_Usernameu_Firebase_id,u_Device_id,u_Birthdate,u_Gender,, u_MobileNo, u_Country, u_State, u_City, body);
-        }else {
-            modelCall = Constant.apiService.
-                    getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity,mGoogleimage);
-        }
-        modelCall.enqueue(new Callback<EditProfileModel>() {
-            @Override
-            public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
+                    getEditDetails(u_Fullname,u_Username,u_Gender,u_Birthdate,u_MobileNo,u_Email,u_Password,u_Device_id,u_Firebase_id,u_Country,u_State,u_City,body);
 
-                if (response.body().getStatus().equals("1")) {
-                    Constant.toast(response.body().getMessage(), RegisterActivity.this);
-                    Constant.progressBar.dismiss();
-                } else {
-                    sessionManager.createLoginSession(mEmail, mPassword, response.body().getResult().getName(),
-                            response.body().getResult().getGender(), response.body().getResult().getDob(),
-                            response.body().getResult().getDevice_id(), response.body().getResult().getMobile(),
-                            response.body().getResult().getFirebase_id());
-                    Constant.intent(RegisterActivity.this, NavigationActivity.class);
-                    Constant.progressBar.dismiss();
+            editProfileModelCall.enqueue(new Callback<EditProfileModel>() {
+                @Override
+                public void onResponse(Call<EditProfileModel> call, Response<EditProfileModel> response) {
+                    if (response.body().getStatus().equals("1")) {
+                        Constant.toast(response.body().getMessage(), getActivity());
+                        Constant.progressBar.dismiss();
+                    }else {
+                        sessionManager.createLoginSession(A_Email,A_Password,response.body().getResult().get(0).getName(),
+                                response.body().getResult().get(0).getGender(),response.body().getResult().get(0).getDob(),
+                                response.body().getResult().get(0).getDevice_id(),response.body().getResult().get(0).getMobile(),
+                                response.body().getResult().get(0).getFirebase_id());
+                        Constant.progressBar.dismiss();
+                        getActivity().finish();
+
+                    }
 
                 }
 
-            }
-        });*/
+                @Override
+                public void onFailure(Call<EditProfileModel> call, Throwable t) {
+                    Log.e(TAG, "onFailure: " + t.getMessage());
+                    Constant.progressBar.dismiss();
+                }
+            });
+        }
     }
 
             public void ShowProfileCountryList() {
@@ -457,4 +597,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 //Show the dialog
                 //alertDialogObject.show();
             }
-        }
+
+
+}

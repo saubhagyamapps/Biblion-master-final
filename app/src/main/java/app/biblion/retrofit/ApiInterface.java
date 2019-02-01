@@ -78,7 +78,7 @@ public interface ApiInterface {
     @Streaming
     Call<ResponseBody> downloadImage(@Url String fileUrl);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("editprofile")
     Call<EditProfileModel> getEditDetails(@Part("name") RequestBody name,
                                           @Part("username") RequestBody username,

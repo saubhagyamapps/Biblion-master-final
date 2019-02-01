@@ -75,9 +75,9 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
     String mGnder = "Male";
     RadioGroup radio_group;
-   // int mslectedGander;
+    int mslectedGander;
     ToggleSwitch toggleSwitch;
-    int mslectedGender = 0;
+    int reg_TogglePosition = 0;
     SessionManager sessionManager;
     String selectedCountry, selectedState, selectedCity;
     private final static int ALL_PERMISSIONS_RESULT = 107;
@@ -129,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         getCemaraImages();
         loginWithGmailData(savedInstanceState);
 
-        mslectedGender = toggleSwitch.getCheckedTogglePosition();
+        reg_TogglePosition = toggleSwitch.getCheckedTogglePosition();
         toggleSwitch.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener() {
             @Override
             public void onToggleSwitchChangeListener(int position, boolean isChecked) {
