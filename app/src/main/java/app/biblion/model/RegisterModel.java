@@ -2,16 +2,17 @@ package app.biblion.model;
 
 public class RegisterModel {
 
+
     /**
      * status : 0
      * message : signup successful
-     * path : http://192.168.1.200/biblion-API/public/profile_image/
-     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hpdpgd@hpp.com","password":"4297f44b13955235245b2497399d7a93","device_id":"1234567890","firebase_id":"1234567890","image":"1548420341.png","country":"India","state":"gujarat","city":"ahmedabad"}
+     * id : 36
+     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hghfhfhhhhh@hlp.clom","password":"4297f44b13955235245b2497399d7a93","device_id":"1234567890","firebase_id":"1234567890","googleimage":"https://www.google.com/slkd/343543df3sdfds","country":"India","state":"gujarat","city":"ahmedabad"}
      */
 
     private String status;
     private String message;
-    private String path;
+    private String id;
     private ResultBean result;
 
     public String getStatus() {
@@ -30,12 +31,12 @@ public class RegisterModel {
         this.message = message;
     }
 
-    public String getPath() {
-        return path;
+    public String getId() {
+        return id;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public ResultBean getResult() {
@@ -53,11 +54,11 @@ public class RegisterModel {
          * gender : male
          * dob : 1988-11-23
          * mobile : 55566644777
-         * email : hpdpgd@hpp.com
+         * email : hghfhfhhhhh@hlp.clom
          * password : 4297f44b13955235245b2497399d7a93
          * device_id : 1234567890
          * firebase_id : 1234567890
-         * image : 1548420341.png
+         * googleimage : https://www.google.com/slkd/343543df3sdfds
          * country : India
          * state : gujarat
          * city : ahmedabad
@@ -72,7 +73,7 @@ public class RegisterModel {
         private String password;
         private String device_id;
         private String firebase_id;
-        private String image;
+        private String googleimage;
         private String country;
         private String state;
         private String city;
@@ -149,12 +150,12 @@ public class RegisterModel {
             this.firebase_id = firebase_id;
         }
 
-        public String getImage() {
-            return image;
+        public String getGoogleimage() {
+            return googleimage;
         }
 
-        public void setImage(String image) {
-            this.image = image;
+        public void setGoogleimage(String googleimage) {
+            this.googleimage = googleimage;
         }
 
         public String getCountry() {

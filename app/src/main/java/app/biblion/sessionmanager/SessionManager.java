@@ -16,9 +16,7 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     private static final String PREF_NAME = "AndroidHivePref";
-
     private static final String IS_LOGIN = "IsLoggedIn";
-
     public static final String KEY_NAME = "name";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
@@ -27,6 +25,7 @@ public class SessionManager {
     public static final String KEY_DOB = "dob";
     public static final String KEY_FIREBASE_ID = "firebse_id";
     public static final String KEY_MOBILE = "mobile_number";
+    public static final String KEY_ID = "id";
 
     // Constructor
     public SessionManager(Context context){
@@ -38,8 +37,9 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String mEmail, String mPassword, String name, String gender, String dob, String device_id, String mobile, String firebase_id){
+    public void createLoginSession(String id,String mEmail, String mPassword, String name, String gender, String dob, String device_id, String mobile, String firebase_id){
         editor.putBoolean(IS_LOGIN, true);
+        editor.putString(KEY_ID, id);
         editor.putString(KEY_EMAIL, mEmail);
         editor.putString(KEY_PASSWORD, mPassword);
         editor.putString(KEY_NAME, name);

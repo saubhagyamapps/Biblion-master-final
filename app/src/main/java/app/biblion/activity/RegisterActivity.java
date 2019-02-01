@@ -459,7 +459,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     private void RegistrationAPI_CAll() {
 
         File file = new File(filePath);
-        RequestBody requestFile =
+        final RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
         MultipartBody.Part body =
@@ -505,7 +505,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     Constant.toast(response.body().getMessage(), RegisterActivity.this);
                     Constant.progressBar.dismiss();
                 } else {
-                    sessionManager.createLoginSession(mEmail, mPassword, response.body().getResult().getName(),
+                    sessionManager.createLoginSession(response.body().getId(),mEmail, mPassword, response.body().getResult().getName(),
                             response.body().getResult().getGender(), response.body().getResult().getDob(),
                             response.body().getResult().getDevice_id(), response.body().getResult().getMobile(),
                             response.body().getResult().getFirebase_id());

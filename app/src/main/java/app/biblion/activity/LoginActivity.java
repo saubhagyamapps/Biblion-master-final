@@ -14,11 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -70,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     AccessToken accessToken;
 
 
-    String fbName, fbEmail, fbId, fbBirthday, fbLoaction,fbImageurl;
+    String fbName, fbEmail, fbId, fbBirthday, fbLoaction, fbImageurl;
     boolean boolean_login;
 
     @Override
@@ -190,7 +187,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Constant.toast(getResources().getString(R.string.email_or_password_dont_matched), LoginActivity.this);
                 } else {
 
-                    session.createLoginSession(mEmail, mPassword, response.body().getResult().get(0).getName(),
+                    session.createLoginSession(response.body().getResult().get(0).getId(), mEmail, mPassword, response.body().getResult().get(0).getName(),
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
                             response.body().getResult().get(0).getFirebase_id());
@@ -312,8 +309,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_sign_in_fb:
 
-                    LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email"));
-                    facebookLogin();
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email"));
+                facebookLogin();
 
                 break;
 
@@ -345,16 +342,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         fbImageurl = "https://graph.facebook.com/" + fbId + "/picture?type=normal";
                                         Log.e("Picture", fbImageurl);
                                         Log.e(TAG, "Name: " + fbName + ", email: " + fbEmail
-                                        + ", DOB " + fbBirthday );
+                                                + ", DOB " + fbBirthday);
 
                                         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                                         intent.putExtra("name", fbName);
                                         intent.putExtra("email", fbEmail);
-                                        intent.putExtra("images",fbImageurl);
+                                        intent.putExtra("images", fbImageurl);
                                         startActivity(intent);
 
                                     } catch (Exception e) {
-                                            e.printStackTrace();
+                                        e.printStackTrace();
                                     }
                                 }
                             }
