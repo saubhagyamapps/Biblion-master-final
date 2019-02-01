@@ -29,7 +29,6 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_setting, container, false);
         getActivity().setTitle("Reset Password");
 
@@ -53,26 +52,50 @@ public class SettingFragment extends Fragment {
         btn_profupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Apicall();
+                validation();
+
             }
         });
     }
 
-    private void Apicall() {
+    private void validation() {
         mOldPassword = edt_OldPassword.getText().toString().trim();
         mNewPassword = edt_NewPassword.getText().toString().trim();
         mConfPassword = edt_NewConfPassword.getText().toString().trim();
+        if (mOldPassword.equals("")) {
+            edt_OldPassword.setError("Required");
+        } else if (mNewPassword.equals("")) {
+            edt_NewPassword.setError("Required");
+        } else if (mConfPassword.equals("")) {
+            edt_NewConfPassword.setError("Required");
+        } else if (!mNewPassword.equals(mConfPassword)) {
+            Constant.toast("New Password or Conform Password Does't maths", getActivity());
+        } else {
+            Apicall();
+        }
+    }
+
+    private void Apicall() {
+        Constant.progressDialog(getActivity());
 
         Call<ResetPasswordModel> modelCall = Constant.apiService.resetPassword(user.get(sessionManager.KEY_ID), mOldPassword, mNewPassword);
         modelCall.enqueue(new Callback<ResetPasswordModel>() {
             @Override
             public void onResponse(Call<ResetPasswordModel> call, Response<ResetPasswordModel> response) {
-
+                if (response.body().getStatus().equals("0")) {
+                    Constant.toast(response.body().getMessage(), getActivity());
+                    edt_NewConfPassword.setText("");
+                    edt_NewPassword.setText("");
+                    edt_OldPassword.setText("");
+                } else {
+                    Constant.toast(response.body().getMessage(), getActivity());
+                }
+                Constant.progressBar.dismiss();
             }
 
             @Override
             public void onFailure(Call<ResetPasswordModel> call, Throwable t) {
-
+                Constant.progressBar.dismiss();
             }
         });
     }

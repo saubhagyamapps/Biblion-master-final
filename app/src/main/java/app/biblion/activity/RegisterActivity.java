@@ -494,11 +494,12 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
         Constant.progressDialog(RegisterActivity.this);
         if (mGoogleimage.equals("null")) {
-            setImages = "google";
+            setImages = "local";
+
             modelCall = Constant.apiService.
                     getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
         } else {
-            setImages = "local";
+            setImages = "google";
             modelCall = Constant.apiService.
                     getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity, mGoogleimage);
         }
