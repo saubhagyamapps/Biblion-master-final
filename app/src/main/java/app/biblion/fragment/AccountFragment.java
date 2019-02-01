@@ -73,23 +73,24 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     RadioButton prof_radioMale, prof_radioFemale;
     ImageView prof_camera_image, edit_Username, edit_MobileNo, edit_DOB, edit_Country, edit_State, edit_City;
     RadioGroup prof_radio_group;
-    String filePath="null";
+    String filePath = "null";
     String mGoogleimage = "null";
     String mDevice_id;
-    String mGnder = "Male";
+    String mGnder;
     String profselectedCountry, profselectedState, profselectedCity;
     int mslectedGender;
     ToggleSwitch toggleSwitch;
     int togglePosition = 0;
     private SessionManager sessionManager;
     String pUserName, pFullName, pFirebase_id, pEmail, pBrithdate, pMobile_Number, pCountry, pState, pCity;
-    String A_Name, A_Email, A_MobileNo, A_DOB, A_Gender, A_DeviceId, A_FirebaseID, A_Password, A_Id,A_City,A_State,A_Country;
+    String A_Name, A_Email, A_MobileNo, A_DOB, A_Gender, A_DeviceId, A_FirebaseID, A_Password, A_Id, A_City, A_State, A_Country;
     private DatePickerDialog profDatePickerDialog;
     private AlertDialog prof_alertDialogObjectCountry, prof_alertDialogObjectState, prof_alertDialogObjectCity;
     Call<EditProfileModel> editProfileModelCall;
     private final static int IMAGE_RESULT = 200;
     CircleImageView imageView;
     Uri picUri;
+    ;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -130,6 +131,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edit_State = mView.findViewById(R.id.state_edit);
         edit_City = mView.findViewById(R.id.city_edit);
 
+
         edtPEmail.setEnabled(false);
         edtPUsername.setEnabled(false);
         edtPMobileno.setEnabled(false);
@@ -146,8 +148,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         updateClicked();
         getCemaraImages();
 
-        togglePosition = toggleSwitch.getCheckedTogglePosition();
-
         toggleSwitch.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener() {
             @Override
             public void onToggleSwitchChangeListener(int position, boolean isChecked) {
@@ -155,18 +155,16 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 switch (position) {
                     case 0:
                         mGnder = "Male";
-                        Toast.makeText(getActivity(), mGnder, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), mGnder, Toast.LENGTH_SHORT).show();
                         break;
 
                     case 1:
                         mGnder = "Female";
-                        Toast.makeText(getActivity(), mGnder, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), mGnder, Toast.LENGTH_SHORT).show();
                         break;
                 }
-
             }
         });
-
     }
 
     public void getDataFromSession() {
@@ -192,17 +190,23 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edtPCity.setText(A_City);
         edtPState.setText(A_State);
         edtPCountry.setText(A_Country);
-
-        Glide.with(getActivity()).load("http://192.168.1.200/biblion-API/public/profile_image/"+user.get(sessionManager.KEY_IMAGE))
+        mGnder = A_Gender;
+        if (mGnder.equals("Male") ) {
+            toggleSwitch.setCheckedTogglePosition(0);
+            mGnder = "Male";
+        } else {
+            toggleSwitch.setCheckedTogglePosition(1);
+            mGnder = "Female";
+        }
+        Glide.with(getActivity()).load("http://192.168.1.200/biblion-API/public/profile_image/" + user.get(sessionManager.KEY_IMAGE))
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
-
-
     }
 
     private void updateClicked() {
+
 
         edit_Username.setOnClickListener(this);
         edit_MobileNo.setOnClickListener(this);
@@ -227,7 +231,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 edtPCountry.setEnabled(false);
                 edtPState.setEnabled(false);
                 edtPCity.setEnabled(false);
-                Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -236,6 +240,28 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 profDatePickerDialog.show();
+                return false;
+            }
+        });
+
+        edtPCountry.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                prof_alertDialogObjectCountry.show();
+                return false;
+            }
+        });
+        edtPState.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                prof_alertDialogObjectCity.show();
+                return false;
+            }
+        });
+        edtPCity.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                prof_alertDialogObjectCity.show();
                 return false;
             }
         });
@@ -271,6 +297,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         pCountry = edtPCountry.getText().toString().trim();
         pState = edtPState.getText().toString().trim();
         pCity = edtPCity.getText().toString().trim();
+
         validation();
     }
 
@@ -471,10 +498,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 MultipartBody.create(MediaType.parse("multipart/form-data"), pMobile_Number);
         RequestBody u_Birthdate =
                 MultipartBody.create(MediaType.parse("multipart/form-data"), pBrithdate);
-        RequestBody u_Firebase_id =
+        /*RequestBody u_Firebase_id =
                 RequestBody.create(MediaType.parse("multipart/form-data"), "fgdjsgjgha");
         RequestBody u_Device_id =
-                RequestBody.create(MediaType.parse("multipart/form-data"), mDevice_id);
+                RequestBody.create(MediaType.parse("multipart/form-data"), mDevice_id);*/
         RequestBody u_Gender =
                 RequestBody.create(MediaType.parse("multipart/form-data"), mGnder);
         RequestBody u_Country =
@@ -504,14 +531,15 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                     sessionManager.createLoginSession(response.body().getResult().get(0).getId(), A_Email, A_Password, response.body().getResult().get(0).getName(),
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
-                            response.body().getResult().get(0).getFirebase_id(),response.body().getResult().get(0).getCity(),
-                            response.body().getResult().get(0).getState(),response.body().getResult().get(0).getCountry(),response.body().getResult().get(0).getImage());
+                            response.body().getResult().get(0).getFirebase_id(), response.body().getResult().get(0).getCity(),
+                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), response.body().getResult().get(0).getImage());
                     Constant.progressBar.dismiss();
                     getFragmentManager()
                             .beginTransaction()
                             .detach(AccountFragment.this)
                             .attach(AccountFragment.this)
                             .commit();
+                    Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
 
 
                 }

@@ -144,6 +144,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     case 1:
                         mGnder = "Female";
                 }
+
             }
         });
         ///  loginWithFacebook(savedInstanceState);
