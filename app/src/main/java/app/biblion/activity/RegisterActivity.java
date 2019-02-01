@@ -64,8 +64,11 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     Button btnRegistration;
     Calendar myCalendar;
     TextView txt_Login;
-    String filePath="null";
-    String mGoogleimage="null";
+    String filePath = "null";
+    String mGoogleimage = "null";
+    String setImages;
+    String mImagesPath;
+    MultipartBody.Part body;
     private DatePickerDialog mDatePickerDialog;
     private AlertDialog alertDialogObjectCountry, alertDialogObjectState, alertDialogObjectCity;
     RadioButton radioMale, radioFemale;
@@ -134,8 +137,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
             @Override
             public void onToggleSwitchChangeListener(int position, boolean isChecked) {
 
-                switch (position)
-                {
+                switch (position) {
                     case 0:
                         mGnder = "Male";
                         break;
@@ -144,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 }
             }
         });
-      ///  loginWithFacebook(savedInstanceState);
+        ///  loginWithFacebook(savedInstanceState);
         /*mslectedGander = radio_group.getCheckedRadioButtonId();
         Log.e(TAG, "initialization: " + mslectedGander);
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -178,12 +180,13 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
 
                 Log.e(TAG, "loginWithGmailData: " + mUserName);
-                if(extras.getString("name") == null){
+                if (extras.getString("name") == null) {
                     camera_image.setClickable(true);
                     edtRUsername.setInputType(InputType.TYPE_CLASS_TEXT);
                     edtREmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                    mGoogleimage = "null";
                     //imageView.setBackgroundResource(R.drawable.abcdedemoimage);
-                }else {
+                } else {
                     Glide.with(getApplicationContext()).load(extras.getString("images"))
                             .thumbnail(0.5f)
                             .crossFade()
@@ -197,15 +200,13 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
 
     }
-    private void loginWithFacebook(Bundle bundle)
-    {
-        if(bundle == null)
-        {
+
+    private void loginWithFacebook(Bundle bundle) {
+        if (bundle == null) {
             Bundle fbextras = getIntent().getExtras();
             if (fbextras == null) {
 
-            }
-        else {
+            } else {
                 camera_image.setClickable(false);
                 edtRUsername.setInputType(InputType.TYPE_NULL);
                 edtREmail.setInputType(InputType.TYPE_NULL);
@@ -449,7 +450,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         } else if (mCity.equals("")) {
             edtRCity.setError("Required");
             edtRCity.setFocusable(true);
-        }else if (filePath.equals("null")&&mGoogleimage.equals("null")) {
+        } else if (filePath.equals("null") && mGoogleimage.equals("null")) {
             Constant.toast("Please Select Profile Picture", RegisterActivity.this);
         } else {
             RegistrationAPI_CAll();
@@ -458,12 +459,14 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
     private void RegistrationAPI_CAll() {
 
-        File file = new File(filePath);
-        final RequestBody requestFile =
-                RequestBody.create(MediaType.parse("multipart/form-data"), file);
-
-        MultipartBody.Part body =
-                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        try {
+            File file = new File(filePath);
+            final RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         RequestBody Email =
                 RequestBody.create(MediaType.parse("multipart/form-data"), mEmail);
         RequestBody Password =
@@ -490,12 +493,14 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 RequestBody.create(MediaType.parse("multipart/form-data"), mCity);
 
         Constant.progressDialog(RegisterActivity.this);
-        if(mGoogleimage.equals("null")) {
+        if (mGoogleimage.equals("null")) {
+            setImages = "google";
             modelCall = Constant.apiService.
                     getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
-        }else {
+        } else {
+            setImages = "local";
             modelCall = Constant.apiService.
-                    getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity,mGoogleimage);
+                    getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity, mGoogleimage);
         }
         modelCall.enqueue(new Callback<RegisterModel>() {
             @Override
@@ -505,10 +510,16 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     Constant.toast(response.body().getMessage(), RegisterActivity.this);
                     Constant.progressBar.dismiss();
                 } else {
-                    sessionManager.createLoginSession(response.body().getId(),mEmail, mPassword, response.body().getResult().getName(),
+                    if (setImages.equals("local")) {
+                        mImagesPath = response.body().getResult().getImage();
+                    } else {
+                        mImagesPath = response.body().getResult().getGoogleImage();
+                    }
+                    sessionManager.createLoginSession(response.body().getId(), mEmail, mPassword, response.body().getResult().getName(),
                             response.body().getResult().getGender(), response.body().getResult().getDob(),
                             response.body().getResult().getDevice_id(), response.body().getResult().getMobile(),
-                            response.body().getResult().getFirebase_id());
+                            response.body().getResult().getFirebase_id(), response.body().getResult().getCity(),
+                            response.body().getResult().getState(), response.body().getResult().getCountry(), mImagesPath);
                     Constant.intent(RegisterActivity.this, NavigationActivity.class);
                     Constant.progressBar.dismiss();
                     finish();

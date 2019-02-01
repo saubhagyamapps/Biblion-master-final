@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:id="@+id/rviewsnack"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rviewsnack"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.RegisterActivity"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    tools:context=".activity.RegisterActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,27 +21,26 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:background="@color/colorPrimaryDark"/>
+                android:background="@color/colorPrimaryDark" />
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_height="match_parent"
-                app:civ_border_width="1.5dp"
                 android:src="@drawable/abcdedemoimage"
-                android:layout_centerHorizontal="true"
-                app:civ_border_color="#ffff"/>
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:civ_border_color="#ffff"
+                app:civ_border_width="1.5dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/camera_image"
                 android:layout_width="40dp"
-                android:layout_marginTop="115dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_camera"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="115dp"
+                android:src="@drawable/ic_camera" />
             <!--<LinearLayout
                 android:layout_width="220dp"
                 android:layout_height="120dp"
@@ -140,30 +139,31 @@
                     android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Gender"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="Gender" />
+
                 <belka.us.androidtoggleswitch.widgets.ToggleSwitch
                     android:id="@+id/r_gender_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    custom:textToggleLeft="Male"
-                    custom:textToggleRight="Female"
-                    custom:toggleWidth="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="50dp"
                     custom:activeBgColor="@color/colorPrimary"
                     custom:inactiveBgColor="#FFF"
-                    android:layout_marginLeft="50dp"
-                    android:layout_gravity="center"
-                    custom:separatorColor="@color/black"/>
-                </LinearLayout>
+                    custom:separatorColor="@color/black"
+                    custom:textToggleLeft="Male"
+                    custom:textToggleRight="Female"
+                    custom:toggleWidth="100dp" />
+            </LinearLayout>
 
             <!--<RadioGroup
                 android:id="@+id/radio_group"
@@ -214,49 +214,49 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFF"
-                    android:hint="DOB"
                     android:clickable="true"
+                    android:drawableRight="@drawable/calendar"
                     android:editable="false"
+                    android:hint="DOB"
                     android:paddingLeft="10dp"
                     android:paddingRight="15dp"
                     android:singleLine="true"
-                    android:textSize="15sp"
-                    android:drawableRight="@drawable/calendar"/>
+                    android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:weightSum="2"
-                android:elevation="5dp">
+                android:elevation="5dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="3dp"
-                >
-                <EditText
-                    android:id="@+id/edt_pwd"
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#FFFF"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:paddingLeft="10dp"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
-            </android.support.v7.widget.CardView>
+                    android:layout_height="50dp"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="3dp">
+
+                    <EditText
+                        android:id="@+id/edt_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#FFFF"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="10dp"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+                </android.support.v7.widget.CardView>
 
 
             </LinearLayout>
 
             <android.support.v7.widget.CardView
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <EditText
@@ -264,54 +264,56 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFF"
-                    android:hint="Country"
-                    android:text="testing"
                     android:clickable="true"
                     android:editable="false"
+                    android:hint="Country"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
-                    android:textSize="15sp"/>
+                    android:text="Country"
+                    android:textSize="15sp" />
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <EditText
-                    android:text="testing"
                     android:id="@+id/edt_state"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFF"
-                    android:hint="State"
                     android:clickable="true"
                     android:editable="false"
+                    android:hint="State"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
-                    android:textSize="15sp"/>
+                    android:text="State"
+                    android:textSize="15sp" />
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 app:cardCornerRadius="3dp">
 
                 <EditText
-                    android:text="testing"
                     android:id="@+id/edt_city"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFF"
-                    android:hint="City"
                     android:editable="false"
+                    android:hint="City"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
-                    android:textSize="15sp"/>
+                    android:text="City"
+                    android:textSize="15sp" />
             </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_registration"
                 android:layout_width="match_parent"
@@ -334,30 +336,30 @@
                 android:text="@string/login_links"
                 android:textSize="15dp" />
 
-           <!-- <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <!-- <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:background="@color/colorPrimaryDark" />
+                 <View
+                     android:layout_width="match_parent"
+                     android:layout_height="1dp"
+                     android:layout_centerInParent="true"
+                     android:layout_marginLeft="0dp"
+                     android:layout_marginRight="0dp"
+                     android:background="@color/colorPrimaryDark" />
 
-                <TextView
-                    android:id="@+id/btn_fb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/loginwith"
-                    android:text="Register With"
-                    android:textAllCaps="false"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold" />
+                 <TextView
+                     android:id="@+id/btn_fb"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerInParent="true"
+                     android:background="@drawable/loginwith"
+                     android:text="Register With"
+                     android:textAllCaps="false"
+                     android:textColor="#ffffff"
+                     android:textStyle="bold" />
 
-            </RelativeLayout>-->
+             </RelativeLayout>-->
 
             <!--<LinearLayout
                 android:layout_width="wrap_content"

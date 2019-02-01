@@ -26,18 +26,20 @@ public class SessionManager {
     public static final String KEY_FIREBASE_ID = "firebse_id";
     public static final String KEY_MOBILE = "mobile_number";
     public static final String KEY_ID = "id";
+    public static final String KEY_CITY = "city";
+    public static final String KEY_COUNTRY = "country";
+    public static final String KEY_STATE = "state";
+    public static final String KEY_IMAGE = "image";
 
-    // Constructor
-    public SessionManager(Context context){
+    public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
 
-    /**
-     * Create login session
-     * */
-    public void createLoginSession(String id,String mEmail, String mPassword, String name, String gender, String dob, String device_id, String mobile, String firebase_id){
+    public void createLoginSession(String id, String mEmail, String mPassword, String name,
+                                   String gender, String dob, String device_id, String mobile,
+                                   String firebase_id, String city, String state, String country,String images) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_ID, id);
         editor.putString(KEY_EMAIL, mEmail);
@@ -48,77 +50,53 @@ public class SessionManager {
         editor.putString(KEY_DEVICE_ID, device_id);
         editor.putString(KEY_MOBILE, mobile);
         editor.putString(KEY_FIREBASE_ID, firebase_id);
+        editor.putString(KEY_CITY, city);
+        editor.putString(KEY_COUNTRY, country);
+        editor.putString(KEY_STATE, state);
+        editor.putString(KEY_IMAGE, images);
         editor.apply();
     }
 
-    /**
-     * Check login method wil check user login status
-     * If false it will redirect user to login page
-     * Else won't do anything
-     * */
-    public boolean checkLogin(){
-        // Check login status
-        if(!this.isLoggedIn()){
-            // user is not logged in redirect him to Login Activity
+
+    public boolean checkLogin() {
+        if (!this.isLoggedIn()) {
             return true;
-        }else {
+        } else {
             return false;
         }
 
     }
 
-    /**
-     * Get stored session data
-     * */
-    public HashMap<String, String> getUserDetails(){
+    public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
-        // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
-        // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
-        //user password
-        user.put(KEY_PASSWORD,pref.getString(KEY_PASSWORD,null));
-        //user DOB
-        user.put(KEY_DOB, pref.getString(KEY_DOB,null));
-        //user gender
+        user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
+        user.put(KEY_DOB, pref.getString(KEY_DOB, null));
         user.put(KEY_GENDER, pref.getString(KEY_GENDER, null));
-        //user mobile
         user.put(KEY_MOBILE, pref.getString(KEY_MOBILE, null));
-        //user deviceid
         user.put(KEY_DEVICE_ID, pref.getString(KEY_DEVICE_ID, null));
-        //user firebaseid
         user.put(KEY_FIREBASE_ID, pref.getString(KEY_FIREBASE_ID, null));
-
-
-        // return user
+        user.put(KEY_ID, pref.getString(KEY_ID, null));
+        user.put(KEY_CITY, pref.getString(KEY_CITY, null));
+        user.put(KEY_COUNTRY, pref.getString(KEY_COUNTRY, null));
+        user.put(KEY_STATE, pref.getString(KEY_STATE, null));
+        user.put(KEY_IMAGE, pref.getString(KEY_IMAGE, null));
         return user;
     }
 
-    /**
-     * Clear session details
-     * */
-    public void logoutUser(){
-        // Clearing all data from Shared Preferences
+
+    public void logoutUser() {
         editor.clear();
         editor.commit();
-
-        // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
-        // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        // Add new Flag to start new Activity
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // Staring Login Activity
         _context.startActivity(i);
     }
 
-    /**
-     * Quick check for login
-     * **/
-    // Get Login State
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 }

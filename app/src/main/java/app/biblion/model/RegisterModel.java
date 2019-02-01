@@ -6,12 +6,14 @@ public class RegisterModel {
     /**
      * status : 0
      * message : signup successful
-     * id : 36
-     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hghfhfhhhhh@hlp.clom","password":"4297f44b13955235245b2497399d7a93","device_id":"1234567890","firebase_id":"1234567890","googleimage":"https://www.google.com/slkd/343543df3sdfds","country":"India","state":"gujarat","city":"ahmedabad"}
+     * path : http://192.168.1.200/biblion-API/public/profile_image/
+     * id : 41
+     * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hdpdpfhc@hp.com","password":"4297f44b13955235245b2497399d7a93","device_id":"1234567890","firebase_id":"1234567890","image":"1549013730.jpg","country":"country","state":"state","city":"city"}
      */
 
     private String status;
     private String message;
+    private String path;
     private String id;
     private ResultBean result;
 
@@ -29,6 +31,14 @@ public class RegisterModel {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public String getId() {
@@ -54,17 +64,18 @@ public class RegisterModel {
          * gender : male
          * dob : 1988-11-23
          * mobile : 55566644777
-         * email : hghfhfhhhhh@hlp.clom
+         * email : hdpdpfhc@hp.com
          * password : 4297f44b13955235245b2497399d7a93
          * device_id : 1234567890
          * firebase_id : 1234567890
-         * googleimage : https://www.google.com/slkd/343543df3sdfds
-         * country : India
-         * state : gujarat
-         * city : ahmedabad
+         * image : 1549013730.jpg
+         * country : country
+         * state : state
+         * city : city
          */
 
         private String name;
+        private String googleImage;
         private String username;
         private String gender;
         private String dob;
@@ -73,11 +84,19 @@ public class RegisterModel {
         private String password;
         private String device_id;
         private String firebase_id;
-        private String googleimage;
+        private String image;
         private String country;
         private String state;
         private String city;
 
+
+        public String getGoogleImage() {
+            return googleImage;
+        }
+
+        public void setGoogleImage(String googleImage) {
+            this.googleImage = googleImage;
+        }
         public String getName() {
             return name;
         }
@@ -150,12 +169,12 @@ public class RegisterModel {
             this.firebase_id = firebase_id;
         }
 
-        public String getGoogleimage() {
-            return googleimage;
+        public String getImage() {
+            return image;
         }
 
-        public void setGoogleimage(String googleimage) {
-            this.googleimage = googleimage;
+        public void setImage(String image) {
+            this.image = image;
         }
 
         public String getCountry() {

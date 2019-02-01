@@ -190,7 +190,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     session.createLoginSession(response.body().getResult().get(0).getId(), mEmail, mPassword, response.body().getResult().get(0).getName(),
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
-                            response.body().getResult().get(0).getFirebase_id());
+                            response.body().getResult().get(0).getFirebase_id(),response.body().getResult().get(0).getCity(),
+                            response.body().getResult().get(0).getState(),response.body().getResult().get(0).getCountry(),response.body().getResult().get(0).getImage());
                     Constant.intent(LoginActivity.this, NavigationActivity.class);
                     finish();
                 }

@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -33,6 +34,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.login.LoginManager;
 
 import java.io.File;
@@ -68,11 +71,10 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     Calendar myCalendar;
     ImageView camera_image;
     RadioButton prof_radioMale, prof_radioFemale;
-    ImageView prof_camera_image,  edit_Username, edit_MobileNo, edit_DOB, edit_Country, edit_State, edit_City;
-    CircleImageView prof_imageView;
+    ImageView prof_camera_image, edit_Username, edit_MobileNo, edit_DOB, edit_Country, edit_State, edit_City;
     RadioGroup prof_radio_group;
     String filePath="null";
-    String mGoogleimage="null";
+    String mGoogleimage = "null";
     String mDevice_id;
     String mGnder = "Male";
     String profselectedCountry, profselectedState, profselectedCity;
@@ -81,13 +83,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     int togglePosition = 0;
     private SessionManager sessionManager;
     String pUserName, pFullName, pFirebase_id, pEmail, pBrithdate, pMobile_Number, pCountry, pState, pCity;
-    String A_Name, A_Email,A_MobileNo,A_DOB, A_Gender, A_DeviceId,A_FirebaseID,A_Password;
+    String A_Name, A_Email, A_MobileNo, A_DOB, A_Gender, A_DeviceId, A_FirebaseID, A_Password, A_Id,A_City,A_State,A_Country;
     private DatePickerDialog profDatePickerDialog;
     private AlertDialog prof_alertDialogObjectCountry, prof_alertDialogObjectState, prof_alertDialogObjectCity;
     Call<EditProfileModel> editProfileModelCall;
     private final static int IMAGE_RESULT = 200;
     CircleImageView imageView;
     Uri picUri;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,8 +103,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         return mView;
     }
 
-    private void initialization()
-    {
+    private void initialization() {
         mDevice_id = Settings.Secure.getString(getActivity().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
@@ -113,19 +115,17 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edtPState = mView.findViewById(R.id.edt_profstate);
         edtPCity = mView.findViewById(R.id.edt_profcity);
         btnUpdate = mView.findViewById(R.id.btn_profupdate);
+
        /* prof_radioMale = mView.findViewById(R.id.profradiobtn_male);
         prof_radioFemale = mView.findViewById(R.id.profradiobtn_female);
         prof_radio_group = mView.findViewById(R.id.profradio_group);*/
-        prof_camera_image = mView.findViewById(R.id.prof_camera_image);
-        prof_imageView = mView.findViewById(R.id.acc_profile_image);
-        prof_camera_image.setClickable(true);
         edtPUsername.setInputType(InputType.TYPE_CLASS_TEXT);
-
         toggleSwitch = mView.findViewById(R.id.gender_switch);
         imageView = mView.findViewById(R.id.acc_profile_image);
+        camera_image = mView.findViewById(R.id.prof_camera_image);
         edit_Username = mView.findViewById(R.id.username_edit);
         edit_MobileNo = mView.findViewById(R.id.mobileno_edit);
-        edit_DOB =mView.findViewById(R.id.birthdate_edit);
+        edit_DOB = mView.findViewById(R.id.birthdate_edit);
         edit_Country = mView.findViewById(R.id.country_edit);
         edit_State = mView.findViewById(R.id.state_edit);
         edit_City = mView.findViewById(R.id.city_edit);
@@ -142,55 +142,37 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         ShowProfileCountryList();
         ShowProfileStateList();
         ShowProfileCityList();
-       // getCemaraImages();
+        // getCemaraImages();
         updateClicked();
+        getCemaraImages();
 
+        togglePosition = toggleSwitch.getCheckedTogglePosition();
 
-       togglePosition = toggleSwitch.getCheckedTogglePosition();
-
-       toggleSwitch.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener() {
-           @Override
-           public void onToggleSwitchChangeListener(int position, boolean isChecked) {
-
-               switch (position)
-               {
-                   case 0:
-                       mGnder ="Male";
-                       Toast.makeText(getActivity(),mGnder, Toast.LENGTH_SHORT).show();
-                       break;
-
-                   case 1:
-                       mGnder = "Female";
-                       Toast.makeText(getActivity(),mGnder, Toast.LENGTH_SHORT).show();
-                       break;
-               }
-
-           }
-       });
-
-        /*mslectedGender = prof_radio_group.getCheckedRadioButtonId();
-        Log.e(TAG, "initialization: " + mslectedGender);
-        prof_radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        toggleSwitch.setOnToggleSwitchChangeListener(new ToggleSwitch.OnToggleSwitchChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.profradiobtn_male:
+            public void onToggleSwitchChangeListener(int position, boolean isChecked) {
+
+                switch (position) {
+                    case 0:
                         mGnder = "Male";
-                        break;
-                    case R.id.profradiobtn_female:
-                        mGnder = "Female";
+                        Toast.makeText(getActivity(), mGnder, Toast.LENGTH_SHORT).show();
                         break;
 
+                    case 1:
+                        mGnder = "Female";
+                        Toast.makeText(getActivity(), mGnder, Toast.LENGTH_SHORT).show();
+                        break;
                 }
+
             }
-        });*/
+        });
 
     }
 
-    public void getDataFromSession()
-    {
+    public void getDataFromSession() {
         HashMap<String, String> user = sessionManager.getUserDetails();
 
+        A_Id = user.get(sessionManager.KEY_ID);
         A_Name = user.get(sessionManager.KEY_NAME);
         A_Email = user.get(sessionManager.KEY_EMAIL);
         A_MobileNo = user.get(sessionManager.KEY_MOBILE);
@@ -199,17 +181,28 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         A_Gender = user.get(sessionManager.KEY_GENDER);
         A_DeviceId = user.get(sessionManager.KEY_DEVICE_ID);
         A_FirebaseID = user.get(sessionManager.KEY_FIREBASE_ID);
+        A_City = user.get(sessionManager.KEY_CITY);
+        A_State = user.get(sessionManager.KEY_STATE);
+        A_Country = user.get(sessionManager.KEY_COUNTRY);
 
         edtPUsername.setText(A_Name);
         edtPEmail.setText(A_Email);
         edtPMobileno.setText(A_MobileNo);
         edtPBirtthdate.setText(A_DOB);
+        edtPCity.setText(A_City);
+        edtPState.setText(A_State);
+        edtPCountry.setText(A_Country);
 
+        Glide.with(getActivity()).load("http://192.168.1.200/biblion-API/public/profile_image/"+user.get(sessionManager.KEY_IMAGE))
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
 
 
     }
-    private void updateClicked()
-    {
+
+    private void updateClicked() {
 
         edit_Username.setOnClickListener(this);
         edit_MobileNo.setOnClickListener(this);
@@ -234,7 +227,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 edtPCountry.setEnabled(false);
                 edtPState.setEnabled(false);
                 edtPCity.setEnabled(false);
-                Toast.makeText(getActivity(), "Updated" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -248,6 +241,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         });
 
     }
+
     private void setAccountDateTimeField() {
 
         Calendar newCalendar = Calendar.getInstance();
@@ -281,12 +275,11 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
     private void validation() {
         if (pUserName.equalsIgnoreCase("")) {
             edtPUsername.setError("Required");
             edtPUsername.setFocusable(true);
-        }  else if (pMobile_Number.equalsIgnoreCase("")) {
+        } else if (pMobile_Number.equalsIgnoreCase("")) {
             edtPMobileno.setError("Required");
             edtPMobileno.setFocusable(true);
         } else if (pBrithdate.equalsIgnoreCase("")) {
@@ -304,11 +297,12 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         }*/
         UpdatedAPI_Call();
     }
+
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()){
-            case  R.id.username_edit:
+        switch (v.getId()) {
+            case R.id.username_edit:
                 edtPUsername.setEnabled(true);
                 edit_Username.setVisibility(View.INVISIBLE);
                 break;
@@ -347,6 +341,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
             }
         });
+
     }
 
     private Intent getPickImageChooserIntent() {
@@ -418,15 +413,18 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
 
         }
     }
+
     public String getImageFilePath(Intent data) {
         return getImageFromFilePath(data);
     }
+
     private String getImageFromFilePath(Intent data) {
         boolean isCamera = data == null || data.getData() == null;
 
         if (isCamera) return getCaptureImageOutputUri().getPath();
         else return getPathFromURI(data.getData());
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -438,7 +436,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
 
-       // picUri = savedInstanceState.getParcelable("pic_uri");
+        // picUri = savedInstanceState.getParcelable("pic_uri");
     }
 
     private String getPathFromURI(Uri contentUri) {
@@ -449,25 +447,30 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         return cursor.getString(column_index);
     }
 
-    private void UpdatedAPI_Call()
-    {
-        File file = new File(filePath);
-        final RequestBody requestfile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+    private void UpdatedAPI_Call() {
+        MultipartBody.Part body = null;
+        try {
+            File file = new File(filePath);
+            final RequestBody requestfile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestfile);
-
-        final RequestBody u_Username =
+            body = MultipartBody.Part.createFormData("image", file.getName(), requestfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        RequestBody u_Id =
+                RequestBody.create(MediaType.parse("multipart/form-data"), A_Id);
+        RequestBody u_Username =
                 RequestBody.create(MediaType.parse("multipart/form-data"), pUserName);
-        RequestBody u_Fullname =
-                RequestBody.create(MediaType.parse("multipart/form-data"), pFullName);
+        /*RequestBody u_Fullname =
+                RequestBody.create(MediaType.parse("multipart/form-data"), pFullName);*/
         RequestBody u_Email =
-                MultipartBody.create(MediaType.parse("multipart/form-data"),A_Email);
-        RequestBody u_Password =
-                MultipartBody.create(MediaType.parse("multipart/form-data"),A_Password);
+                MultipartBody.create(MediaType.parse("multipart/form-data"), A_Email);
+        /*RequestBody u_Password =
+                MultipartBody.create(MediaType.parse("multipart/form-data"),A_Password);*/
         RequestBody u_MobileNo =
-                MultipartBody.create(MediaType.parse("multipart/form-data"),pMobile_Number);
+                MultipartBody.create(MediaType.parse("multipart/form-data"), pMobile_Number);
         RequestBody u_Birthdate =
-                MultipartBody.create(MediaType.parse("multipart/form-data"),pBrithdate);
+                MultipartBody.create(MediaType.parse("multipart/form-data"), pBrithdate);
         RequestBody u_Firebase_id =
                 RequestBody.create(MediaType.parse("multipart/form-data"), "fgdjsgjgha");
         RequestBody u_Device_id =
@@ -482,121 +485,130 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 RequestBody.create(MediaType.parse("multipart/form-data"), pCity);
 
         Constant.progressDialog(getActivity());
-        if (mGoogleimage.equals("null"))
-        {
+
+        if (!filePath.equals("null")) {
             editProfileModelCall = Constant.apiService.
-                    getEditDetails(u_Fullname,u_Username,u_Gender,u_Birthdate,u_MobileNo,u_Email,u_Password,u_Device_id,u_Firebase_id,u_Country,u_State,u_City,body);
+                    getEditDetailsWithImag(u_Id, u_Username, u_Email, u_Gender, u_Birthdate, u_MobileNo, u_Country, u_State, u_City, body);
 
-            editProfileModelCall.enqueue(new Callback<EditProfileModel>() {
-                @Override
-                public void onResponse(Call<EditProfileModel> call, Response<EditProfileModel> response) {
-                    if (response.body().getStatus().equals("1")) {
-                        Constant.toast(response.body().getMessage(), getActivity());
-                        Constant.progressBar.dismiss();
-                    }else {
-                        sessionManager.createLoginSession(A_Email,A_Password,response.body().getResult().get(0).getName(),
-                                response.body().getResult().get(0).getGender(),response.body().getResult().get(0).getDob(),
-                                response.body().getResult().get(0).getDevice_id(),response.body().getResult().get(0).getMobile(),
-                                response.body().getResult().get(0).getFirebase_id());
-                        Constant.progressBar.dismiss();
-                        getActivity().finish();
-
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<EditProfileModel> call, Throwable t) {
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-                    Constant.progressBar.dismiss();
-                }
-            });
+        } else {
+            editProfileModelCall = Constant.apiService.getEditDetails(A_Id, pUserName, A_Email, mGnder, pBrithdate, pMobile_Number, pCountry, pState, pCity);
         }
+
+        editProfileModelCall.enqueue(new Callback<EditProfileModel>() {
+            @Override
+            public void onResponse(Call<EditProfileModel> call, Response<EditProfileModel> response) {
+                if (response.body().getStatus().equals("1")) {
+                    Constant.toast(response.body().getMessage(), getActivity());
+                    Constant.progressBar.dismiss();
+                } else {
+                    sessionManager.createLoginSession(response.body().getResult().get(0).getId(), A_Email, A_Password, response.body().getResult().get(0).getName(),
+                            response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
+                            response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
+                            response.body().getResult().get(0).getFirebase_id(),response.body().getResult().get(0).getCity(),
+                            response.body().getResult().get(0).getState(),response.body().getResult().get(0).getCountry(),response.body().getResult().get(0).getImage());
+                    Constant.progressBar.dismiss();
+                    getFragmentManager()
+                            .beginTransaction()
+                            .detach(AccountFragment.this)
+                            .attach(AccountFragment.this)
+                            .commit();
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<EditProfileModel> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Constant.progressBar.dismiss();
+            }
+        });
     }
 
-            public void ShowProfileCountryList() {
-                List<String> mCountrylist = new ArrayList<String>();
-                mCountrylist.add("USA");
-                mCountrylist.add("RUSSIA");
-                mCountrylist.add("INDIA");
-                mCountrylist.add("UK");
-                mCountrylist.add("AUSTRALIA");
-                mCountrylist.add("SPAIN");
-                //Create sequence of items
-                final CharSequence[] Animals = mCountrylist.toArray(new String[mCountrylist.size()]);
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                dialogBuilder.setTitle("Country");
-                dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        profselectedCountry = Animals[item].toString();  //Selected item in listview
-                        edtPCountry.setText(profselectedCountry);
-                    }
-                });
-                //Create alert dialog object via builder
-                prof_alertDialogObjectCountry = dialogBuilder.create();
-                //Show the dialog
-                //alertDialogObject.show();
+    public void ShowProfileCountryList() {
+        List<String> mCountrylist = new ArrayList<String>();
+        mCountrylist.add("USA");
+        mCountrylist.add("RUSSIA");
+        mCountrylist.add("INDIA");
+        mCountrylist.add("UK");
+        mCountrylist.add("AUSTRALIA");
+        mCountrylist.add("SPAIN");
+        //Create sequence of items
+        final CharSequence[] Animals = mCountrylist.toArray(new String[mCountrylist.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setTitle("Country");
+        dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                profselectedCountry = Animals[item].toString();  //Selected item in listview
+                edtPCountry.setText(profselectedCountry);
             }
+        });
+        //Create alert dialog object via builder
+        prof_alertDialogObjectCountry = dialogBuilder.create();
+        //Show the dialog
+        //alertDialogObject.show();
+    }
 
-            public void ShowProfileStateList() {
-                List<String> mStatelist = new ArrayList<String>();
-                mStatelist.add("Gujarat");
-                mStatelist.add("Maharashtra");
-                mStatelist.add("Madhya Pradesh");
-                mStatelist.add("Rajsthan");
-                mStatelist.add("Punjab");
-                mStatelist.add("Haryan");
-                mStatelist.add("Delhi");
-                mStatelist.add("Uttar Pradesh");
-                mStatelist.add("Karnataka");
-                mStatelist.add("Delhi");
-                mStatelist.add("Andhra Pradesh");
-                mStatelist.add("Himachal Pradesh");
-                //Create sequence of items
-                final CharSequence[] Animals = mStatelist.toArray(new String[mStatelist.size()]);
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                dialogBuilder.setTitle("State");
-                dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        profselectedState = Animals[item].toString();  //Selected item in listview
-                        edtPState.setText(profselectedState);
-                    }
-                });
-                //Create alert dialog object via builder
-                prof_alertDialogObjectState = dialogBuilder.create();
-                //Show the dialog
-                //alertDialogObject.show();
+    public void ShowProfileStateList() {
+        List<String> mStatelist = new ArrayList<String>();
+        mStatelist.add("Gujarat");
+        mStatelist.add("Maharashtra");
+        mStatelist.add("Madhya Pradesh");
+        mStatelist.add("Rajsthan");
+        mStatelist.add("Punjab");
+        mStatelist.add("Haryan");
+        mStatelist.add("Delhi");
+        mStatelist.add("Uttar Pradesh");
+        mStatelist.add("Karnataka");
+        mStatelist.add("Delhi");
+        mStatelist.add("Andhra Pradesh");
+        mStatelist.add("Himachal Pradesh");
+        //Create sequence of items
+        final CharSequence[] Animals = mStatelist.toArray(new String[mStatelist.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setTitle("State");
+        dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                profselectedState = Animals[item].toString();  //Selected item in listview
+                edtPState.setText(profselectedState);
             }
+        });
+        //Create alert dialog object via builder
+        prof_alertDialogObjectState = dialogBuilder.create();
+        //Show the dialog
+        //alertDialogObject.show();
+    }
 
-            public void ShowProfileCityList() {
-                List<String> mCitylist = new ArrayList<String>();
-                mCitylist.add("Ahmedabad");
-                mCitylist.add("Surat");
-                mCitylist.add("Vadodara");
-                mCitylist.add("Rajkot");
-                mCitylist.add("Bhavnagar");
-                mCitylist.add("Jamnagar");
-                mCitylist.add("Junagadh");
-                mCitylist.add("Anand");
-                mCitylist.add("Surendranagar");
-                mCitylist.add("Navsari");
-                mCitylist.add("Anand");
-                mCitylist.add("Kheda");
-                //Create sequence of items
-                final CharSequence[] Animals = mCitylist.toArray(new String[mCitylist.size()]);
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-                dialogBuilder.setTitle("City");
-                dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        profselectedCity = Animals[item].toString();  //Selected item in listview
-                        edtPCity.setText(profselectedCity);
-                    }
-                });
-                //Create alert dialog object via builder
-                prof_alertDialogObjectCity = dialogBuilder.create();
-                //Show the dialog
-                //alertDialogObject.show();
+    public void ShowProfileCityList() {
+        List<String> mCitylist = new ArrayList<String>();
+        mCitylist.add("Ahmedabad");
+        mCitylist.add("Surat");
+        mCitylist.add("Vadodara");
+        mCitylist.add("Rajkot");
+        mCitylist.add("Bhavnagar");
+        mCitylist.add("Jamnagar");
+        mCitylist.add("Junagadh");
+        mCitylist.add("Anand");
+        mCitylist.add("Surendranagar");
+        mCitylist.add("Navsari");
+        mCitylist.add("Anand");
+        mCitylist.add("Kheda");
+        //Create sequence of items
+        final CharSequence[] Animals = mCitylist.toArray(new String[mCitylist.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setTitle("City");
+        dialogBuilder.setItems(Animals, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                profselectedCity = Animals[item].toString();  //Selected item in listview
+                edtPCity.setText(profselectedCity);
             }
+        });
+        //Create alert dialog object via builder
+        prof_alertDialogObjectCity = dialogBuilder.create();
+        //Show the dialog
+        //alertDialogObject.show();
+    }
 
 
 }
