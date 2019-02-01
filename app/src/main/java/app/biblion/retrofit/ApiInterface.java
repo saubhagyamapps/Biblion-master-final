@@ -86,7 +86,7 @@ public interface ApiInterface {
                                            @Field("oldpass") String oldpass,
                                            @Field("newpass") String newpass);
 
-    @FormUrlEncoded
+    @Multipart
     @POST("editprofile")
     Call<EditProfileModel> getEditDetails(@Part("name") RequestBody name,
                                           @Part("username") RequestBody username,
