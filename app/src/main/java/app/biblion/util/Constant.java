@@ -3,6 +3,7 @@ package app.biblion.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.Toast;
 
 import app.biblion.R;
@@ -12,6 +13,7 @@ import app.biblion.retrofit.ApiInterface;
 public class Constant {
     public static String mBaseUrl = "http://192.168.1.200/biblion-API/";
     public static ProgressDialog progressBar;
+    public static Button btnNext;
     public static ApiInterface apiService =
             ApiClient.getClient().create(ApiInterface.class);
 
