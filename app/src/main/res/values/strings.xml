@@ -53,4 +53,5 @@ five star Goodreads ratings and all that</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back"><u>Back to login</u></string>
 </resources>

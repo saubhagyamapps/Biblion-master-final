@@ -160,7 +160,7 @@ public class NavigationActivity extends AppCompatActivity
         imgUser = header.findViewById(R.id.imgUser);
         txtName.setText(user.get(session.KEY_NAME));
         txtEmail.setText(user.get(session.KEY_EMAIL));
-        Glide.with(getApplicationContext()).load("http://192.168.1.200/biblion-API/public/profile_image/"+user.get(session.KEY_IMAGE))
+        Glide.with(getApplicationContext()).load(user.get(session.KEY_IMAGE))
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

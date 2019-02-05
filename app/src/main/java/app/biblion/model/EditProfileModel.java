@@ -69,7 +69,7 @@ public class EditProfileModel {
         private String device_id;
         private String firebase_id;
         private String image;
-        private Object googleimage;
+        private String googleimage;
         private String country;
         private String state;
         private String city;
@@ -162,11 +162,11 @@ public class EditProfileModel {
             this.image = image;
         }
 
-        public Object getGoogleimage() {
+        public String getGoogleimage() {
             return googleimage;
         }
 
-        public void setGoogleimage(Object googleimage) {
+        public void setGoogleimage(String googleimage) {
             this.googleimage = googleimage;
         }
 

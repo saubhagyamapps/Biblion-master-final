@@ -26,6 +26,7 @@ import com.facebook.HttpMethod;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleApiClient mGoogleApiClient;
     EditText edtEmail, edtPwd;
     Button btnLogin;
-    TextView txtForgotPwd, txtSignup;
+    TextView  txtSignup,link_forgotpwd;
     String mEmail, mPassword, mDevice_id;
     private static final int RC_SIGN_IN = 007;
     SessionManager session;
@@ -65,10 +66,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressDialog mProgressDialog;
     CallbackManager callbackManager;
     AccessToken accessToken;
-
-
+    String mImagesPath;
+    private LoginButton loginButton;
     String fbName, fbEmail, fbId, fbBirthday, fbLoaction, fbImageurl;
-    boolean boolean_login;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,15 +95,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_sign_in_fb = findViewById(R.id.btn_sign_in_fb);
         btn_sign_in_twitter = findViewById(R.id.btn_sign_in_twitter);
         btnLogin = findViewById(R.id.btn_login);
-        //btnFb = findViewById(R.id.btn_fb);
-
-        txtForgotPwd = findViewById(R.id.link_forgotpwd);
+        link_forgotpwd = findViewById(R.id.link_forgotpwd);
         txtSignup = findViewById(R.id.link_signup);
         clicked();
         btn_sign_in_gmail.setOnClickListener(this);
         btn_sign_in_fb.setOnClickListener(this);
         btn_sign_in_twitter.setOnClickListener(this);
-
+        forgotPaaswordlink();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -130,6 +129,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                 });
         signIn();
+
+
+    }
+
+    private void forgotPaaswordlink() {
+        link_forgotpwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Constant.intent(getApplicationContext(),ForgotPasswordActivity.class);
+            }
+        });
+
     }
 
     private void revokeAccess() {
@@ -161,6 +172,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
+
+
     }
 
     private void validation() {
@@ -187,11 +200,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Constant.toast(getResources().getString(R.string.email_or_password_dont_matched), LoginActivity.this);
                 } else {
 
+                    if (response.body().getResult().get(0).getImage() != null && !response.body().getResult().get(0).getImage().isEmpty() &&
+                            !response.body().getResult().get(0).getImage().equals("null")) {
+                        mImagesPath = response.body().getResult().get(0).getImage();
+                    } else {
+                        mImagesPath = response.body().getResult().get(0).getGoogleimage();
+                    }
                     session.createLoginSession(response.body().getResult().get(0).getId(), mEmail, mPassword, response.body().getResult().get(0).getName(),
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
-                            response.body().getResult().get(0).getFirebase_id(),response.body().getResult().get(0).getCity(),
-                            response.body().getResult().get(0).getState(),response.body().getResult().get(0).getCountry(),response.body().getResult().get(0).getImage());
+                            response.body().getResult().get(0).getFirebase_id(), response.body().getResult().get(0).getCity(),
+                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), mImagesPath);
                     Constant.intent(LoginActivity.this, NavigationActivity.class);
                     finish();
                 }
@@ -310,7 +329,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.btn_sign_in_fb:
 
-                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email"));
+                LoginManager.getInstance().logOut();
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile,email", "user_gender"));
                 facebookLogin();
 
                 break;
@@ -323,28 +343,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void facebookLogin() {
 
+        Constant.progressDialog(LoginActivity.this);
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                final GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 {
                                     try {
 
-                                        boolean_login = true;
                                         Log.e("object", object.toString());
                                         fbName = object.getString("name");
                                         fbEmail = object.getString("email");
                                         fbId = object.getString("id");
 
+                                        if (object.has("birthday")) {
+                                            String birthday = object.getString("birthday");
+                                        }
+                                        if (object.has("gender")) {
+                                            String gender = object.getString("gender");
+                                        }
+
                                         fbImageurl = "https://graph.facebook.com/" + fbId + "/picture?type=normal";
                                         Log.e("Picture", fbImageurl);
                                         Log.e(TAG, "Name: " + fbName + ", email: " + fbEmail
-                                                + ", DOB " + fbBirthday);
-
+                                                + ", DOB ");
+                                        Constant.progressBar.dismiss();
                                         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                                         intent.putExtra("name", fbName);
                                         intent.putExtra("email", fbEmail);
@@ -358,7 +385,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                         });
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, name, email");
+                parameters.putString("fields", "id, name, email,gender,birthday,link");
                 request.setParameters(parameters);
                 request.executeAsync();
 
@@ -393,6 +420,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
-
 
 }

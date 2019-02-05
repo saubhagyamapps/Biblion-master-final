@@ -147,23 +147,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
             }
         });
-        ///  loginWithFacebook(savedInstanceState);
-        /*mslectedGander = radio_group.getCheckedRadioButtonId();
-        Log.e(TAG, "initialization: " + mslectedGander);
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.radiobtn_male:
-                        mGnder = "Male";
-                        break;
-                    case R.id.radiobtn_female:
-                        mGnder = "Female";
-                        break;
 
-                }
-            }
-        });*/
     }
 
     private void loginWithGmailData(Bundle savedInstanceState) {
@@ -200,27 +184,6 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         }
 
 
-    }
-
-    private void loginWithFacebook(Bundle bundle) {
-        if (bundle == null) {
-            Bundle fbextras = getIntent().getExtras();
-            if (fbextras == null) {
-
-            } else {
-                camera_image.setClickable(false);
-                edtRUsername.setInputType(InputType.TYPE_NULL);
-                edtREmail.setInputType(InputType.TYPE_NULL);
-                edtRUsername.setText(fbextras.getString("name"));
-                edtREmail.setText(fbextras.getString("email"));
-                //edtRBirtthdate.setText(fbextras.getString("birthday"));
-                Glide.with(getApplicationContext()).load(fbextras.getString("images"))
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(imageView);
-            }
-        }
     }
 
     private void getCemaraImages() {
@@ -515,7 +478,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     if (setImages.equals("local")) {
                         mImagesPath = response.body().getResult().getImage();
                     } else {
-                        mImagesPath = response.body().getResult().getGoogleImage();
+                        mImagesPath = mGoogleimage;
                     }
                     sessionManager.createLoginSession(response.body().getId(), mEmail, mPassword, response.body().getResult().getName(),
                             response.body().getResult().getGender(), response.body().getResult().getDob(),
