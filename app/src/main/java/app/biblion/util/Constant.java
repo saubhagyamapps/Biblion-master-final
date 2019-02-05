@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.util.LogTime;
@@ -18,6 +19,7 @@ public class Constant {
 
     public static String mBaseUrl = "http://192.168.1.200/biblion-API/";
     public static ProgressDialog progressBar;
+    public static Button btnNext;
     public static ApiInterface apiService =
             ApiClient.getClient().create(ApiInterface.class);
 
@@ -39,5 +41,4 @@ public class Constant {
         classOne.startActivity(intent);
 
     }
-
 }

@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -88,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     CircleImageView imageView;
     private final static int IMAGE_RESULT = 200;
     Call<RegisterModel> modelCall;
-
+    String mIntentImagesPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +161,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 edtRUsername.setText(extras.getString("name"));
                 edtREmail.setText(extras.getString("email"));
                 mGoogleimage = extras.getString("images");
-
+                mIntentImagesPath=extras.getString("images");
 
                 Log.e(TAG, "loginWithGmailData: " + mUserName);
                 if (extras.getString("name") == null) {
@@ -172,11 +171,15 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     mGoogleimage = "null";
                     //imageView.setBackgroundResource(R.drawable.abcdedemoimage);
                 } else {
-                    Glide.with(getApplicationContext()).load(extras.getString("images"))
-                            .thumbnail(0.5f)
-                            .crossFade()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(imageView);
+                    if (mIntentImagesPath != null && !mIntentImagesPath.isEmpty() && !mIntentImagesPath.equals("null")) {
+                        Glide.with(getApplicationContext()).load(extras.getString("images"))
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(imageView);
+                    } else {
+                        camera_image.setClickable(true);
+                    }
                 }
             }
         } else {

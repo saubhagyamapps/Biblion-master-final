@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleApiClient mGoogleApiClient;
     EditText edtEmail, edtPwd;
     Button btnLogin;
-    TextView  txtSignup,link_forgotpwd;
+    TextView txtSignup, link_forgotpwd;
     String mEmail, mPassword, mDevice_id;
     private static final int RC_SIGN_IN = 007;
     SessionManager session;
@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String mImagesPath;
     private LoginButton loginButton;
     String fbName, fbEmail, fbId, fbBirthday, fbLoaction, fbImageurl;
+    String personName, personPhotoUrl = "null", email;
 
 
     @Override
@@ -137,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         link_forgotpwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Constant.intent(getApplicationContext(),ForgotPasswordActivity.class);
+                Constant.intent(getApplicationContext(), ForgotPasswordActivity.class);
             }
         });
 
@@ -291,12 +292,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
-            String personName = acct.getDisplayName();
-            String personPhotoUrl = acct.getPhotoUrl().toString();
-            String email = acct.getEmail();
 
-            Log.e(TAG, "Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);
+            try {
+                personName = acct.getDisplayName();
+                email = acct.getEmail();
+                personPhotoUrl = acct.getPhotoUrl().toString();
+                Log.e(TAG, "Name: " + personName + ", email: " + email
+                        + ", Image: " + personPhotoUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             intent.putExtra("name", personName);
