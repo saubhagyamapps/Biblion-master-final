@@ -7,7 +7,7 @@ public class ArticalModel {
 
     /**
      * status : 0
-     * path : http://192.168.1.200/biblion-API/public/images/
+     * path : http://frozenkitchen.in/biblion/public/images/
      * result : [{"id":1,"image":"dd.png","heading":"heading","title":"title","description":"description"},{"id":2,"image":"legalwriting2.jpg","heading":"heading","title":"title","description":"description"},{"id":3,"image":"avatar.png","heading":"first row","title":"title","description":"description"},{"id":4,"image":"spokesperson1.jpg","heading":"third  heading","title":"third title","description":"description"},{"id":5,"image":"spokesperson2.jpg","heading":"fourth heading","title":"fifth title","description":"description"},{"id":6,"image":"spokesperson3.jpg","heading":"sixth heading","title":"sixth title","description":"description"},{"id":7,"image":"h.jpg","heading":"seventh heading","title":"seventh title","description":"description"},{"id":8,"image":"creative-office-new-1.jpg","heading":"eighth heading","title":"eighth title","description":"description"},{"id":9,"image":"sat4.jpg","heading":"nineth heading","title":"nineth title","description":"description"},{"id":10,"image":"newimg2.jpg","heading":"tenth heading","title":"tenth title","description":"description"}]
      */
 

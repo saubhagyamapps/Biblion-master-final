@@ -30,7 +30,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -88,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     CircleImageView imageView;
     private final static int IMAGE_RESULT = 200;
     Call<RegisterModel> modelCall;
-
+    String mIntentImagesPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,23 +146,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
             }
         });
-        ///  loginWithFacebook(savedInstanceState);
-        /*mslectedGander = radio_group.getCheckedRadioButtonId();
-        Log.e(TAG, "initialization: " + mslectedGander);
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.radiobtn_male:
-                        mGnder = "Male";
-                        break;
-                    case R.id.radiobtn_female:
-                        mGnder = "Female";
-                        break;
 
-                }
-            }
-        });*/
     }
 
     private void loginWithGmailData(Bundle savedInstanceState) {
@@ -178,7 +161,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 edtRUsername.setText(extras.getString("name"));
                 edtREmail.setText(extras.getString("email"));
                 mGoogleimage = extras.getString("images");
-
+                mIntentImagesPath=extras.getString("images");
 
                 Log.e(TAG, "loginWithGmailData: " + mUserName);
                 if (extras.getString("name") == null) {
@@ -188,11 +171,15 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     mGoogleimage = "null";
                     //imageView.setBackgroundResource(R.drawable.abcdedemoimage);
                 } else {
-                    Glide.with(getApplicationContext()).load(extras.getString("images"))
-                            .thumbnail(0.5f)
-                            .crossFade()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(imageView);
+                    if (mIntentImagesPath != null && !mIntentImagesPath.isEmpty() && !mIntentImagesPath.equals("null")) {
+                        Glide.with(getApplicationContext()).load(extras.getString("images"))
+                                .thumbnail(0.5f)
+                                .crossFade()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(imageView);
+                    } else {
+                        camera_image.setClickable(true);
+                    }
                 }
             }
         } else {
@@ -200,27 +187,6 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
         }
 
 
-    }
-
-    private void loginWithFacebook(Bundle bundle) {
-        if (bundle == null) {
-            Bundle fbextras = getIntent().getExtras();
-            if (fbextras == null) {
-
-            } else {
-                camera_image.setClickable(false);
-                edtRUsername.setInputType(InputType.TYPE_NULL);
-                edtREmail.setInputType(InputType.TYPE_NULL);
-                edtRUsername.setText(fbextras.getString("name"));
-                edtREmail.setText(fbextras.getString("email"));
-                //edtRBirtthdate.setText(fbextras.getString("birthday"));
-                Glide.with(getApplicationContext()).load(fbextras.getString("images"))
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(imageView);
-            }
-        }
     }
 
     private void getCemaraImages() {
@@ -495,11 +461,12 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
 
         Constant.progressDialog(RegisterActivity.this);
         if (mGoogleimage.equals("null")) {
-            setImages = "google";
+            setImages = "local";
+
             modelCall = Constant.apiService.
                     getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
         } else {
-            setImages = "local";
+            setImages = "google";
             modelCall = Constant.apiService.
                     getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity, mGoogleimage);
         }
@@ -514,7 +481,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                     if (setImages.equals("local")) {
                         mImagesPath = response.body().getResult().getImage();
                     } else {
-                        mImagesPath = response.body().getResult().getGoogleImage();
+                        mImagesPath = mGoogleimage;
                     }
                     sessionManager.createLoginSession(response.body().getId(), mEmail, mPassword, response.body().getResult().getName(),
                             response.body().getResult().getGender(), response.body().getResult().getDob(),

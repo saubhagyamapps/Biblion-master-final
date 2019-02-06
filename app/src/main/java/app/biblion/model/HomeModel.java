@@ -14,7 +14,7 @@ public class HomeModel {
     /**
      * status : 0
      * Total Pages : 2
-     * path : http://192.168.1.200/biblion-API/public/images/
+     * path : http://frozenkitchen.in/biblion/public/images/
      * result : [{"id":1,"image":"image1.png","description":"sdlkdf lsdhjds lkhfkjsd kjhfkjsd khkjfsh kjhk iu hiu kjh kjghi hgi hkj hkj"},{"id":2,"image":"image2.png","description":"kgi g hgjk hh gy uyhk jlhjuh gujh kljh hg gk jhh gjh gujh gujhg j ojh gjhg jhg jg jg ohgjh gujh gjhg jh"},{"id":3,"image":"image3.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":4,"image":"image4.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":5,"image":"image5.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":6,"image":"image6.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":7,"image":"image7.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":8,"image":"image8.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":9,"image":"image9.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"},{"id":10,"image":"image10.png","description":"lkj kh jkgjhg ugjhgfhgfhg jhg fgf ghfh gkjg jhfgu jh gjhjfhg hgjhkjhjhfyt fyf dhgjhhgd tdyfhfyfdt dfd"}]
      */
 

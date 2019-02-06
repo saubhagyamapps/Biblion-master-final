@@ -12,27 +12,32 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
 import com.luseen.spacenavigation.SpaceOnLongClickListener;
 
+import java.util.HashMap;
+
 import app.biblion.R;
 import app.biblion.fragment.AccountFragment;
 import app.biblion.fragment.ArticlesFragment;
 import app.biblion.fragment.BibleBookFragment;
-import app.biblion.fragment.DetailELibraryFragment;
 import app.biblion.fragment.ELibraryFragment;
 import app.biblion.fragment.HomeBookFragment;
 import app.biblion.fragment.QuizFragment;
 import app.biblion.fragment.SettingFragment;
 import app.biblion.fragment.SongBookFragment;
 import app.biblion.sessionmanager.SessionManager;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class NavigationActivity extends AppCompatActivity
@@ -46,8 +51,10 @@ public class NavigationActivity extends AppCompatActivity
     FragmentTransaction fragmentTransaction;
     // BottomBar bottomBar;
     SessionManager session;
-
+    TextView txtName, txtEmail;
+    CircleImageView imgUser;
     private SpaceNavigationView spaceNavigationView;
+    HashMap<String, String> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +70,7 @@ public class NavigationActivity extends AppCompatActivity
         //bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         session = new SessionManager(getApplicationContext());
         // session.checkLogin();
-
+        user = session.getUserDetails();
         spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
         spaceNavigationView.addSpaceItem(new SpaceItem("Home", R.drawable.account));
@@ -142,7 +149,22 @@ public class NavigationActivity extends AppCompatActivity
         toggle.syncState();
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        setnavigationHeader();
         //  bottomNavigation();
+    }
+
+    private void setnavigationHeader() {
+        View header = navigationView.getHeaderView(0);
+        txtName = (TextView) header.findViewById(R.id.txtName);
+        txtEmail = (TextView) header.findViewById(R.id.txtEmail);
+        imgUser = header.findViewById(R.id.imgUser);
+        txtName.setText(user.get(session.KEY_NAME));
+        txtEmail.setText(user.get(session.KEY_EMAIL));
+        Glide.with(getApplicationContext()).load(user.get(session.KEY_IMAGE))
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imgUser);
     }
 
     @Override

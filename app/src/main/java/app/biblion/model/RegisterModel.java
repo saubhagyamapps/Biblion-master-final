@@ -6,7 +6,7 @@ public class RegisterModel {
     /**
      * status : 0
      * message : signup successful
-     * path : http://192.168.1.200/biblion-API/public/profile_image/
+     * path : http://frozenkitchen.in/biblion/public/profile_image/
      * id : 41
      * result : {"name":"myname","username":"username","gender":"male","dob":"1988-11-23","mobile":"55566644777","email":"hdpdpfhc@hp.com","password":"4297f44b13955235245b2497399d7a93","device_id":"1234567890","firebase_id":"1234567890","image":"1549013730.jpg","country":"country","state":"state","city":"city"}
      */

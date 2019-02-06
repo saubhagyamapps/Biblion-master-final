@@ -18,7 +18,6 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -36,7 +35,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.facebook.login.LoginManager;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -51,7 +49,6 @@ import app.biblion.model.EditProfileModel;
 import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Constant;
 import belka.us.androidtoggleswitch.widgets.ToggleSwitch;
-import belka.us.androidtoggleswitch.widgets.util.ToggleSwitchButton;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -90,7 +87,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     private final static int IMAGE_RESULT = 200;
     CircleImageView imageView;
     Uri picUri;
-    ;
+    String mImagesPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -191,14 +188,14 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edtPState.setText(A_State);
         edtPCountry.setText(A_Country);
         mGnder = A_Gender;
-        if (mGnder.equals("Male") ) {
+        if (mGnder.equals("Male")) {
             toggleSwitch.setCheckedTogglePosition(0);
             mGnder = "Male";
         } else {
             toggleSwitch.setCheckedTogglePosition(1);
             mGnder = "Female";
         }
-        Glide.with(getActivity()).load("http://192.168.1.200/biblion-API/public/profile_image/" + user.get(sessionManager.KEY_IMAGE))
+        Glide.with(getActivity()).load(user.get(sessionManager.KEY_IMAGE))
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -528,11 +525,17 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                     Constant.toast(response.body().getMessage(), getActivity());
                     Constant.progressBar.dismiss();
                 } else {
+                    if (response.body().getResult().get(0).getImage() != null && !response.body().getResult().get(0).getImage().isEmpty() &&
+                            !response.body().getResult().get(0).getImage().equals("null")) {
+                        mImagesPath = response.body().getResult().get(0).getImage();
+                    } else {
+                        mImagesPath = response.body().getResult().get(0).getGoogleimage();
+                    }
                     sessionManager.createLoginSession(response.body().getResult().get(0).getId(), A_Email, A_Password, response.body().getResult().get(0).getName(),
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
                             response.body().getResult().get(0).getFirebase_id(), response.body().getResult().get(0).getCity(),
-                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), response.body().getResult().get(0).getImage());
+                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), mImagesPath);
                     Constant.progressBar.dismiss();
                     getFragmentManager()
                             .beginTransaction()

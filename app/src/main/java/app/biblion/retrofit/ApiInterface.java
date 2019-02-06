@@ -1,6 +1,7 @@
 package app.biblion.retrofit;
 
 
+import app.biblion.model.AllSongListModel;
 import app.biblion.model.ArticalModel;
 import app.biblion.model.EditProfileModel;
 import app.biblion.model.HomeModel;
@@ -110,4 +111,8 @@ public interface ApiInterface {
                                           @Field("country") String country,
                                           @Field("state") String state,
                                           @Field("city") String city);
+
+    @FormUrlEncoded
+    @POST("allsonglist")
+    Call<AllSongListModel> getSongList(@Field("page") int page);
 }

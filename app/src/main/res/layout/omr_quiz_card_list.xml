@@ -1,62 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:id="@+id/card_list"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_list"
     android:layout_width="match_parent"
     android:layout_height="300dp"
     android:layout_margin="10dp"
     android:background="#9ee2e2"
-    app:cardElevation="3dp"
     app:cardCornerRadius="3dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="10"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="10">
 
         <TextView
             android:id="@+id/txt_que"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:paddingTop="20dp"
             android:paddingLeft="10dp"
-            android:layout_marginLeft="10dp"
-            />
+            android:paddingTop="20dp" />
+
         <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:layout_weight="6">
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_weight="6">
 
             <RadioButton
                 android:id="@+id/radio_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="One"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="6dp"
+                android:text="One" />
+
             <RadioButton
                 android:id="@+id/radio_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Two"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="6dp"
+                android:text="Two" />
+
             <RadioButton
                 android:id="@+id/radio_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Three"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="6dp"
+                android:text="Three" />
+
             <RadioButton
                 android:id="@+id/radio_four"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Four"
-                android:layout_marginTop="6dp"/>
+                android:layout_marginTop="6dp"
+                android:text="Four" />
         </RadioGroup>
     </LinearLayout>
 

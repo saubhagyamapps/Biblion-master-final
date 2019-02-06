@@ -3,15 +3,21 @@ package app.biblion.util;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.bumptech.glide.util.LogTime;
+
+import javax.security.auth.login.LoginException;
 
 import app.biblion.R;
 import app.biblion.retrofit.ApiClient;
 import app.biblion.retrofit.ApiInterface;
 
 public class Constant {
-    public static String mBaseUrl = "http://192.168.1.200/biblion-API/";
+
+    public static String mBaseUrl = "http://frozenkitchen.in/biblion/";
     public static ProgressDialog progressBar;
     public static Button btnNext;
     public static ApiInterface apiService =
@@ -27,7 +33,7 @@ public class Constant {
     }
 
     public static void toast(String message, Context applicationContext) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show();
     }
 
     public static void intent(Context classOne, Class classTwo) {

@@ -80,9 +80,9 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 movieVH.txt_heading_Art.setText(dataBean.get(i).getHeading());
                 movieVH.txt_Title_Art.setText(dataBean.get(i).getTitle());
                 movieVH.txt_Desc_Art.setText(dataBean.get(i).getDescription());
-               /* Bitmap myImage = getBitmapFromURL("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage());
+               /* Bitmap myImage = getBitmapFromURL("http://frozenkitchen.in/biblion/public/images/" + dataBean.get(i).getImage());
                 Drawable dr = new BitmapDrawable(myImage);*/
-                Glide.with(mContext).load("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage())
+                Glide.with(mContext).load("http://frozenkitchen.in/biblion/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
