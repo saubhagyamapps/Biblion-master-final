@@ -82,7 +82,7 @@ public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.View
                 final MovieVH movieVH = (MovieVH) holder;
                 movieVH.txtBookName.setText(dataBean.get(i).getBookname());
                 Log.e(TAG, "onBindViewHolder: "+dataBean.get(i).getBookname() );
-                Glide.with(mContext).load("http://192.168.1.200/biblion-API/public/images/" + dataBean.get(i).getImage())
+                Glide.with(mContext).load("http://frozenkitchen.in/biblion/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
