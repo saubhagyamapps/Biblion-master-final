@@ -15,9 +15,9 @@ import app.biblion.R;
 import app.biblion.util.Constant;
 
 public class FilltheBlanksAdapter extends RecyclerView.Adapter<FilltheBlanksAdapter.MyViewHolder> {
-        View view;
-        Context mContext;
-        int[] num;
+    View view;
+    Context mContext;
+    int[] num;
 
     public FilltheBlanksAdapter(Context mContext, int[] num) {
         this.mContext = mContext;
@@ -43,7 +43,7 @@ public class FilltheBlanksAdapter extends RecyclerView.Adapter<FilltheBlanksAdap
         myViewHolder.radio_three.setText("Their, there");
         myViewHolder.radio_four.setText("There, there");
 
-        if (num.length == i+1) {
+        if (num.length == i + 1) {
             myViewHolder.btn_click.setVisibility(View.VISIBLE);
         } else {
             myViewHolder.btn_click.setVisibility(View.GONE);
