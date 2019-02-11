@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:drawable="@color/white"
+        android:state_selected="true"/>
+    <item
+        android:drawable="@color/colorPrimary"
+        android:state_selected="false"/>
     <gradient
         android:startColor="#43b8ba"
         android:centerColor="#2ea6a8"
         android:endColor="#108d8f"/>
-
 </selector>

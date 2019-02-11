@@ -5,9 +5,11 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context=".fragment.LeaderBoardFragment">
     <android.support.design.widget.TabLayout
         android:id="@+id/tab"
+        android:elevation="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/tablayout"
@@ -15,6 +17,7 @@
         app:tabSelectedTextColor="@color/black"/>
 
     <android.support.v4.view.ViewPager
+        android:layout_marginTop="5dp"
         android:id="@+id/vpPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
