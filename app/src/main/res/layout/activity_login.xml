@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/viewSnackbar"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/viewSnackbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -12,40 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="160dp"
-                android:padding="35dp"
-                android:src="@drawable/applogo" />
+            android:layout_height="250dp"
+            android:background="#E6048487">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_gravity="center_horizontal"
-                android:background="#E6048487" />
-
-            <TextView
-                android:id="@+id/txtTital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_centerInParent="true"
-                android:text="Welcome Back!"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txtTital"
-                android:layout_centerHorizontal="true"
-                android:text="Log in with your email &amp; password"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/circleimageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="20dp"
+                    android:src="@drawable/center_logo" />
+            </LinearLayout>
+
+            <!-- <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="160dp"
+                 android:padding="35dp"
+                 android:src="@drawable/applogo" />
+
+             <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="160dp"
+                 android:layout_gravity="center_horizontal"
+                 android:background="#E6048487" />
+
+             <TextView
+                 android:id="@+id/txtTital"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerInParent="true"
+                 android:text="Welcome Back!"
+                 android:textColor="@color/white"
+                 android:textSize="20sp"
+                 android:textStyle="bold" />
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_below="@+id/txtTital"
+                 android:layout_centerHorizontal="true"
+                 android:text="Log in with your email &amp; password"
+                 android:textColor="@color/white"
+                 android:textSize="15sp" />-->
         </RelativeLayout>
 
         <android.support.v7.widget.CardView
@@ -57,15 +73,15 @@
             app:cardElevation="2dp">
 
             <EditText
-                android:textSize="15sp"
-                android:inputType="textEmailAddress"
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="Email Id"
+                android:inputType="textEmailAddress"
                 android:padding="13dp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="15sp" />
         </android.support.v7.widget.CardView>
 
 
@@ -78,7 +94,6 @@
             app:cardElevation="2dp">
 
             <EditText
-                android:textSize="15sp"
                 android:id="@+id/input_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +101,8 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:padding="13dp"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textSize="15sp" />
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
@@ -107,6 +123,7 @@
                 android:text="Log in"
                 android:textColor="#ffffff" />
         </android.support.v7.widget.CardView>
+
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

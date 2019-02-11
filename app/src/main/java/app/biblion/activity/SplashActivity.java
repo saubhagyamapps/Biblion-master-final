@@ -68,7 +68,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void openNewScreen() {
         if (Flag == 1) {
-            intent = new Intent(SplashActivity.this, LoginActivity.class);
+            intent = new Intent(SplashActivity.this, Signup_SignInActivity.class);
             startActivity(intent);
             finish();
         } else {
