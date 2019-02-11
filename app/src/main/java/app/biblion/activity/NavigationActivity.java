@@ -33,6 +33,7 @@ import app.biblion.fragment.ArticlesFragment;
 import app.biblion.fragment.BibleBookFragment;
 import app.biblion.fragment.ELibraryFragment;
 import app.biblion.fragment.HomeBookFragment;
+import app.biblion.fragment.LeaderBoardFragment;
 import app.biblion.fragment.QuizFragment;
 import app.biblion.fragment.SettingFragment;
 import app.biblion.fragment.SongBookFragment;
@@ -252,6 +253,9 @@ public class NavigationActivity extends AppCompatActivity
             case R.id.nav_logout:
                 session.logoutUser();
                 finish();
+                break;
+            case R.id.nav_leaderboard:
+                fragment = new LeaderBoardFragment();
                 break;
         }
 

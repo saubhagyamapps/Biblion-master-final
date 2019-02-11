@@ -28,6 +28,10 @@
             android:id="@+id/nav_articles"
             android:icon="@mipmap/articles"
             android:title="@string/articles" />
+        <item
+            android:id="@+id/nav_leaderboard"
+            android:icon="@drawable/lead"
+            android:title="@string/leaderboard" />
     </group>
 
     <item android:title="Communicate">

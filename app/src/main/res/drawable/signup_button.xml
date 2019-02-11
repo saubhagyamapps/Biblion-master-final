@@ -17,4 +17,6 @@
         android:centerColor="#2ea6a8"
         android:endColor="#108d8f"
         android:startColor="#43b8ba" />
+    />
+
 </shape>
