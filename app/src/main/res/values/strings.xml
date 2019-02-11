@@ -14,6 +14,7 @@
     <string name="song_book" translatable="false">Song Book</string>
     <string name="elibary" translatable="false">E Liabary</string>
     <string name="articles" translatable="false">Articles</string>
+    <string name="leaderboard" translatable="false">Leaderboard</string>
     <string name="settings" translatable="false">Reset Password</string>
     <string name="progress_dialog_msg" translatable="false">Please Wait...</string>
     <string name="progress_dialog_tital" translatable="false">Loading</string>
@@ -52,6 +53,6 @@ five star Goodreads ratings and all that</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb600108270439990</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="back"><u>Back to login</u></string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="back" translatable="false"><u>Back to login</u></string>
 </resources>
