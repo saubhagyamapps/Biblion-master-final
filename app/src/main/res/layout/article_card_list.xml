@@ -7,6 +7,8 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -16,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center">
 
             <android.support.v7.widget.CardView
@@ -29,6 +31,7 @@
                 app:cardElevation="5dp">
 
                 <ImageView
+                    android:src="@drawable/app_icon_center"
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -43,10 +46,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:orientation="vertical">
 
             <TextView
+                android:text="Testing"
+                android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/txt_heading_art"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,15 +62,19 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:text="Testing"
+                android:textColor="#0f8a8c"
                 android:id="@+id/txt_title_art"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
+                android:textStyle="italic"
                 android:textSize="15dp" />
 
             <TextView
+                android:text="Testing"
                 android:id="@+id/txt_desc_art"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
@@ -73,6 +82,17 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="15dp"
                 android:textSize="10dp" />
+
+            <TextView
+                android:textColor="#0f8a8c"
+                android:id="@+id/txt_continue_read"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="CONTINUE READING"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:textSize="15dp" />
 
         </LinearLayout>
 

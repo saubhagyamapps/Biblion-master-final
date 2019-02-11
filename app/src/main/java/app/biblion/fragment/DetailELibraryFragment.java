@@ -29,7 +29,8 @@ public class DetailELibraryFragment extends Fragment {
     View mView;
     private static final String TAG = "DetailELibraryFragment";
     RatingBar bookRatingBar;
-    TextView txtDescription,btnBookDownload;
+    TextView txtDescription;
+    Button btnBookDownload;
     public static final String PROGRESS_UPDATE = "progress_update";
 
     @Override

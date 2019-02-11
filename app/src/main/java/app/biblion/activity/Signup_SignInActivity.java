@@ -33,6 +33,10 @@ public class Signup_SignInActivity extends AppCompatActivity {
         btn_Signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_Signin.setBackground(getResources().getDrawable(R.drawable.signup_button));
+                btn_SignUp.setBackgroundColor(getResources().getColor(R.color.white));
+                btn_Signin.setTextColor(getResources().getColor(R.color.white));
+                btn_SignUp.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 startActivity(new Intent(getApplicationContext(),LoginActivity.class));
             }
         });
@@ -40,6 +44,10 @@ public class Signup_SignInActivity extends AppCompatActivity {
         btn_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_SignUp.setBackground(getResources().getDrawable(R.drawable.signup_button));
+                btn_Signin.setBackgroundColor(getResources().getColor(R.color.white));
+                btn_SignUp.setTextColor(getResources().getColor(R.color.white));
+                btn_Signin.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                 startActivity(new Intent(getApplicationContext(),RegisterActivity.class));
             }
         });
