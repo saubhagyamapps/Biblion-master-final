@@ -1,9 +1,7 @@
 package app.biblion.fragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,34 +41,6 @@ public class LeaderBoardFragment extends Fragment {
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-                for (int p = 0; i < tabLayout.getTabCount(); i++)
-                {
-                    if (p==i)
-                    {
-                        tabLayout.getTabAt(i).getCustomView().setBackgroundColor(Color.parseColor("#fffff"));
-                    }else {
-                        tabLayout.getTabAt(i).getCustomView().setBackgroundColor(Color.parseColor("#048487"));
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
     }
 
 
@@ -79,9 +49,9 @@ public class LeaderBoardFragment extends Fragment {
     private void setUpViewPager(ViewPager viewPager)
     {
         ViewPagerAdapter  viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(new FriendsFragment(), "FRIENDS");
+        viewPagerAdapter.addFragment(new CountryFragment(), "FRIENDS");
         viewPagerAdapter.addFragment(new CountryFragment(), "COUNTRY");
-        viewPagerAdapter.addFragment(new GlobalFragment(), "GLOBAL");
+        viewPagerAdapter.addFragment(new CountryFragment(), "GLOBAL");
 
         viewPager.setAdapter(viewPagerAdapter);
     }
