@@ -12,7 +12,7 @@
         android:elevation="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/tablayout"
+        app:tabBackground="@drawable/tablayout"
         app:tabTextColor="@color/white"
         app:tabSelectedTextColor="@color/black"/>
 

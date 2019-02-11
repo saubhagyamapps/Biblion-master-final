@@ -1,0 +1,14 @@
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\loaders\SearchLoader.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\model\search\SearchItem.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\model\search\SearchItemType.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\ui\folio\activity\SearchActivity.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\ui\folio\adapter\ListViewType.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\ui\folio\adapter\OnItemClickListener.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\ui\folio\adapter\SearchAdapter.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\ui\folio\adapter\ViewHolder.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\ui\folio\fragment\MediaControllerFragment.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\view\ConfigBottomSheetDialogFragment.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\view\FolioAppBarLayout.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\view\FolioSearchView.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\view\FolioWebView.kt
+C:\Users\Android\Documents\GitHub\Biblion-master-final\folioreader\src\main\java\com\folioreader\view\MediaControllerCallback.kt
