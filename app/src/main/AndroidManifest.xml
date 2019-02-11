@@ -31,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.ReadBookAcivity" />
         <activity
             android:name=".activity.NavigationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

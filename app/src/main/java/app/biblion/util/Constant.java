@@ -18,6 +18,7 @@ import app.biblion.retrofit.ApiInterface;
 public class Constant {
 
     public static String mBaseUrl = "http://frozenkitchen.in/biblion/";
+    public static String mImagesPath;
     public static ProgressDialog progressBar;
     public static Button btnNext;
     public static ApiInterface apiService =

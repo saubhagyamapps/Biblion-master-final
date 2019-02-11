@@ -30,6 +30,7 @@ import java.util.List;
 import app.biblion.R;
 import app.biblion.interfacea.BookClick;
 import app.biblion.model.MyLibraryBookModel;
+import app.biblion.util.Constant;
 
 public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -82,7 +83,7 @@ public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.View
                 final MovieVH movieVH = (MovieVH) holder;
                 movieVH.txtBookName.setText(dataBean.get(i).getBookname());
                 Log.e(TAG, "onBindViewHolder: "+dataBean.get(i).getBookname() );
-                Glide.with(mContext).load("http://frozenkitchen.in/biblion/public/images/" + dataBean.get(i).getImage())
+                Glide.with(mContext).load(Constant.mImagesPath + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)

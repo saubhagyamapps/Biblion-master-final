@@ -36,6 +36,7 @@ public class HomeBookFragment extends Fragment {
     private int TOTAL_PAGES = 2;
     HomeAdapter homeAdapter;
     RecyclerView recyclerView_Home;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,9 +46,8 @@ public class HomeBookFragment extends Fragment {
         return mView;
     }
 
-    public void init()
-    {
-        recyclerView_Home =mView.findViewById(R.id.recyclerview_home);
+    public void init() {
+        recyclerView_Home = mView.findViewById(R.id.recyclerview_home);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_Home.setLayoutManager(layoutManager);
         homeAdapter = new HomeAdapter(getActivity());
@@ -84,20 +84,19 @@ public class HomeBookFragment extends Fragment {
         loadFirstPage();
     }
 
-    private void loadFirstPage ()
-    {
+    private void loadFirstPage() {
         Log.d(TAG, "loadFirstPage:");
         Call<HomeModel> modelCall = Constant.apiService.getHomeList(currentPage);
         modelCall.enqueue(new Callback<HomeModel>() {
             @Override
             public void onResponse(Call<HomeModel> call, Response<HomeModel> response) {
-
+                Constant.mImagesPath=response.body().getPath();
                 List<HomeModel.ResultBean> resultBeans = response.body().getResult();
 
-               homeAdapter.addAll(resultBeans);
+                homeAdapter.addAll(resultBeans);
                 if (currentPage <= TOTAL_PAGES) homeAdapter.addLoadingFooter();
                 else isLastPage = true;
-                }
+            }
 
             @Override
             public void onFailure(Call<HomeModel> call, Throwable t) {
@@ -106,9 +105,8 @@ public class HomeBookFragment extends Fragment {
         });
     }
 
-    private void loadNextPage ()
-    {
-        Log.d(TAG, "loadNextPage:" +currentPage);
+    private void loadNextPage() {
+        Log.d(TAG, "loadNextPage:" + currentPage);
         Call<HomeModel> modelCall = Constant.apiService.getHomeList(currentPage);
         modelCall.enqueue(new Callback<HomeModel>() {
             @Override

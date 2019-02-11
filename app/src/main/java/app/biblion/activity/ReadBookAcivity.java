@@ -1,15 +1,11 @@
-package app.biblion.fragment;
+package app.biblion.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -31,38 +27,20 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.biblion.R;
+import app.biblion.fragment.HighlightData;
 
-
-public class BibleBookFragment extends Fragment implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener,View.OnClickListener {
-
-    private static final String LOG_TAG = BibleBookFragment.class.getSimpleName();
-    private FolioReader folioReader;
-    View mView;
-    ImageView imagesA,imagesB,imagesC,imagesD;
+public class ReadBookAcivity extends AppCompatActivity implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener{
+    private static final String LOG_TAG = "ReadBookAcivity";
     ReadPosition readPosition;
     Config config;
-    String selectedOfferId;
-    @Nullable
+    private FolioReader folioReader;
+    String mBookPath;
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SharedPreferences prefs = getSharedPreferences("Book_Path", MODE_PRIVATE);
+        mBookPath = prefs.getString("path", "No name defined");
 
-        mView = inflater.inflate(R.layout.bible_book_fragment, container, false);
-        getActivity().setTitle("Bible Book");
-        initialization();
-
-        return mView;
-    }
-
-    private void initialization() {
-        imagesA=mView.findViewById(R.id.imagesA);
-        imagesB=mView.findViewById(R.id.imagesB);
-        imagesC=mView.findViewById(R.id.imagesC);
-        imagesD=mView.findViewById(R.id.imagesD);
-        imagesA.setOnClickListener(this);
-        imagesB.setOnClickListener(this);
-        imagesC.setOnClickListener(this);
-        imagesD.setOnClickListener(this);
         folioReader = FolioReader.get()
                 .setOnHighlightListener(this)
                 .setReadPositionListener(this)
@@ -70,32 +48,41 @@ public class BibleBookFragment extends Fragment implements OnHighlightListener, 
 
         getHighlightsAndSave();
 
-         readPosition = getLastReadPosition();
+        readPosition = getLastReadPosition();
 
-         config = AppUtil.getSavedConfig(getActivity());
+        config = AppUtil.getSavedConfig(getApplicationContext());
         if (config == null)
             config = new Config();
         config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
-
+        folioReader.setReadPosition(readPosition)
+                .setConfig(config, true)
+                .openBook(mBookPath);
     }
-
-
     private ReadPosition getLastReadPosition() {
 
         String jsonString = loadAssetTextAsString("read_positions/read_position.json");
         return ReadPositionImpl.createInstance(jsonString);
     }
+    @Override
+    public void onFolioReaderClosed() {
+        Log.v(LOG_TAG, "-> onFolioReaderClosed");
+        Intent intent=new Intent(ReadBookAcivity.this,NavigationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
+        Toast.makeText(ReadBookAcivity.this,
+                "highlight id = " + highlight.getUUID() + " type = " + type,
+                Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void saveReadPosition(ReadPosition readPosition) {
-
         Log.i(LOG_TAG, "-> ReadPosition = " + readPosition.toJson());
-    }
 
-    /*
-     * For testing purpose, we are getting dummy highlights from asset. But you can get highlights from your server
-     * On success, you can save highlights to FolioReader DB.
-     */
+    }
     private void getHighlightsAndSave() {
         new Thread(new Runnable() {
             @Override
@@ -122,12 +109,11 @@ public class BibleBookFragment extends Fragment implements OnHighlightListener, 
             }
         }).start();
     }
-
     private String loadAssetTextAsString(String name) {
         BufferedReader in = null;
         try {
             StringBuilder buf = new StringBuilder();
-            InputStream is = getActivity().getAssets().open(name);
+            InputStream is = getApplicationContext().getAssets().open(name);
             in = new BufferedReader(new InputStreamReader(is));
 
             String str;
@@ -152,47 +138,5 @@ public class BibleBookFragment extends Fragment implements OnHighlightListener, 
             }
         }
         return null;
-    }
-
-  /*  @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FolioReader.clear();
-    }*/
-
-    @Override
-    public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
-        Toast.makeText(getActivity(),
-                "highlight id = " + highlight.getUUID() + " type = " + type,
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFolioReaderClosed() {
-        Log.v(LOG_TAG, "-> onFolioReaderClosed");
-       // getFragmentManager().beginTransaction().replace(R.id.contant_frame, new HomeBookFragment()).commit();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.imagesA:
-                folioReader.setReadPosition(readPosition)
-                        .setConfig(config, true)
-                        .openBook("file:///android_asset/BibleBook.epub");
-                break; case R.id.imagesB:
-                folioReader.setReadPosition(readPosition)
-                        .setConfig(config, true)
-                        .openBook("file:///android_asset/TheHolyBibleKingJames.epub");
-                break; case R.id.imagesC:
-                folioReader.setReadPosition(readPosition)
-                        .setConfig(config, true)
-                        .openBook("file:///android_asset/ASV.epub");
-                break; case R.id.imagesD:
-                folioReader.setReadPosition(readPosition)
-                        .setConfig(config, true)
-                        .openBook("file:///android_asset/TheHolyBibleKingJames.epub");
-                break;
-        }
     }
 }

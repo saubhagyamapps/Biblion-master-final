@@ -26,6 +26,7 @@ import java.util.List;
 import app.biblion.R;
 import app.biblion.model.ArticalModel;
 import app.biblion.model.HomeModel;
+import app.biblion.util.Constant;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -74,7 +75,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         switch (getItemViewType(i)) {
             case ITEM:
                 MovieVH movieVH = (MovieVH) holder;
-                Glide.with(mContext).load("http://frozenkitchen.in/biblion/public/images/" + dataBean.get(i).getImage())
+                Glide.with(mContext).load(Constant.mImagesPath + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)

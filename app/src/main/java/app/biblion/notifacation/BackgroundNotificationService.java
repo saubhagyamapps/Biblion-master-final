@@ -1,21 +1,19 @@
 package app.biblion.notifacation;
 
-import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.folioreader.Constants;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -25,12 +23,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import app.biblion.R;
+import app.biblion.activity.ReadBookAcivity;
+import app.biblion.activity.SplashActivity;
+import app.biblion.fragment.BibleBookFragment;
 import app.biblion.fragment.DetailELibraryFragment;
-import app.biblion.retrofit.ApiInterface;
 import app.biblion.util.Constant;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Retrofit;
 
 
 public class BackgroundNotificationService extends IntentService {
@@ -42,7 +41,7 @@ public class BackgroundNotificationService extends IntentService {
     private static final String TAG = "BackgroundNotificationS";
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
-
+    File outputFile;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -59,13 +58,17 @@ public class BackgroundNotificationService extends IntentService {
             notificationChannel.enableVibration(false);
             notificationManager.createNotificationChannel(notificationChannel);
         }
-
+        Intent intent1 = new Intent(getApplicationContext(), ReadBookAcivity.class);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent1.putExtra("path",String.valueOf(outputFile));
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 123, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
 
         notificationBuilder = new NotificationCompat.Builder(this, "id")
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setContentTitle("Download")
                 .setContentText("Downloading Book")
                 .setDefaults(0)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         notificationManager.notify(0, notificationBuilder.build());
 
@@ -91,13 +94,17 @@ public class BackgroundNotificationService extends IntentService {
     private void downloadImage(ResponseBody body) throws IOException {
 
         int count;
-        Log.e(TAG, "downloadImage: "+body.toString());
+        Log.e(TAG, "downloadImage: " + body.toString());
         byte data[] = new byte[1024 * 4];
         long fileSize = body.contentLength();
         InputStream inputStream = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Book.EPUB");
+        outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Book.EPUB");
         OutputStream outputStream = new FileOutputStream(outputFile);
         long total = 0;
+        Log.e(TAG, "downloadImage: " + outputFile);
+        SharedPreferences.Editor editor = getSharedPreferences("Book_Path", MODE_PRIVATE).edit();
+        editor.putString("path", String.valueOf(outputFile));
+        editor.apply();
         boolean downloadComplete = false;
         //int totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
 

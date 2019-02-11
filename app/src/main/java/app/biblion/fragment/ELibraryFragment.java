@@ -33,7 +33,7 @@ public class ELibraryFragment extends Fragment {
     MyLibraryBookAdepter myLibraryAdapter;
     RecyclerView recyclerView_article;
     RecyclerView recycleviewTopDownload;
-    int[] num = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private static final int PAGE_START = 1;
@@ -137,6 +137,8 @@ public class ELibraryFragment extends Fragment {
         modelCall.enqueue(new Callback<MyLibraryBookModel>() {
             @Override
             public void onResponse(Call<MyLibraryBookModel> call, Response<MyLibraryBookModel> response) {
+                //Constant.mImagesPath=response.body().getPath();
+                Constant.mImagesPath = "http://frozenkitchen.in/biblion/public/images/";
 
                 List<MyLibraryBookModel.ResultBean> results = response.body().getResult();
                 TOTAL_PAGES=response.body().getTotalPages();

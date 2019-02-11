@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +21,6 @@ import app.biblion.R;
 import app.biblion.adpater.ArticlesAdapter;
 import app.biblion.adpater.util.PaginationScrollListenerLinear;
 import app.biblion.model.ArticalModel;
-import app.biblion.retrofit.ApiClient;
-import app.biblion.retrofit.ApiInterface;
 import app.biblion.util.Constant;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,11 +49,10 @@ public class ArticlesFragment extends Fragment {
         return mView;
     }
 
-    public void init()
-    {
+    public void init() {
         floatingActionButton = mView.findViewById(R.id.btn_fab);
         recyclerView_article = mView.findViewById(R.id.recycle_article);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView_article.setLayoutManager(layoutManager);
         articlesAdapter = new ArticlesAdapter(getActivity());
         recyclerView_article.setAdapter(articlesAdapter);
@@ -101,7 +97,7 @@ public class ArticlesFragment extends Fragment {
             public void onResponse(Call<ArticalModel> call, Response<ArticalModel> response) {
 
                 List<ArticalModel.ResultBean> results = response.body().getResult();
-                // progressBar.setVisibility(View.GONE);
+                Constant.mImagesPath=response.body().getPath();
                 articlesAdapter.addAll(results);
 
                 if (currentPage <= TOTAL_PAGES) articlesAdapter.addLoadingFooter();
