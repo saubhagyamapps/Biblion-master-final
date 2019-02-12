@@ -3,6 +3,7 @@ package app.biblion.retrofit;
 
 import app.biblion.model.AllSongListModel;
 import app.biblion.model.ArticalModel;
+import app.biblion.model.DevotionModel;
 import app.biblion.model.EditProfileModel;
 import app.biblion.model.HomeModel;
 import app.biblion.model.LoginModel;
@@ -72,9 +73,8 @@ public interface ApiInterface {
     @POST("getbooks")
     Call<MyLibraryBookModel> getMyLibraryBook(@Field("page") int page);
 
-    @FormUrlEncoded
-    @POST("home")
-    Call<HomeModel> getHomeList(@Field("page") int page);
+    @GET("home")
+    Call<HomeModel> getHomeList();
 
     @GET()
     @Streaming
@@ -115,4 +115,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("allsonglist")
     Call<AllSongListModel> getSongList(@Field("page") int page);
+
+    @GET("uploadimg")
+    Call<DevotionModel> getDevotiondata();
 }

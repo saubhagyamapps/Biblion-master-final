@@ -31,21 +31,37 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:elevation="10dp"
+                    android:outlineSpotShadowColor="#b4e3f5"
+                    android:outlineAmbientShadowColor="#b4e3f5"
+                    >
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/home_card_bible"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
+                        app:cardElevation="10dp"
                         app:cardBackgroundColor="#ff7282"
+                        android:outlineSpotShadowColor="#b4e3f5"
+                        android:outlineAmbientShadowColor="#b4e3f5"
                         app:cardCornerRadius="5dp">
 
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
+                            android:src="@drawable/bible_icon"
+                            />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Bible"
+                            android:layout_marginTop="30dp"
+                            android:text="BIBLE"
+                            android:textStyle="bold"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
 
@@ -74,15 +90,27 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:cardBackgroundColor="#19d191"
-                            app:cardCornerRadius="5dp">
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="10dp"
+                            android:outlineSpotShadowColor="#b4e3f5"
+                            android:outlineAmbientShadowColor="#b4e3f5">
 
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/icon_quiz"
+                                />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Quiz"
+                                android:layout_marginTop="15dp"
+                                android:text="QUIZ"
+                                android:textStyle="bold"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </android.support.v7.widget.CardView>
                     </LinearLayout>
@@ -99,15 +127,28 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             app:cardBackgroundColor="#fe7b45"
-                            app:cardCornerRadius="5dp">
+                            app:cardCornerRadius="5dp"
+                            app:cardElevation="10dp"
+                            android:outlineSpotShadowColor="#b4e3f5"
+                            android:outlineAmbientShadowColor="#b4e3f5">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/book_icon"
+                                />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Song Book"
+                                android:text="SONG BOOK"
+                                android:layout_marginTop="15dp"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                         </android.support.v7.widget.CardView>
                     </LinearLayout>
@@ -135,13 +176,22 @@
                             app:cardBackgroundColor="#4ccedc"
                             app:cardCornerRadius="5dp">
 
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/article_icon"
+                                />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="Article"
+                                android:text="ARTICLE"
+                                android:layout_marginTop="15dp"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                         </android.support.v7.widget.CardView>
                     </LinearLayout>
@@ -160,13 +210,23 @@
                             app:cardBackgroundColor="#f3b163"
                             app:cardCornerRadius="5dp">
 
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/e_librarty_icon"
+                                />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="E-Library"
+                                android:text="E-LIBRARY"
+                                android:textStyle="bold"
+                                android:layout_marginTop="15dp"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textSize="12sp" />
 
                         </android.support.v7.widget.CardView>
                     </LinearLayout>
@@ -210,11 +270,24 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerview_home"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    ></android.support.v7.widget.RecyclerView>
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentTop="true" />
+
+                <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="bottom"
+                    android:padding="10dip"
+                    app:centered="true"
+                    app:fillColor="#000"
+                    app:pageColor="#FFF"
+                    app:snap="false" />
 
             </LinearLayout>
 
@@ -228,7 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="22dp"
-                    android:text="DEVOTION"
+                    android:text="Devotion"
                     android:textColor="#188d90"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -261,16 +334,16 @@
                 app:cardElevation="5dp">
 
                 <ImageView
+                    android:scaleType="fitXY"
                     android:id="@+id/image_devotion"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/acb_demo" />
+                    android:layout_height="170dp"
+                    android:layout_margin="8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="120dp"
+                    android:layout_marginTop="190dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -283,11 +356,11 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/bhakti_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/description" />
+                        android:layout_marginTop="10dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </RelativeLayout>
