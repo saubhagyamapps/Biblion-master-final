@@ -49,9 +49,9 @@ public class LeaderBoardFragment extends Fragment {
     private void setUpViewPager(ViewPager viewPager)
     {
         ViewPagerAdapter  viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(new CountryFragment(), "FRIENDS");
+        viewPagerAdapter.addFragment(new FriendsFragment(), "FRIENDS");
         viewPagerAdapter.addFragment(new CountryFragment(), "COUNTRY");
-        viewPagerAdapter.addFragment(new CountryFragment(), "GLOBAL");
+        viewPagerAdapter.addFragment(new GlobalFragment(), "GLOBAL");
 
         viewPager.setAdapter(viewPagerAdapter);
     }
