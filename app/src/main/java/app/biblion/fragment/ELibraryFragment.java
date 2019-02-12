@@ -6,17 +6,23 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import java.util.List;
 
 import app.biblion.R;
 import app.biblion.adpater.MyLibraryBookAdepter;
+import app.biblion.adpater.MyLibraryBookTopDownloadAdepter;
+import app.biblion.adpater.util.PaginationScrollListenerGridlaout;
 import app.biblion.adpater.util.PaginationScrollListenerLinear;
 import app.biblion.interfacea.BookClick;
 import app.biblion.model.MyLibraryBookModel;
@@ -31,14 +37,24 @@ public class ELibraryFragment extends Fragment {
     View mView;
     Context context;
     MyLibraryBookAdepter myLibraryAdapter;
+    MyLibraryBookTopDownloadAdepter myLibraryBookTopDownloadAdepter;
     RecyclerView recyclerView_article;
     RecyclerView recycleviewTopDownload;
 
-    private boolean isLoading = false;
-    private boolean isLastPage = false;
-    private static final int PAGE_START = 1;
-    private int currentPage = PAGE_START;
-    private int TOTAL_PAGES = 2;
+    private boolean isLoadingMyLibary = false;
+    private boolean isLastPageMylibrary = false;
+    private static final int PAGE_START_MY_LIBRARY = 1;
+    private int currentPageMYLiabray = PAGE_START_MY_LIBRARY;
+    private int TOTAL_PAGES_MyLibary = 2;
+
+    private boolean isLoadingTopDownloadBook = false;
+    private boolean isLastPageTopDownloadBook = false;
+    private static final int PAGE_START_TopDownloadBook = 1;
+    private int currentPageTopDownloadBook = PAGE_START_TopDownloadBook;
+    private int TOTAL_PAGES_TopDownloadBook = 2;
+    EditText etSerachView;
+    LinearLayout serachView_layout;
+    boolean Flag = true;
 
     @Nullable
     @Override
@@ -51,6 +67,9 @@ public class ELibraryFragment extends Fragment {
 
     public void init() {
         recyclerView_article = mView.findViewById(R.id.recyclerviewMyLibrary);
+        etSerachView = mView.findViewById(R.id.etSerachView);
+        serachView_layout = mView.findViewById(R.id.serachView_layout);
+        serrchButtonClick();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_article.setLayoutManager(layoutManager);
         myLibraryAdapter = new MyLibraryBookAdepter(getActivity(), new BookClick() {
@@ -60,80 +79,116 @@ public class ELibraryFragment extends Fragment {
             }
         });
         recyclerView_article.setAdapter(myLibraryAdapter);
-
-        recycleviewTopDownload = mView.findViewById(R.id.recycleviewTopDownload);
-        RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        recycleviewTopDownload.setLayoutManager(layoutManager1);
-        recycleviewTopDownload.setAdapter(myLibraryAdapter);
         recyclerView_article.addOnScrollListener(new PaginationScrollListenerLinear((LinearLayoutManager) layoutManager) {
             @Override
             protected void loadMoreItems() {
-                isLoading = true;
-                currentPage += 1;
+                isLoadingMyLibary = true;
+                currentPageMYLiabray += 1;
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadNextPage();
+                        loadNextPageMyLibrary();
                     }
                 }, 1000);
             }
 
             @Override
             public int getTotalPageCount() {
-                return TOTAL_PAGES;
+                return TOTAL_PAGES_MyLibary;
             }
 
             @Override
             public boolean isLastPage() {
-                return isLastPage;
+                return isLastPageMylibrary;
             }
 
             @Override
             public boolean isLoading() {
-                return isLoading;
+                return isLoadingMyLibary;
             }
         });
 
-        recycleviewTopDownload.addOnScrollListener(new PaginationScrollListenerLinear((LinearLayoutManager) layoutManager) {
+        recycleviewTopDownload = mView.findViewById(R.id.recycleviewTopDownload);
+        GridLayoutManager layoutManager1 = new GridLayoutManager(context, 2);
+        recycleviewTopDownload.setLayoutManager(layoutManager1);
+        myLibraryBookTopDownloadAdepter = new MyLibraryBookTopDownloadAdepter(getActivity(), new BookClick() {
+            @Override
+            public void bookClick() {
+                getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+            }
+        });
+        recycleviewTopDownload.setAdapter(myLibraryBookTopDownloadAdepter);
+
+
+        recycleviewTopDownload.addOnScrollListener(new PaginationScrollListenerGridlaout((GridLayoutManager) layoutManager1) {
             @Override
             protected void loadMoreItems() {
-                isLoading = true;
-                currentPage += 1;
+                isLoadingTopDownloadBook = true;
+                currentPageTopDownloadBook += 1;
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadNextPage();
+                        loadNextPageTopDowloadBook();
                     }
                 }, 1000);
             }
 
             @Override
             public int getTotalPageCount() {
-                return TOTAL_PAGES;
+                return TOTAL_PAGES_TopDownloadBook;
             }
 
             @Override
             public boolean isLastPage() {
-                return isLastPage;
+                return isLastPageTopDownloadBook;
             }
 
             @Override
             public boolean isLoading() {
-                return isLoading;
+                return isLoadingTopDownloadBook;
             }
         });
 
 
-
-        loadFirstPage();
+        loadFirstPageMyLibrary();
+        loadFirstPageTopDowloadBook();
     }
 
-    private void loadFirstPage() {
+    private void serrchButtonClick() {
+        etSerachView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (etSerachView.getRight() - etSerachView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        Log.e(TAG, "onTouch: ");
+                        if (Flag) {
+                            Flag = false;
+                            serachView_layout.setVisibility(View.VISIBLE);
+                        } else {
+                            Flag = true;
+                            serachView_layout.setVisibility(View.GONE);
+                        }
+
+
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void loadFirstPageMyLibrary() {
 
         Log.d(TAG, "loadFirstPage: ");
-        Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPage);
+        Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageMYLiabray);
         modelCall.enqueue(new Callback<MyLibraryBookModel>() {
             @Override
             public void onResponse(Call<MyLibraryBookModel> call, Response<MyLibraryBookModel> response) {
@@ -141,11 +196,12 @@ public class ELibraryFragment extends Fragment {
                 Constant.mImagesPath = "http://frozenkitchen.in/biblion/public/images/";
 
                 List<MyLibraryBookModel.ResultBean> results = response.body().getResult();
-                TOTAL_PAGES=response.body().getTotalPages();
+                TOTAL_PAGES_MyLibary = response.body().getTotalPages();
                 myLibraryAdapter.addAll(results);
 
-                if (currentPage <= TOTAL_PAGES) myLibraryAdapter.addLoadingFooter();
-                else isLastPage = true;
+                if (currentPageMYLiabray <= TOTAL_PAGES_MyLibary)
+                    myLibraryAdapter.addLoadingFooter();
+                else isLastPageMylibrary = true;
             }
 
             @Override
@@ -155,20 +211,71 @@ public class ELibraryFragment extends Fragment {
         });
     }
 
-    private void loadNextPage() {
-        Log.d(TAG, "loadNextPage: " + currentPage);
-        Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPage);
+    private void loadNextPageMyLibrary() {
+        Log.d(TAG, "loadNextPage: " + currentPageMYLiabray);
+        Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageMYLiabray);
         modelCall.enqueue(new Callback<MyLibraryBookModel>() {
             @Override
             public void onResponse(Call<MyLibraryBookModel> call, Response<MyLibraryBookModel> response) {
                 myLibraryAdapter.removeLoadingFooter();
-                isLoading = false;
+                isLoadingMyLibary = false;
 
                 List<MyLibraryBookModel.ResultBean> results = response.body().getResult();
                 myLibraryAdapter.addAll(results);
 
-                if (currentPage != TOTAL_PAGES) myLibraryAdapter.addLoadingFooter();
-                else isLastPage = true;
+                if (currentPageMYLiabray != TOTAL_PAGES_MyLibary)
+                    myLibraryAdapter.addLoadingFooter();
+                else isLastPageMylibrary = true;
+            }
+
+            @Override
+            public void onFailure(Call<MyLibraryBookModel> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void loadFirstPageTopDowloadBook() {
+
+        Log.d(TAG, "loadFirstPage: ");
+        Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageTopDownloadBook);
+        modelCall.enqueue(new Callback<MyLibraryBookModel>() {
+            @Override
+            public void onResponse(Call<MyLibraryBookModel> call, Response<MyLibraryBookModel> response) {
+                //Constant.mImagesPath=response.body().getPath();
+                Constant.mImagesPath = "http://frozenkitchen.in/biblion/public/images/";
+
+                List<MyLibraryBookModel.ResultBean> results = response.body().getResult();
+                TOTAL_PAGES_TopDownloadBook = response.body().getTotalPages();
+                myLibraryBookTopDownloadAdepter.addAll(results);
+
+                if (currentPageTopDownloadBook <= TOTAL_PAGES_TopDownloadBook)
+                    myLibraryBookTopDownloadAdepter.addLoadingFooter();
+                else isLastPageTopDownloadBook = true;
+            }
+
+            @Override
+            public void onFailure(Call<MyLibraryBookModel> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void loadNextPageTopDowloadBook() {
+        Log.d(TAG, "loadNextPage: " + currentPageMYLiabray);
+        Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageTopDownloadBook);
+        modelCall.enqueue(new Callback<MyLibraryBookModel>() {
+            @Override
+            public void onResponse(Call<MyLibraryBookModel> call, Response<MyLibraryBookModel> response) {
+                myLibraryBookTopDownloadAdepter.removeLoadingFooter();
+                isLoadingMyLibary = false;
+
+                List<MyLibraryBookModel.ResultBean> results = response.body().getResult();
+                myLibraryBookTopDownloadAdepter.addAll(results);
+
+                if (currentPageTopDownloadBook != TOTAL_PAGES_TopDownloadBook)
+                    myLibraryBookTopDownloadAdepter.addLoadingFooter();
+                else isLastPageTopDownloadBook = true;
             }
 
             @Override

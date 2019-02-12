@@ -57,10 +57,10 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Android\Downloads\download.png" />
-                                      <entry key="outputName" value="ic_download" />
+                                      <entry key="imageAsset" value="C:\Users\Android\Documents\Received Files\eLibrary-frt-with-Filter_filter.png" />
+                                      <entry key="outputName" value="ic_filter_logo" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="ffffff" />
+                                      <entry key="themeColor" value="239698" />
                                     </map>
                                   </option>
                                 </PersistentState>

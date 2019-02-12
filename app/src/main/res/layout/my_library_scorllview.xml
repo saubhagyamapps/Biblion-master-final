@@ -36,7 +36,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerviewMyLibrary"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="220dp"
             android:layout_below="@id/titleMyLiabary"
             android:layout_marginLeft="10dp" />
 
@@ -68,7 +68,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleviewTopDownload"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="220dp"
             android:layout_below="@id/titalTopDownload"
             android:layout_marginLeft="10dp" />
 

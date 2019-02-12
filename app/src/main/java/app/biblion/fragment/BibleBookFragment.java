@@ -48,7 +48,7 @@ public class BibleBookFragment extends Fragment implements OnHighlightListener, 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.bible_book_fragment, container, false);
-        getActivity().setTitle("Bible Book");
+        getActivity().setTitle("Bible");
         initialization();
 
         return mView;
