@@ -34,16 +34,18 @@
         android:layout_marginLeft="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginRight="50dp" />
-
-    <LinearLayout
+    <HorizontalScrollView
         android:id="@+id/lianerTital"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@id/serachView"
+        android:layout_below="@id/serachView">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:background="#333333"
         android:gravity="center"
-        android:weightSum="3">
-
+        android:weightSum="7"
+        >
         <Button
 
             android:layout_width="match_parent"
@@ -74,11 +76,56 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:background="@drawable/rounded"
-            android:text="Old Testament"
+            android:text="Theology"
             android:textAllCaps="false"
             android:textSize="12dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded"
+            android:text="Pastoral care and counseling"
+            android:textAllCaps="false"
+            android:textSize="12dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded"
+            android:text="Comunication"
+            android:textAllCaps="false"
+            android:textSize="12dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded"
+            android:text="Religion"
+            android:textAllCaps="false"
+            android:textSize="12dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded"
+            android:text="Other"
+            android:textAllCaps="false"
+            android:textSize="12dp" />
+
     </LinearLayout>
-
+    </HorizontalScrollView>
     <include
         layout="@layout/my_library_scorllview"
         android:layout_width="match_parent"
