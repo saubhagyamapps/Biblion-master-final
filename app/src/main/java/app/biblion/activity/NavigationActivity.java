@@ -74,9 +74,9 @@ public class NavigationActivity extends AppCompatActivity
         user = session.getUserDetails();
         spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
-        spaceNavigationView.addSpaceItem(new SpaceItem("Home", R.drawable.account));
-        spaceNavigationView.addSpaceItem(new SpaceItem("BookMark", R.drawable.account));
-        spaceNavigationView.addSpaceItem(new SpaceItem("My Library", R.drawable.account));
+        spaceNavigationView.addSpaceItem(new SpaceItem("Home", R.drawable.home));
+        spaceNavigationView.addSpaceItem(new SpaceItem("Quiz", R.drawable.quiz));
+        spaceNavigationView.addSpaceItem(new SpaceItem("E Library", R.mipmap.ebooks));
         spaceNavigationView.addSpaceItem(new SpaceItem("Account", R.drawable.account));
         spaceNavigationView.shouldShowFullBadgeText(false);
 

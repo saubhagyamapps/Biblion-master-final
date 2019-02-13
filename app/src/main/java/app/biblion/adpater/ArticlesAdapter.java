@@ -3,8 +3,6 @@ package app.biblion.adpater;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -13,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,7 +28,6 @@ import java.util.List;
 
 import app.biblion.R;
 import app.biblion.model.ArticalModel;
-import app.biblion.util.Constant;
 
 public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -64,6 +62,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         return viewHolder;
     }
+
     @NonNull
     private RecyclerView.ViewHolder getViewHolder(ViewGroup parent, LayoutInflater inflater) {
         RecyclerView.ViewHolder viewHolder;
@@ -71,6 +70,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         viewHolder = new MovieVH(v1);
         return viewHolder;
     }
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -83,20 +83,26 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 movieVH.txt_Desc_Art.setText(dataBean.get(i).getDescription());
                /* Bitmap myImage = getBitmapFromURL(Constant.mImagesPath + dataBean.get(i).getImage());
                 Drawable dr = new BitmapDrawable(myImage);*/
-                Glide.with(mContext).load(Constant.mImagesPath + dataBean.get(i).getImage())
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(movieVH.imageView);
-              //  movieVH.imageView.setBackgroundDrawable(dr);
+                String ImagesPath = dataBean.get(i).getImage();
+                if (ImagesPath != null && !ImagesPath.isEmpty() && !ImagesPath.equals("null")) {
+                    movieVH.imagesViewArticle.setVisibility(View.VISIBLE);
+                    Glide.with(mContext).load("http://frozenkitchen.in/biblion_demo/public/images/" + dataBean.get(i).getImage())
+                            .thumbnail(0.5f)
+                            .crossFade()
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(movieVH.imageView);
+                } else {
+                    movieVH.imagesViewArticle.setVisibility(View.GONE);
+                }
+
+                //  movieVH.imageView.setBackgroundDrawable(dr);
 
             case LOADING:
                 break;
         }
 
     }
-
 
 
     @Override
@@ -121,6 +127,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             add(result);
         }
     }
+
     public void addLoadingFooter() {
         isLoadingAdded = true;
         add(new ArticalModel.ResultBean());
@@ -147,6 +154,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         CardView card_Article;
         TextView txt_heading_Art, txt_Title_Art, txt_Desc_Art;
         ImageView imageView;
+        LinearLayout imagesViewArticle;
 
         public MovieVH(@NonNull View itemView) {
             super(itemView);
@@ -156,6 +164,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_Title_Art = itemView.findViewById(R.id.txt_title_art);
             txt_Desc_Art = itemView.findViewById(R.id.txt_desc_art);
             imageView = itemView.findViewById(R.id.imageView);
+            imagesViewArticle = itemView.findViewById(R.id.imagesViewArticle);
 
         }
     }
@@ -166,6 +175,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
         }
     }
+
     private Bitmap getBitmapFromURL(String s) {
         try {
             URL url = new URL(s);

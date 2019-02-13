@@ -15,6 +15,7 @@
         android:weightSum="2">
 
         <LinearLayout
+            android:id="@+id/imagesViewArticle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
@@ -77,9 +78,11 @@
                 android:text="Testing"
                 android:id="@+id/txt_desc_art"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:layout_marginRight="15dp"
                 android:textSize="10dp" />
 
@@ -90,7 +93,7 @@
                 android:layout_height="20dp"
                 android:text="CONTINUE READING"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:textSize="15dp" />
 

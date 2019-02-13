@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,12 +162,16 @@ public class HomeBookFragment extends Fragment {
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(devotion_image);
-                txt_BhaktiDesc.setText(txtDesc);
+                String strinHtml=txtDesc.replace("&nbsp;"," ");
+                Log.e(TAG, "onResponse: "+strinHtml );
+                txt_BhaktiDesc.setText(Html.fromHtml("<![CDATA["+strinHtml+"]]>"));
+            //    txt_BhaktiDesc.setText(Html.fromHtml(getString(R.string.nice_html)));
+
             }
 
             @Override
             public void onFailure(Call<DevotionModel> call, Throwable t) {
-
+                Log.e(TAG, "onFailure: "+t.getMessage() );
             }
         });
 

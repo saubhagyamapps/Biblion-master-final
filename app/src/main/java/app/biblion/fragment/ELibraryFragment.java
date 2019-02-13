@@ -110,7 +110,7 @@ public class ELibraryFragment extends Fragment {
         });
 
         recycleviewTopDownload = mView.findViewById(R.id.recycleviewTopDownload);
-        GridLayoutManager layoutManager1 = new GridLayoutManager(context, 2);
+        GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
         recycleviewTopDownload.setLayoutManager(layoutManager1);
         myLibraryBookTopDownloadAdepter = new MyLibraryBookTopDownloadAdepter(getActivity(), new BookClick() {
             @Override
