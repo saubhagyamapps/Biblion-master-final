@@ -72,34 +72,31 @@ public class HomeBookFragment extends Fragment {
     private void getImagedata() {
 
         Log.d(TAG, "LoadImage:");
-       Call<HomeModel> modelcall = Constant.apiService.getHomeList();
-       modelcall.enqueue(new Callback<HomeModel>() {
-           @Override
-           public void onResponse(Call<HomeModel> call, Response<HomeModel> response) {
+        Call<HomeModel> modelcall = Constant.apiService.getHomeList();
+        modelcall.enqueue(new Callback<HomeModel>() {
+            @Override
+            public void onResponse(Call<HomeModel> call, Response<HomeModel> response) {
 
-               //Constant.mImagesPath = response.body().getPath();
-               List<HomeModel.ResultBean> resultBeans = response.body().getResult();
+                //Constant.mImagesPath = response.body().getPath();
+                List<HomeModel.ResultBean> resultBeans = response.body().getResult();
 
-               viewPager.setAdapter(new SlidingImage_Adapter(getActivity(), response.body().getResult()));
+                viewPager.setAdapter(new SlidingImage_Adapter(getActivity(), response.body().getResult()));
 
-               indicator = (CirclePageIndicator) mView.findViewById(R.id.indicator);
+                indicator = (CirclePageIndicator) mView.findViewById(R.id.indicator);
 
-               indicator.setViewPager(viewPager);
-
-               /*final float density = getResources().getDisplayMetrics().density;
-
-               indicator.setRadius(5 * density);*/
-
-               handlerCall(response.body().getResult().size());
+                indicator.setViewPager(viewPager);
 
 
-           }
+                handlerCall(response.body().getResult().size());
 
-           @Override
-           public void onFailure(Call<HomeModel> call, Throwable t) {
 
-           }
-       });
+            }
+
+            @Override
+            public void onFailure(Call<HomeModel> call, Throwable t) {
+
+            }
+        });
 
 
     }
@@ -144,8 +141,7 @@ public class HomeBookFragment extends Fragment {
         });
     }
 
-    private void LoadBhaktidata()
-    {
+    private void LoadBhaktidata() {
 
         Log.d(TAG, "LoadImage:");
         Call<DevotionModel> modelCall = Constant.apiService.getDevotiondata();
@@ -153,10 +149,10 @@ public class HomeBookFragment extends Fragment {
         modelCall.enqueue(new Callback<DevotionModel>() {
             @Override
             public void onResponse(Call<DevotionModel> call, Response<DevotionModel> response) {
-                    int i = 0;
+
 
                 String txtDesc = response.body().getDescription();
-                Glide.with(getActivity()).load("http://frozenkitchen.in/biblion_demo/public/images/" +response.body().getImage())
+                Glide.with(getActivity()).load("http://frozenkitchen.in/biblion_demo/public/images/" + response.body().getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
