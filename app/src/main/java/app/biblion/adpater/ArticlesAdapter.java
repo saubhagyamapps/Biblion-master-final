@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.biblion.R;
+import app.biblion.interfacea.BookClick;
 import app.biblion.model.ArticalModel;
 
 public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -37,10 +38,11 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int LOADING = 1;
     private List<ArticalModel.ResultBean> dataBean;
     private boolean isLoadingAdded = false;
-
-    public ArticlesAdapter(Context mContext) {
+    BookClick bookClick;
+    public ArticlesAdapter(Context mContext,BookClick bookClick) {
         this.mContext = mContext;
         dataBean = new ArrayList<>();
+        this.bookClick=bookClick;
 
     }
 
@@ -72,7 +74,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int i) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         switch (getItemViewType(i)) {
@@ -95,7 +97,12 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 } else {
                     movieVH.imagesViewArticle.setVisibility(View.GONE);
                 }
-
+                movieVH.txt_Continue_reading.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                                bookClick.bookClick(dataBean.get(i).getId());
+                    }
+                });
                 //  movieVH.imageView.setBackgroundDrawable(dr);
 
             case LOADING:
@@ -152,7 +159,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public class MovieVH extends RecyclerView.ViewHolder {
 
         CardView card_Article;
-        TextView txt_heading_Art, txt_Title_Art, txt_Desc_Art;
+        TextView txt_heading_Art, txt_Title_Art, txt_Desc_Art, txt_Continue_reading;
         ImageView imageView;
         LinearLayout imagesViewArticle;
 
@@ -165,6 +172,9 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             txt_Desc_Art = itemView.findViewById(R.id.txt_desc_art);
             imageView = itemView.findViewById(R.id.imageView);
             imagesViewArticle = itemView.findViewById(R.id.imagesViewArticle);
+
+            txt_Continue_reading =itemView.findViewById(R.id.txt_continue_read);
+
 
         }
     }
