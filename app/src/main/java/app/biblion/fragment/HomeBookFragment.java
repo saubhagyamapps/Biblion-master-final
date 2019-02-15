@@ -1,14 +1,21 @@
 package app.biblion.fragment;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +27,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,7 +49,7 @@ public class HomeBookFragment extends Fragment {
     View mView;
     Context context;
     ImageView devotion_image;
-    TextView txt_BhaktiDesc;
+    TextView txt_BhaktiDesc, txtDevotion;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private static final int PAGE_START = 1;
@@ -49,6 +59,10 @@ public class HomeBookFragment extends Fragment {
     private List<HomeModel.ResultBean> dataBeanlist;
     private static ViewPager viewPager;
     CirclePageIndicator indicator;
+    FloatingActionButton fabShare;
+    Uri uri;
+    Bitmap bitmap;
+    Spanned dicription;
 
     @Nullable
     @Override
@@ -64,9 +78,58 @@ public class HomeBookFragment extends Fragment {
         viewPager = mView.findViewById(R.id.pager);
         devotion_image = mView.findViewById(R.id.image_devotion);
         txt_BhaktiDesc = mView.findViewById(R.id.bhakti_txt);
-
+        fabShare = mView.findViewById(R.id.fabShare);
+        txtDevotion = mView.findViewById(R.id.txtDevotion);
         getImagedata();
         LoadBhaktidata();
+        fabShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
+
+                takeScreenshot();
+            }
+        });
+    }
+
+    private void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            View v1 = getActivity().getWindow().getDecorView().findViewById(R.id.image_devotion);
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            openScreenshot(imageFile);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openScreenshot(File imageFile) {
+
+        Uri uri = Uri.fromFile(imageFile);
+        String textToShare = "Keshu odedara";
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_TEXT, String.valueOf(dicription));
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(share, "Share with"));
     }
 
     private void getImagedata() {
@@ -80,15 +143,18 @@ public class HomeBookFragment extends Fragment {
                 //Constant.mImagesPath = response.body().getPath();
                 List<HomeModel.ResultBean> resultBeans = response.body().getResult();
 
-                viewPager.setAdapter(new SlidingImage_Adapter(getActivity(), response.body().getResult()));
+                if (getActivity() != null) {
+                    if (resultBeans.size() != 0) {
+                        viewPager.setAdapter(new SlidingImage_Adapter(getActivity(), response.body().getResult()));
 
-                indicator = (CirclePageIndicator) mView.findViewById(R.id.indicator);
+                        indicator = (CirclePageIndicator) mView.findViewById(R.id.indicator);
 
-                indicator.setViewPager(viewPager);
+                        indicator.setViewPager(viewPager);
 
 
-                handlerCall(response.body().getResult().size());
-
+                        handlerCall(response.body().getResult().size());
+                    }
+                }
 
             }
 
@@ -151,23 +217,26 @@ public class HomeBookFragment extends Fragment {
             public void onResponse(Call<DevotionModel> call, Response<DevotionModel> response) {
 
 
-                String txtDesc = response.body().getDescription();
-                Glide.with(getActivity()).load("http://frozenkitchen.in/biblion_demo/public/images/" + response.body().getImage())
+                String txtDesc = response.body().getDescription().replace("&lt;", "<").replace("&gt;", ">")
+                        .replace("\\r\\n\\r\\n", "");
+
+                Glide.with(getActivity()).load(response.body().getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(devotion_image);
-                String strinHtml=txtDesc.replace("&nbsp;"," ");
-                Log.e(TAG, "onResponse: "+strinHtml );
-                txt_BhaktiDesc.setText(Html.fromHtml("<![CDATA["+strinHtml+"]]>"));
-            //    txt_BhaktiDesc.setText(Html.fromHtml(getString(R.string.nice_html)));
+                String strinHtml = txtDesc.replace("&amp;nbsp;", "  ");
+                dicription = (Html.fromHtml(strinHtml));
+                txt_BhaktiDesc.setText(dicription);
+
 
             }
 
             @Override
             public void onFailure(Call<DevotionModel> call, Throwable t) {
-                Log.e(TAG, "onFailure: "+t.getMessage() );
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                txt_BhaktiDesc.setText(Html.fromHtml(getString(R.string.nice_html)));
             }
         });
 

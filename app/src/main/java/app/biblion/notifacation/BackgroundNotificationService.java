@@ -42,12 +42,13 @@ public class BackgroundNotificationService extends IntentService {
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     File outputFile;
-
+String mBookId;
     @Override
     protected void onHandleIntent(Intent intent) {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+        mBookId=intent.getStringExtra("id");
+        Log.e(TAG, "onHandleIntent: "+mBookId );
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel("id", "an", NotificationManager.IMPORTANCE_LOW);
 
@@ -78,8 +79,8 @@ public class BackgroundNotificationService extends IntentService {
 
     private void initRetrofit() {
 
-
-        Call<ResponseBody> request = Constant.apiService.downloadImage("downloadbook/1");
+        String url="downloadbooks/"+mBookId;
+        Call<ResponseBody> request = Constant.apiService.downloadImage(url);
         try {
 
             downloadImage(request.execute().body());
@@ -94,7 +95,7 @@ public class BackgroundNotificationService extends IntentService {
     private void downloadImage(ResponseBody body) throws IOException {
 
         int count;
-        Log.e(TAG, "downloadImage: " + body.toString());
+//        Log.e(TAG, "downloadImage: " + body.toString());
         byte data[] = new byte[1024 * 4];
         long fileSize = body.contentLength();
         InputStream inputStream = new BufferedInputStream(body.byteStream(), 1024 * 8);

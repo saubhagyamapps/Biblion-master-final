@@ -116,6 +116,6 @@ public interface ApiInterface {
     @POST("allsonglist")
     Call<AllSongListModel> getSongList(@Field("page") int page);
 
-    @GET("uploadimg")
+    @GET("uploading")
     Call<DevotionModel> getDevotiondata();
 }

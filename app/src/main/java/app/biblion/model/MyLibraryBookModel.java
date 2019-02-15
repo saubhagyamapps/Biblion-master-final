@@ -57,16 +57,16 @@ public class MyLibraryBookModel {
          * description : dslkjdldfs sldkjhdskj khkjs kdjshkiku ikk  kjghhkj hkjg gk jkj   k
          */
 
-        private int id;
+        private String id;
         private String image;
         private String bookname;
         private String description;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

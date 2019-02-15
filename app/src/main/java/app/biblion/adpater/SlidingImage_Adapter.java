@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import app.biblion.R;
 import app.biblion.model.HomeModel;
-import app.biblion.util.Constant;
 
 
 public class SlidingImage_Adapter extends PagerAdapter {
@@ -29,9 +26,9 @@ public class SlidingImage_Adapter extends PagerAdapter {
 
 
     public SlidingImage_Adapter(Context context, List<HomeModel.ResultBean> IMAGES) {
+        this.IMAGES = IMAGES;
+        this.inflater = LayoutInflater.from(context);
         this.context = context;
-        this.IMAGES=IMAGES;
-        inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -49,9 +46,9 @@ public class SlidingImage_Adapter extends PagerAdapter {
         View imageLayout = inflater.inflate(R.layout.home_card_list, view, false);
         assert imageLayout != null;
         final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.home_image);
-    //    imageView.setImageResource(IMAGES.get(position).getImage());
+        //    imageView.setImageResource(IMAGES.get(position).getImage());
 
-        Glide.with(context).load("http://frozenkitchen.in/biblion_demo/public/images/" +IMAGES.get(position).getImage())
+        Glide.with(context).load("http://frozenkitchen.in/biblion_demo/public/images/" + IMAGES.get(position).getImage())
                 .thumbnail(0.5f)
                 .crossFade()
                 .skipMemoryCache(true)

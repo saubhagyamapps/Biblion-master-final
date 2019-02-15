@@ -75,7 +75,7 @@ public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.View
         return viewHolder;
     }
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int i) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         switch (getItemViewType(i)) {
@@ -83,7 +83,7 @@ public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.View
                 final MovieVH movieVH = (MovieVH) holder;
                 movieVH.txtBookName.setText(dataBean.get(i).getBookname());
                 Log.e(TAG, "onBindViewHolder: "+dataBean.get(i).getBookname() );
-                Glide.with(mContext).load(Constant.mImagesPath + dataBean.get(i).getImage())
+                Glide.with(mContext).load("http://frozenkitchen.in/biblion_demo/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
                         .skipMemoryCache(true)
@@ -93,7 +93,7 @@ public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.View
                 movieVH.imageViewBook.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bookClick.bookClick();
+                        bookClick.bookClick(dataBean.get(i).getId());
                     }
                 });
             case LOADING:

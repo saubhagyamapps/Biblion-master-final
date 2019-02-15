@@ -32,18 +32,23 @@ public class DetailELibraryFragment extends Fragment {
     TextView txtDescription;
     Button btnBookDownload;
     public static final String PROGRESS_UPDATE = "progress_update";
-
+    String mBookId;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_detail_elibrary, container, false);
+        Bundle args = getArguments();
+
+         mBookId = args.getString("id");
+
+        Log.e(TAG, "onCreateView: " + mBookId);
         initialization();
 
         return mView;
     }
 
     private void initialization() {
-        btnBookDownload=mView.findViewById(R.id.btnBookDownload);
+        btnBookDownload = mView.findViewById(R.id.btnBookDownload);
         txtDescription = mView.findViewById(R.id.txtDescription);
         bookRatingBar = mView.findViewById(R.id.book_rating);
         bookRatingBar.setRating((float) 2.5);
@@ -65,7 +70,6 @@ public class DetailELibraryFragment extends Fragment {
             }
         });
     }
-
 
 
     private void registerReceiver() {
@@ -100,9 +104,8 @@ public class DetailELibraryFragment extends Fragment {
     };
 
     private void startImageDownload() {
-
-
         Intent intent = new Intent(getActivity(), BackgroundNotificationService.class);
+        intent.putExtra("id",mBookId);
         getActivity().startService(intent);
 
     }
