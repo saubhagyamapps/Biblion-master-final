@@ -19,7 +19,9 @@ import java.util.List;
 
 import app.biblion.R;
 import app.biblion.adpater.ArticlesAdapter;
+import app.biblion.adpater.MyLibraryBookAdepter;
 import app.biblion.adpater.util.PaginationScrollListenerLinear;
+import app.biblion.interfacea.BookClick;
 import app.biblion.model.ArticalModel;
 import app.biblion.util.Constant;
 import retrofit2.Call;
@@ -54,7 +56,19 @@ public class ArticlesFragment extends Fragment {
         recyclerView_article = mView.findViewById(R.id.recycle_article);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
         recyclerView_article.setLayoutManager(layoutManager);
-        articlesAdapter = new ArticlesAdapter(getActivity());
+        articlesAdapter = new ArticlesAdapter(getActivity(), new BookClick() {
+            @Override
+            public void bookClick(String id) {
+
+                ArticleClickFragment articleClickFragment = new ArticleClickFragment();
+                Bundle args = new Bundle();
+                args.putString("id", id);
+                articleClickFragment .setArguments(args);
+                getFragmentManager().beginTransaction().addToBackStack(null)
+                        .replace(R.id.contant_frame,articleClickFragment).commit();
+            }
+        });
+
         recyclerView_article.setAdapter(articlesAdapter);
         recyclerView_article.addOnScrollListener(new PaginationScrollListenerLinear((LinearLayoutManager) layoutManager) {
             @Override
