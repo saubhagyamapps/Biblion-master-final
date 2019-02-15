@@ -35,43 +35,47 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:paddingBottom="5dp"
                 android:weightSum="3">
 
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/search_botton"
-                    android:elevation="10dp"
+                    android:background="@drawable/shadow_effect_button"
+                    android:gravity="center"
                     android:text="Title"
+                    android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#c9c9c9" />
 
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/search_botton"
-                    android:elevation="10dp"
-                    android:text="Publisher"
+                    android:background="@drawable/shadow_effect_button"
+                    android:gravity="center"
+                    android:text="Title"
+                    android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#c9c9c9" />
 
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/search_botton"
-                    android:elevation="10dp"
-                    android:text="Year"
+                    android:background="@drawable/shadow_effect_button"
+                    android:gravity="center"
+                    android:text="YEAR"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
                     android:textColor="#c9c9c9" />
 
             </LinearLayout>
@@ -84,39 +88,39 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/search_botton"
-                    android:elevation="10dp"
+                    android:background="@drawable/shadow_effect_button"
+                    android:gravity="center"
                     android:text="Author"
+                    android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#c9c9c9" />
 
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/search_botton"
-                    android:elevation="10dp"
+                    android:background="@drawable/shadow_effect_button"
+                    android:gravity="center"
                     android:text="Language"
+                    android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#c9c9c9" />
 
-                <Button
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/search_botton"
-                    android:elevation="10dp"
+                    android:background="@drawable/shadow_effect_button"
+                    android:gravity="center"
                     android:text="APPLY"
+                    android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#c9c9c9" />
 

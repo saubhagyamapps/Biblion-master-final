@@ -3,20 +3,12 @@ package app.biblion.model;
 public class DevotionModel {
 
     /**
-     * image : Chrysanthemum.jpg
-     * description : test new5
+     * description : <p>fasdgjaf&nbsp;fhasjas dfashg&nbsp;<strong> hfgjdsafdasfg dhsasjf</strong></p>\r\n\r\n<p><strong>afsdjh</strong>&nbsp;gfhagfhsgfas&nbsp;<em>hfadskfhakfhaskf&nbsp;</em></p>\r\n\r\n<p>daskjfhkaf</p>\r\n\r\n<p>dfjakfh</p>\r\n\r\n<p>&nbsp;</p>
+     * image : http://frozenkitchen.in/biblion_demo/public/images/Koala.jpg
      */
 
-    private String image;
     private String description;
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+    private String image;
 
     public String getDescription() {
         return description;
@@ -24,5 +16,13 @@ public class DevotionModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

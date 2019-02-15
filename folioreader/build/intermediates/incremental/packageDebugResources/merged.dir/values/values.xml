@@ -87,6 +87,7 @@
     <string name="htmlBodyTableOpen">&lt;html>&lt;body>&lt;table></string>
     <string name="html_mime_type" translatable="false">text/html</string>
     <string name="languageMeta">&lt;tr>&lt;td>Language:&lt;/td>&lt;td></string>
+    <string name="languages">Languagedsas</string>
     <string name="lato">Lato</string>
     <string name="lato_font">fonts/lato/Lato-Regular.ttf</string>
     <string name="less_than_minute">Less than a minute · </string>
@@ -185,7 +186,7 @@
         <item name="android:windowExitAnimation">@anim/shrink_from_topleft_to_bottomright</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -224,7 +225,7 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/app_green</item>
-        <!-- For ripple color -->
+        
         <item name="colorControlHighlight">#666666</item>
         <item name="actionBarStyle">@style/FolioActivityNightTheme.ActionBarStyle</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
@@ -265,7 +266,7 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/app_green</item>
-        <!-- For ripple color -->
+        
         <item name="colorControlHighlight">#666666</item>
         <item name="actionBarStyle">@style/ActionBarNightStyle</item>
         <item name="android:windowBackground">@color/webview_night</item>
@@ -318,8 +319,7 @@
     </style>
     <declare-styleable name="DirectionalViewpager">
         <attr format="string" name="direction">
-            <!-- <enum name="vertical" value="vertical"></enum>
-             <enum name="horizontal" value="horizontal"></enum>-->
+            
         </attr>
     </declare-styleable>
     <declare-styleable name="LoadingView">

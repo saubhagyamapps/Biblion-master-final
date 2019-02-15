@@ -1634,6 +1634,7 @@ string highlights
 string htmlBodyTableOpen
 string html_mime_type
 string languageMeta
+string languages
 string lato
 string lato_font
 string less_than_minute

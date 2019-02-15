@@ -74,8 +74,15 @@ public class ELibraryFragment extends Fragment {
         recyclerView_article.setLayoutManager(layoutManager);
         myLibraryAdapter = new MyLibraryBookAdepter(getActivity(), new BookClick() {
             @Override
-            public void bookClick() {
-                getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+            public void bookClick(String id) {
+               // getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+                DetailELibraryFragment fragmentB = new DetailELibraryFragment ();
+                Bundle args = new Bundle();
+                args.putString("id", id);
+                fragmentB .setArguments(args);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.contant_frame, fragmentB )
+                        .commit();
             }
         });
         recyclerView_article.setAdapter(myLibraryAdapter);
@@ -114,8 +121,16 @@ public class ELibraryFragment extends Fragment {
         recycleviewTopDownload.setLayoutManager(layoutManager1);
         myLibraryBookTopDownloadAdepter = new MyLibraryBookTopDownloadAdepter(getActivity(), new BookClick() {
             @Override
-            public void bookClick() {
-                getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+            public void bookClick(String id) {
+             //   getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+
+                DetailELibraryFragment fragmentB = new DetailELibraryFragment ();
+                Bundle args = new Bundle();
+                args.putString("id", id);
+                fragmentB .setArguments(args);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.contant_frame, fragmentB )
+                        .commit();
             }
         });
         recycleviewTopDownload.setAdapter(myLibraryBookTopDownloadAdepter);

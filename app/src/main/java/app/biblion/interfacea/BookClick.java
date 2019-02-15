@@ -2,5 +2,5 @@ package app.biblion.interfacea;
 
 public interface BookClick {
 
-    public void bookClick();
+    public void bookClick(String id);
 }

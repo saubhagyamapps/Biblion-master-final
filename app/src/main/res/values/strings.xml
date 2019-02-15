@@ -56,10 +56,5 @@ five star Goodreads ratings and all that</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="back" translatable="false"><u>Back to login</u></string>
 
-    <string name="nice_html">
-<![CDATA[
-<p>This is a html-formatted string with <strong>bold</strong> and <em>italic</em> text</p>
-<p>This is another paragraph of the same string.</p>
-]]>
-</string>
+    <string name="nice_html"><![CDATA[<h1>This is</h1>]]></string>
 </resources>
