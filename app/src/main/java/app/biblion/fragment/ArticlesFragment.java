@@ -103,7 +103,7 @@ public class ArticlesFragment extends Fragment {
     }
 
     private void loadFirstPage() {
-
+            Constant.progressDialog(getActivity());
         Log.d(TAG, "loadFirstPage: ");
         Call<ArticalModel> modelCall = Constant.apiService.getArticalList(currentPage);
         modelCall.enqueue(new Callback<ArticalModel>() {
@@ -116,10 +116,12 @@ public class ArticlesFragment extends Fragment {
 
                 if (currentPage <= TOTAL_PAGES) articlesAdapter.addLoadingFooter();
                 else isLastPage = true;
+                Constant.progressBar.dismiss();
             }
 
             @Override
             public void onFailure(Call<ArticalModel> call, Throwable t) {
+                Constant.progressBar.dismiss();
                 t.printStackTrace();
             }
         });

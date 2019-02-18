@@ -106,7 +106,6 @@ public class HomeBookFragment extends Fragment {
         clicked();
         fabShare = mView.findViewById(R.id.fabShare);
         txtDevotion = mView.findViewById(R.id.txtDevotion);
-        txt_BhaktiDesc.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         getImagedata();
         LoadBhaktidata();
         fabShare.setOnClickListener(new View.OnClickListener() {
