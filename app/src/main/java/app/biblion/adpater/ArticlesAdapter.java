@@ -103,7 +103,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                                 bookClick.bookClick(dataBean.get(i).getId());
                     }
                 });
-                //  movieVH.imageView.setBackgroundDrawable(dr);
 
             case LOADING:
                 break;

@@ -51,6 +51,8 @@
             android:orientation="vertical">
 
             <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Testing"
                 android:textColor="@color/colorPrimaryDark"
                 android:id="@+id/txt_heading_art"
@@ -63,6 +65,8 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="Testing"
                 android:textColor="#0f8a8c"
                 android:id="@+id/txt_title_art"
