@@ -4,6 +4,7 @@ package app.biblion.retrofit;
 import app.biblion.model.AllSongListModel;
 import app.biblion.model.ArticalDetailsModel;
 import app.biblion.model.ArticalModel;
+import app.biblion.model.ArticleDetailModel;
 import app.biblion.model.DevotionModel;
 import app.biblion.model.EditProfileModel;
 import app.biblion.model.HomeModel;
@@ -123,4 +124,8 @@ public interface ApiInterface {
 
     @GET("uploading")
     Call<DevotionModel> getDevotiondata();
+
+    @FormUrlEncoded
+    @POST("getarticals")
+    Call<ArticleDetailModel> getArticledetails(@Field("id") String id);
 }

@@ -15,9 +15,13 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.Layout;
+import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +29,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bluejamesbond.text.DocumentView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import com.viewpagerindicator.CirclePageIndicator;
 
 import java.io.File;
@@ -41,6 +47,7 @@ import app.biblion.adpater.SlidingImage_Adapter;
 import app.biblion.model.DevotionModel;
 import app.biblion.model.HomeModel;
 import app.biblion.util.Constant;
+import me.biubiubiu.justifytext.library.JustifyTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +60,7 @@ public class HomeBookFragment extends Fragment {
     View mView;
     Context context;
     ImageView devotion_image;
-    TextView txt_BhaktiDesc, txtDevotion;
+    TextView txt_BhaktiDesc, txtDevotion, titleDevotion;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private static final int PAGE_START = 1;
@@ -68,7 +75,12 @@ public class HomeBookFragment extends Fragment {
     Bitmap bitmap;
     Spanned dicription;
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
+    CardView Card_Bible, Card_Quiz, Card_SongBook, Card_Article,Card_E_Library;
+    JustifyTextView justifyTextView;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,7 +94,16 @@ public class HomeBookFragment extends Fragment {
 
         viewPager = mView.findViewById(R.id.pager);
         devotion_image = mView.findViewById(R.id.image_devotion);
-        txt_BhaktiDesc = mView.findViewById(R.id.bhakti_txt);
+       // txt_BhaktiDesc = mView.findViewById(R.id.bhakti_txt);
+        titleDevotion = mView.findViewById(R.id.devotion_title);
+        justifyTextView = mView.findViewById(R.id.bhakti_txt);
+
+        Card_Bible = mView.findViewById(R.id.home_card_bible);
+        Card_Quiz = mView.findViewById(R.id.home_card_quiz);
+        Card_SongBook = mView.findViewById(R.id.home_card_songbook);
+        Card_Article = mView.findViewById(R.id.home_card_article);
+        Card_E_Library = mView.findViewById(R.id.home_card_e_library);
+        clicked();
         fabShare = mView.findViewById(R.id.fabShare);
         txtDevotion = mView.findViewById(R.id.txtDevotion);
         txt_BhaktiDesc.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
@@ -98,6 +119,64 @@ public class HomeBookFragment extends Fragment {
             }
         });
     }
+
+    private void clicked()
+    {
+        Card_Bible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                BibleBookFragment bibleBookFragment = new BibleBookFragment();
+                getFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.contant_frame,bibleBookFragment)
+                        .commit();
+            }
+        });
+        Card_Quiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QuizFragment quizFragment = new QuizFragment();
+                getFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.contant_frame,quizFragment)
+                        .commit();
+            }
+        });
+
+        Card_SongBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SongBookFragment songBookFragment =new SongBookFragment();
+                getFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.contant_frame,songBookFragment)
+                        .commit();
+            }
+        });
+
+        Card_Article.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArticlesFragment articlesFragment = new ArticlesFragment();
+                getFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.contant_frame,articlesFragment)
+                        .commit();
+            }
+        });
+        Card_E_Library.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ELibraryFragment eLibraryFragment = new ELibraryFragment();
+                getFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.contant_frame,eLibraryFragment)
+                        .commit();
+            }
+        });
+    }
+
 
     private void takeScreenshot() {
         Date now = new Date();
@@ -234,7 +313,16 @@ public class HomeBookFragment extends Fragment {
                         .into(devotion_image);
                 String strinHtml = txtDesc.replace("&amp;nbsp;", "  ");
                 dicription = (Html.fromHtml(strinHtml));
-                txt_BhaktiDesc.setText(dicription);
+                //txt_BhaktiDesc.setText(dicription);
+               // SpannableString spannableString = new SpannableString(response.body().getDescription());
+                //description (Html.fromHtml(strinHtml));
+                justifyTextView.setText(String.valueOf(dicription));
+
+
+                SpannableString content = new SpannableString(response.body().getTitle());
+                content.setSpan(new UnderlineSpan(), 0, response.body().getTitle().length(), 0);
+                titleDevotion.setText(content);
+
 
 
             }
@@ -242,9 +330,10 @@ public class HomeBookFragment extends Fragment {
             @Override
             public void onFailure(Call<DevotionModel> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
-               // txt_BhaktiDesc.setText(Html.fromHtml(getString(R.string.nice_html)));
+
             }
         });
+
 
     }
         /*recyclerView_Home = mView.findViewById(R.id.recyclerview_home);
