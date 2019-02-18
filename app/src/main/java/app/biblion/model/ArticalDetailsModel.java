@@ -4,13 +4,11 @@ import java.util.List;
 
 public class ArticalDetailsModel {
 
-    /**
-     * status : 0
-     * result : [{"id":1,"heading":"heading","title":"title","description":"description"}]
-     * image : http://frozenkitchen.in/biblion_demo/public/images/1550041080.jpg
-     */
+
+
 
     private String status;
+    private int like;
     private String image;
     private List<ResultBean> result;
 
@@ -20,6 +18,14 @@ public class ArticalDetailsModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getLike() {
+        return like;
+    }
+
+    public void setLike(int like) {
+        this.like = like;
     }
 
     public String getImage() {
@@ -39,12 +45,7 @@ public class ArticalDetailsModel {
     }
 
     public static class ResultBean {
-        /**
-         * id : 1
-         * heading : heading
-         * title : title
-         * description : description
-         */
+
 
         private int id;
         private String heading;
