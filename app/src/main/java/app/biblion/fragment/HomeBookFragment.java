@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -51,6 +52,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
+
 
 public class HomeBookFragment extends Fragment {
     private static final String TAG = "HomeBookFragment";
@@ -72,6 +75,8 @@ public class HomeBookFragment extends Fragment {
     Bitmap bitmap;
     Spanned dicription;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     CardView Card_Bible, Card_Quiz, Card_SongBook, Card_Article,Card_E_Library;
     JustifyTextView justifyTextView;
 
@@ -101,6 +106,7 @@ public class HomeBookFragment extends Fragment {
         clicked();
         fabShare = mView.findViewById(R.id.fabShare);
         txtDevotion = mView.findViewById(R.id.txtDevotion);
+        txt_BhaktiDesc.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         getImagedata();
         LoadBhaktidata();
         fabShare.setOnClickListener(new View.OnClickListener() {
@@ -297,7 +303,7 @@ public class HomeBookFragment extends Fragment {
 
 
                 String txtDesc = response.body().getDescription().replace("&lt;", "<").replace("&gt;", ">")
-                        .replace("\\r\\n\\r\\n", "");
+                        .replace("\\r\\n\\r\\n", "").replace("\\r\\n","");
 
                 Glide.with(getActivity()).load(response.body().getImage())
                         .thumbnail(0.5f)
@@ -324,9 +330,6 @@ public class HomeBookFragment extends Fragment {
             @Override
             public void onFailure(Call<DevotionModel> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage());
-               // txt_BhaktiDesc.setText(Html.fromHtml(getString(R.string.nice_html)));
-                justifyTextView.setText(Html.fromHtml(getString(R.string.nice_html)));
-
 
             }
         });

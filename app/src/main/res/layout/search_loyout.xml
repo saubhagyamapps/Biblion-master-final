@@ -61,7 +61,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/shadow_effect_button"
                     android:gravity="center"
-                    android:text="Title"
+                    android:text="Publisher"
                     android:textAlignment="center"
                     android:textAllCaps="false"
                     android:textColor="#c9c9c9" />

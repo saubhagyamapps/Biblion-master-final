@@ -2,6 +2,7 @@ package app.biblion.retrofit;
 
 
 import app.biblion.model.AllSongListModel;
+import app.biblion.model.ArticalDetailsModel;
 import app.biblion.model.ArticalModel;
 import app.biblion.model.ArticleDetailModel;
 import app.biblion.model.DevotionModel;
@@ -71,10 +72,14 @@ public interface ApiInterface {
     Call<ArticalModel> getArticalList(@Field("page") int page);
 
     @FormUrlEncoded
+    @POST("getarticals")
+    Call<ArticalDetailsModel> getArticalDetails(@Field("artical_id") int page);
+
+    @FormUrlEncoded
     @POST("getbooks")
     Call<MyLibraryBookModel> getMyLibraryBook(@Field("page") int page);
 
-    @GET("home")
+    @GET("homeapi")
     Call<HomeModel> getHomeList();
 
     @GET()

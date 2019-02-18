@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class ELibraryFragment extends Fragment {
     EditText etSerachView;
     LinearLayout serachView_layout;
     boolean Flag = true;
+    HorizontalScrollView lianerTital;
 
     @Nullable
     @Override
@@ -69,6 +71,7 @@ public class ELibraryFragment extends Fragment {
         recyclerView_article = mView.findViewById(R.id.recyclerviewMyLibrary);
         etSerachView = mView.findViewById(R.id.etSerachView);
         serachView_layout = mView.findViewById(R.id.serachView_layout);
+        lianerTital = mView.findViewById(R.id.lianerTital);
         serrchButtonClick();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_article.setLayoutManager(layoutManager);
@@ -186,9 +189,24 @@ public class ELibraryFragment extends Fragment {
                         if (Flag) {
                             Flag = false;
                             serachView_layout.setVisibility(View.VISIBLE);
+                            lianerTital.setClickable(false);
+                            lianerTital.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    return true;
+                                }
+                            });
+
                         } else {
                             Flag = true;
                             serachView_layout.setVisibility(View.GONE);
+                            lianerTital.setClickable(true);
+                            lianerTital.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    return false;
+                                }
+                            });
                         }
 
 
