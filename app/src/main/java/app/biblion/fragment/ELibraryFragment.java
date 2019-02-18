@@ -75,13 +75,13 @@ public class ELibraryFragment extends Fragment {
         myLibraryAdapter = new MyLibraryBookAdepter(getActivity(), new BookClick() {
             @Override
             public void bookClick(String id) {
-               // getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
-                DetailELibraryFragment fragmentB = new DetailELibraryFragment ();
+                // getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+                DetailELibraryFragment fragmentB = new DetailELibraryFragment();
                 Bundle args = new Bundle();
                 args.putString("id", id);
-                fragmentB .setArguments(args);
+                fragmentB.setArguments(args);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.contant_frame, fragmentB )
+                        .replace(R.id.contant_frame, fragmentB)
                         .commit();
             }
         });
@@ -122,14 +122,14 @@ public class ELibraryFragment extends Fragment {
         myLibraryBookTopDownloadAdepter = new MyLibraryBookTopDownloadAdepter(getActivity(), new BookClick() {
             @Override
             public void bookClick(String id) {
-             //   getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
+                //   getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
 
-                DetailELibraryFragment fragmentB = new DetailELibraryFragment ();
+                DetailELibraryFragment fragmentB = new DetailELibraryFragment();
                 Bundle args = new Bundle();
                 args.putString("id", id);
-                fragmentB .setArguments(args);
+                fragmentB.setArguments(args);
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.contant_frame, fragmentB )
+                        .replace(R.id.contant_frame, fragmentB)
                         .commit();
             }
         });
