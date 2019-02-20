@@ -59,6 +59,7 @@
                 android:background="@color/white" />
 
             <RatingBar
+                android:visibility="gone"
                 android:id="@+id/book_rating"
                 style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"

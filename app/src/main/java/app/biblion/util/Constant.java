@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.util.LogTime;
@@ -21,6 +24,11 @@ public class Constant {
     public static String mImagesPath;
     public static ProgressDialog progressBar;
     public static Button btnNext;
+    public static TextView txtTitle;
+    public static LinearLayout screenShortLayout;
+    public static ImageView ssImagesView;
+
+
     public static ApiInterface apiService =
             ApiClient.getClient().create(ApiInterface.class);
 
