@@ -5,10 +5,17 @@ import java.util.List;
 public class ArticalDetailsModel {
 
 
-
+    /**
+     * status : 0
+     * result : [{"id":10,"heading":"tenth heading","title":"tenth title","description":"description"}]
+     * like : 0
+     * like_status : 0
+     * image : http://frozenkitchen.in/biblion_demo/public/images/newimg2.jpg
+     */
 
     private String status;
     private int like;
+    private int like_status;
     private String image;
     private List<ResultBean> result;
 
@@ -28,6 +35,14 @@ public class ArticalDetailsModel {
         this.like = like;
     }
 
+    public int getLike_status() {
+        return like_status;
+    }
+
+    public void setLike_status(int like_status) {
+        this.like_status = like_status;
+    }
+
     public String getImage() {
         return image;
     }
@@ -45,7 +60,12 @@ public class ArticalDetailsModel {
     }
 
     public static class ResultBean {
-
+        /**
+         * id : 10
+         * heading : tenth heading
+         * title : tenth title
+         * description : description
+         */
 
         private int id;
         private String heading;

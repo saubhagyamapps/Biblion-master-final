@@ -20,7 +20,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.Signup_SignInActivity"></activity>
+        <activity
+            android:name=".fragment.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".activity.Signup_SignInActivity" />
         <activity android:name=".activity.ForgotPasswordActivity" />
         <activity
             android:name=".activity.SplashActivity"
@@ -33,6 +37,7 @@
         </activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.ReadBookAcivity" />
+        <activity android:name=".fragment.DetailELibraryFragment" />
         <activity
             android:name=".activity.NavigationActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

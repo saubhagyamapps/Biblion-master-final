@@ -1,11 +1,13 @@
 package app.biblion.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +16,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import java.util.List;
 
@@ -33,7 +38,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ELibraryFragment extends Fragment {
+public class ELibraryFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "ELibraryFragment";
     View mView;
     Context context;
@@ -57,14 +62,23 @@ public class ELibraryFragment extends Fragment {
     LinearLayout serachView_layout;
     boolean Flag = true;
     HorizontalScrollView lianerTital;
+    LinearLayout layoutMyLiabary;
+    ScrollView scrollViewMyLibrary;
+    Button btnOldTestament, btnNewTestament, btnTheology, btnPastoralcareAndCounseling, btnCommunication, btnReligion, btnOther;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.elibray_fragment, container, false);
         getActivity().setTitle("E Library");
-        init();
+        //init();
         return mView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
     }
 
     public void init() {
@@ -72,22 +86,39 @@ public class ELibraryFragment extends Fragment {
         etSerachView = mView.findViewById(R.id.etSerachView);
         serachView_layout = mView.findViewById(R.id.serachView_layout);
         lianerTital = mView.findViewById(R.id.lianerTital);
+        layoutMyLiabary = mView.findViewById(R.id.layoutMyLiabary);
+
+        btnOldTestament = mView.findViewById(R.id.btnOldTestament);
+        btnNewTestament = mView.findViewById(R.id.btnNewTestament);
+        btnTheology = mView.findViewById(R.id.btnTheology);
+        btnPastoralcareAndCounseling = mView.findViewById(R.id.btnPastoralcareAndCounseling);
+        btnCommunication = mView.findViewById(R.id.btnCommunication);
+        btnReligion = mView.findViewById(R.id.btnReligion);
+        btnOther = mView.findViewById(R.id.btnOther);
+
+
+        btnOldTestament.setOnClickListener(this);
+        btnNewTestament.setOnClickListener(this);
+        btnTheology.setOnClickListener(this);
+        btnPastoralcareAndCounseling.setOnClickListener(this);
+        btnCommunication.setOnClickListener(this);
+        btnReligion.setOnClickListener(this);
+        btnOther.setOnClickListener(this);
+
         serrchButtonClick();
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_article.setLayoutManager(layoutManager);
         myLibraryAdapter = new MyLibraryBookAdepter(getActivity(), new BookClick() {
             @Override
             public void bookClick(String id) {
-                // getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
-                DetailELibraryFragment fragmentB = new DetailELibraryFragment();
-                Bundle args = new Bundle();
-                args.putString("id", id);
-                fragmentB.setArguments(args);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.contant_frame, fragmentB)
-                        .commit();
+
+                Intent intent=new Intent(getActivity(),DetailELibraryFragment.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
             }
+
         });
+
         recyclerView_article.setAdapter(myLibraryAdapter);
         recyclerView_article.addOnScrollListener(new PaginationScrollListenerLinear((LinearLayoutManager) layoutManager) {
             @Override
@@ -125,15 +156,11 @@ public class ELibraryFragment extends Fragment {
         myLibraryBookTopDownloadAdepter = new MyLibraryBookTopDownloadAdepter(getActivity(), new BookClick() {
             @Override
             public void bookClick(String id) {
-                //   getFragmentManager().beginTransaction().replace(R.id.contant_frame, new DetailELibraryFragment()).addToBackStack("fragment").commit();
 
-                DetailELibraryFragment fragmentB = new DetailELibraryFragment();
-                Bundle args = new Bundle();
-                args.putString("id", id);
-                fragmentB.setArguments(args);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.contant_frame, fragmentB)
-                        .commit();
+                Intent intent=new Intent(getActivity(),DetailELibraryFragment.class);
+                intent.putExtra("id",id);
+                startActivity(intent);
+
             }
         });
         recycleviewTopDownload.setAdapter(myLibraryBookTopDownloadAdepter);
@@ -172,6 +199,25 @@ public class ELibraryFragment extends Fragment {
 
         loadFirstPageMyLibrary();
         loadFirstPageTopDowloadBook();
+        // hideLayout();
+    }
+
+
+
+    private void hideLayout() {
+
+        scrollViewMyLibrary.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (scrollViewMyLibrary != null) {
+                    if (scrollViewMyLibrary.getChildAt(0).getBottom() <= (scrollViewMyLibrary.getHeight() + scrollViewMyLibrary.getScrollY())) {
+                        layoutMyLiabary.setVisibility(View.GONE);
+                    } else {
+                        layoutMyLiabary.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     private void serrchButtonClick() {
@@ -318,5 +364,43 @@ public class ELibraryFragment extends Fragment {
         });
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnOldTestament:
+                setFragment(btnOldTestament.getText().toString());
+                break;
+            case R.id.btnNewTestament:
+                setFragment(btnNewTestament.getText().toString());
+                break;
+            case R.id.btnTheology:
+                setFragment(btnTheology.getText().toString());
+                break;
+            case R.id.btnPastoralcareAndCounseling:
+                setFragment(btnPastoralcareAndCounseling.getText().toString());
+                break;
+            case R.id.btnCommunication:
+                setFragment(btnCommunication.getText().toString());
+                break;
+            case R.id.btnReligion:
+                setFragment(btnReligion.getText().toString());
+                break;
+            case R.id.btnOther:
+                setFragment(btnOther.getText().toString());
+                break;
+
+        }
+    }
+
+    private void setFragment(String CaterogyName) {
+        CategoryBookFragment fragmentB = new CategoryBookFragment();
+        Bundle args = new Bundle();
+        args.putString("CaterogyName", CaterogyName);
+        fragmentB.setArguments(args);
+        getFragmentManager().beginTransaction().addToBackStack("fragment")
+                .replace(R.id.contant_frame, fragmentB)
+                .commit();
+    }
 
 }
