@@ -1,6 +1,8 @@
 package app.biblion.fragment;
 
+import android.app.Activity;
 import android.content.Context;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -9,16 +11,23 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -63,6 +72,10 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     LinearLayout layoutMyLiabary;
     Button btnOldTestament, btnNewTestament, btnTheology, btnPastoralcareAndCounseling, btnCommunication, btnReligion, btnOther;
 
+    int mCurCheckPosition;
+    TextView filter_Title, filter_Publisher, filter_Year, filter_Author,filter_Language, filter_Apply;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -84,12 +97,14 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getActivity().setTitle("E-Library");
+        Constant.hideKeyboard(getActivity(),mView);
         init();
     }
 
     public void init() {
         recyclerView_article = mView.findViewById(R.id.recyclerviewMyLibrary);
         etSerachView = mView.findViewById(R.id.etSerachView);
+
         serachView_layout = mView.findViewById(R.id.serachView_layout);
         lianerTital = mView.findViewById(R.id.lianerTital);
         layoutMyLiabary = mView.findViewById(R.id.layoutMyLiabary);
@@ -101,7 +116,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         btnCommunication = mView.findViewById(R.id.btnCommunication);
         btnReligion = mView.findViewById(R.id.btnReligion);
         btnOther = mView.findViewById(R.id.btnOther);
-
+       /// etSerachView.setInputType(InputType.TYPE_NULL);
 
         btnOldTestament.setOnClickListener(this);
         btnNewTestament.setOnClickListener(this);
@@ -111,7 +126,17 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         btnReligion.setOnClickListener(this);
         btnOther.setOnClickListener(this);
 
+        filter_Title = mView.findViewById(R.id.filter_title);
+        filter_Publisher = mView.findViewById(R.id.filter_publisher);
+        filter_Year = mView.findViewById(R.id.filter_year);
+        filter_Year = mView.findViewById(R.id.filter_year);
+        filter_Author = mView.findViewById(R.id.filter_author);
+        filter_Language = mView.findViewById(R.id.filter_language);
+        filter_Apply = mView.findViewById(R.id.filter_apply);
+
+        onTouchClick();
         serrchButtonClick();
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         recyclerView_article.setLayoutManager(layoutManager);
         myLibraryAdapter = new MyLibraryBookAdepter(getActivity(), new BookClick() {
@@ -213,6 +238,11 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         loadFirstPageMyLibrary();
         loadFirstPageTopDowloadBook();
     }
+    private void showKeyBoard()
+    {
+        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.SHOW_IMPLICIT);
+    }
 
     private void serrchButtonClick() {
         etSerachView.setOnTouchListener(new View.OnTouchListener() {
@@ -222,6 +252,9 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                 final int DRAWABLE_TOP = 1;
                 final int DRAWABLE_RIGHT = 2;
                 final int DRAWABLE_BOTTOM = 3;
+                //etSerachView.setInputType(InputType.TYPE_NULL);
+                Constant.hideKeyboard(getActivity(),mView);
+                serachView_layout.setVisibility(View.VISIBLE);
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (etSerachView.getRight() - etSerachView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
@@ -386,6 +419,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                 setFragment(btnOther.getText().toString());
                 break;
 
+
         }
     }
 
@@ -402,4 +436,18 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
 
     }
 
+   private void onTouchClick()
+   {
+       filter_Title.setOnTouchListener(new View.OnTouchListener() {
+           @Override
+           public boolean onTouch(View v, MotionEvent event) {
+               etSerachView.setSingleLine();
+               etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+               InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+               inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
+               filter_Title.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+               return false;
+           }
+       });
+   }
 }
