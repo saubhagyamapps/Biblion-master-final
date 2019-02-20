@@ -112,6 +112,7 @@ public class ArticleClickFragment extends Fragment {
                 Clicked_Title_txt.setText(response.body().getResult().get(0).getTitle());
                 Glide.with(getActivity()).load(response.body().getImage())
                         .thumbnail(0.5f)
+                        .placeholder(R.drawable.image_loader)
                         .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)

@@ -51,6 +51,7 @@ public class SlidingImage_Adapter extends PagerAdapter {
         Glide.with(context).load("http://frozenkitchen.in/biblion_demo/public/images/" + IMAGES.get(position).getImage())
                 .thumbnail(0.5f)
                 .crossFade()
+                .placeholder(R.drawable.image_loader)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);

@@ -13,16 +13,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.devs.readmoreoption.ReadMoreOption;
 
 import java.io.File;
 
 import app.biblion.R;
+import app.biblion.model.BookDetailsModel;
 import app.biblion.notifacation.BackgroundNotificationService;
+import app.biblion.util.Constant;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailELibraryFragment extends Fragment {
 
@@ -33,6 +41,9 @@ public class DetailELibraryFragment extends Fragment {
     Button btnBookDownload;
     public static final String PROGRESS_UPDATE = "progress_update";
     String mBookId;
+    ReadMoreOption readMoreOption;
+    ImageView imagesDetailsBook;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,10 +60,12 @@ public class DetailELibraryFragment extends Fragment {
 
     private void initialization() {
         btnBookDownload = mView.findViewById(R.id.btnBookDownload);
+        imagesDetailsBook = mView.findViewById(R.id.imagesDetailsBook);
         txtDescription = mView.findViewById(R.id.txtDescription);
         bookRatingBar = mView.findViewById(R.id.book_rating);
+
         bookRatingBar.setRating((float) 2.5);
-        ReadMoreOption readMoreOption = new ReadMoreOption.Builder(getContext())
+        readMoreOption = new ReadMoreOption.Builder(getContext())
                 .textLength(150)
                 .moreLabel("Read More")
                 .lessLabel("Read Leas")
@@ -61,12 +74,37 @@ public class DetailELibraryFragment extends Fragment {
                 .labelUnderLine(true)
                 .build();
 
-        readMoreOption.addReadMoreTo(txtDescription, getString(R.string.long_desc));
+
         registerReceiver();
         btnBookDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startImageDownload();
+            }
+        });
+        APICALL();
+    }
+
+    private void APICALL() {
+        Constant.progressDialog(getContext());
+        Call<BookDetailsModel> modelCall = Constant.apiService.getBookDetails(mBookId);
+        modelCall.enqueue(new Callback<BookDetailsModel>() {
+            @Override
+            public void onResponse(Call<BookDetailsModel> call, Response<BookDetailsModel> response) {
+                readMoreOption.addReadMoreTo(txtDescription, response.body().getResult().get(0).getDescription());
+                Glide.with(getActivity()).load("http://frozenkitchen.in/biblion_demo/public/images/" + response.body().getResult().get(0).getImage())
+                        .thumbnail(0.5f)
+                        .placeholder(R.drawable.image_loader)
+                        .crossFade()
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imagesDetailsBook);
+                Constant.progressBar.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<BookDetailsModel> call, Throwable t) {
+                Constant.progressBar.dismiss();
             }
         });
     }
@@ -105,7 +143,7 @@ public class DetailELibraryFragment extends Fragment {
 
     private void startImageDownload() {
         Intent intent = new Intent(getActivity(), BackgroundNotificationService.class);
-        intent.putExtra("id",mBookId);
+        intent.putExtra("id", mBookId);
         getActivity().startService(intent);
 
     }

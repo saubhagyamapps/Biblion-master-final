@@ -78,6 +78,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 Glide.with(mContext).load(Constant.mImagesPath + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
+                        .placeholder(R.drawable.image_loader)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(movieVH.image_Home);

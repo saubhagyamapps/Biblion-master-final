@@ -48,21 +48,20 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     private boolean isLastPageMylibrary = false;
     private static final int PAGE_START_MY_LIBRARY = 1;
     private int currentPageMYLiabray = PAGE_START_MY_LIBRARY;
-    private int TOTAL_PAGES_MyLibary = 2;
+    private int TOTAL_PAGES_MyLibary;
 
     private boolean isLoadingTopDownloadBook = false;
     private boolean isLastPageTopDownloadBook = false;
     private static final int PAGE_START_TopDownloadBook = 1;
     private int currentPageTopDownloadBook = PAGE_START_TopDownloadBook;
-    private int TOTAL_PAGES_TopDownloadBook = 2;
+    private int TOTAL_PAGES_TopDownloadBook;
+
     EditText etSerachView;
     LinearLayout serachView_layout;
     boolean Flag = true;
     HorizontalScrollView lianerTital;
     LinearLayout layoutMyLiabary;
-    ScrollView scrollViewMyLibrary;
     Button btnOldTestament, btnNewTestament, btnTheology, btnPastoralcareAndCounseling, btnCommunication, btnReligion, btnOther;
-    int mCurCheckPosition;
 
     @Nullable
     @Override
@@ -260,7 +259,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadFirstPageMyLibrary() {
-
+        Constant.progressDialog(getActivity());
         Log.d(TAG, "loadFirstPage: ");
         Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageMYLiabray);
         modelCall.enqueue(new Callback<MyLibraryBookModel>() {
@@ -276,17 +275,19 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                 if (currentPageMYLiabray <= TOTAL_PAGES_MyLibary)
                     myLibraryAdapter.addLoadingFooter();
                 else isLastPageMylibrary = true;
+                Constant.progressBar.dismiss();
             }
 
             @Override
             public void onFailure(Call<MyLibraryBookModel> call, Throwable t) {
                 t.printStackTrace();
+                Constant.progressBar.dismiss();
             }
         });
     }
 
     private void loadNextPageMyLibrary() {
-        Log.d(TAG, "loadNextPage: " + currentPageMYLiabray);
+        Log.d(TAG, "loadNextPageMyLibrary:--> " + currentPageMYLiabray);
         Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageMYLiabray);
         modelCall.enqueue(new Callback<MyLibraryBookModel>() {
             @Override
@@ -336,7 +337,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void loadNextPageTopDowloadBook() {
-        Log.d(TAG, "loadNextPage: " + currentPageMYLiabray);
+        Log.d(TAG, "loadNextPageTopDowloadBook:--> " + currentPageMYLiabray);
         Call<MyLibraryBookModel> modelCall = Constant.apiService.getMyLibraryBook(currentPageTopDownloadBook);
         modelCall.enqueue(new Callback<MyLibraryBookModel>() {
             @Override

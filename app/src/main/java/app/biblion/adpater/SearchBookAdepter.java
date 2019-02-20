@@ -21,20 +21,19 @@ import java.util.List;
 
 import app.biblion.R;
 import app.biblion.interfacea.BookClick;
-import app.biblion.model.MyLibraryBookModel;
-import app.biblion.util.Constant;
+import app.biblion.model.SearchModel;
 
-public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SearchBookAdepter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context mContext;
     private static final String TAG = "MyLibraryBookAdepter";
 
     private static final int ITEM = 0;
     private static final int LOADING = 1;
-    private List<MyLibraryBookModel.ResultBean> dataBean;
+    private List<SearchModel.ResultBean> dataBean;
     private boolean isLoadingAdded = false;
     BookClick bookClick;
-    public MyLibraryBookTopDownloadAdepter(Context mContext, BookClick bookClick) {
+    public SearchBookAdepter(Context mContext, BookClick bookClick) {
         this.mContext = mContext;
         dataBean = new ArrayList<>();
         this.bookClick=bookClick;
@@ -77,8 +76,8 @@ public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<Recycl
                 Log.e(TAG, "onBindViewHolder: "+dataBean.get(i).getBookname() );
                 Glide.with(mContext).load("http://frozenkitchen.in/biblion_demo/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
-                        .crossFade()
                         .placeholder(R.drawable.image_loader)
+                        .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(movieVH.imageViewBook);
@@ -86,7 +85,7 @@ public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<Recycl
                 movieVH.imageViewBook.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bookClick.bookClick(dataBean.get(i).getId());
+                       bookClick.bookClick(dataBean.get(i).getId());
                     }
                 });
             case LOADING:
@@ -109,13 +108,13 @@ public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<Recycl
     }
 
 
-    public void add(MyLibraryBookModel.ResultBean r) {
+    public void add(SearchModel.ResultBean r) {
         dataBean.add(r);
         notifyItemInserted(dataBean.size() - 1);
     }
 
-    public void addAll(List<MyLibraryBookModel.ResultBean> Results) {
-        for (MyLibraryBookModel.ResultBean result : Results) {
+    public void addAll(List<SearchModel.ResultBean> Results) {
+        for (SearchModel.ResultBean result : Results) {
             add(result);
         }
     }
@@ -123,14 +122,14 @@ public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<Recycl
 
     public void addLoadingFooter() {
         isLoadingAdded = true;
-        add(new MyLibraryBookModel.ResultBean());
+        add(new SearchModel.ResultBean());
     }
 
     public void removeLoadingFooter() {
         isLoadingAdded = false;
 
         int position = dataBean.size() - 1;
-        MyLibraryBookModel.ResultBean result = getItem(position);
+        SearchModel.ResultBean result = getItem(position);
 
         if (result != null) {
             dataBean.remove(position);
@@ -138,7 +137,7 @@ public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public MyLibraryBookModel.ResultBean getItem(int position) {
+    public SearchModel.ResultBean getItem(int position) {
         return dataBean.get(position);
     }
 
