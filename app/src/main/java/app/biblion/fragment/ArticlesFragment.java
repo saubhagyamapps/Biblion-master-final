@@ -65,7 +65,7 @@ public class ArticlesFragment extends Fragment {
                 args.putString("id", id);
                 articleClickFragment .setArguments(args);
                 getFragmentManager().beginTransaction().addToBackStack(null)
-                        .replace(R.id.contant_frame,articleClickFragment).commit();
+                        .add(R.id.contant_frame,articleClickFragment).commit();
             }
         });
 

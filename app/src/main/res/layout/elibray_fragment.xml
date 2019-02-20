@@ -92,7 +92,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rounded"
-                android:text="Pastoral care and counseling"
+                android:text="Pastoralcare and Counseling"
                 android:textAllCaps="false"
                 android:textSize="12dp" />
 

@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -25,36 +24,35 @@ import java.io.File;
 import app.biblion.R;
 import app.biblion.notifacation.BackgroundNotificationService;
 
-public class DetailELibraryFragment extends AppCompatActivity {
+public class DetailELibraryFragment extends Fragment {
 
-
+    View mView;
     private static final String TAG = "DetailELibraryFragment";
     RatingBar bookRatingBar;
     TextView txtDescription;
     Button btnBookDownload;
     public static final String PROGRESS_UPDATE = "progress_update";
     String mBookId;
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_detail_elibrary);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        Bundle extras = getIntent().getExtras();
-        mBookId = extras.getString("id");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_detail_elibrary, container, false);
+        Bundle args = getArguments();
+
+        mBookId = args.getString("id");
+
+        Log.e(TAG, "onCreateView: " + mBookId);
         initialization();
+
+        return mView;
     }
 
-
     private void initialization() {
-        btnBookDownload = findViewById(R.id.btnBookDownload);
-        txtDescription = findViewById(R.id.txtDescription);
-        bookRatingBar = findViewById(R.id.book_rating);
+        btnBookDownload = mView.findViewById(R.id.btnBookDownload);
+        txtDescription = mView.findViewById(R.id.txtDescription);
+        bookRatingBar = mView.findViewById(R.id.book_rating);
         bookRatingBar.setRating((float) 2.5);
-        ReadMoreOption readMoreOption = new ReadMoreOption.Builder(DetailELibraryFragment.this)
+        ReadMoreOption readMoreOption = new ReadMoreOption.Builder(getContext())
                 .textLength(150)
                 .moreLabel("Read More")
                 .lessLabel("Read Leas")
@@ -76,7 +74,7 @@ public class DetailELibraryFragment extends AppCompatActivity {
 
     private void registerReceiver() {
 
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(DetailELibraryFragment.this);
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(getActivity());
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PROGRESS_UPDATE);
         bManager.registerReceiver(mBroadcastReceiver, intentFilter);
@@ -94,7 +92,7 @@ public class DetailELibraryFragment extends AppCompatActivity {
 
                 if (downloadComplete) {
 
-                    Toast.makeText(DetailELibraryFragment.this, "File download completed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "File download completed", Toast.LENGTH_SHORT).show();
 
                     File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + File.separator +
                             "Book.EPUB");
@@ -106,27 +104,9 @@ public class DetailELibraryFragment extends AppCompatActivity {
     };
 
     private void startImageDownload() {
-        Intent intent = new Intent(DetailELibraryFragment.this, BackgroundNotificationService.class);
-        intent.putExtra("id", mBookId);
-        DetailELibraryFragment.this.startService(intent);
+        Intent intent = new Intent(getActivity(), BackgroundNotificationService.class);
+        intent.putExtra("id",mBookId);
+        getActivity().startService(intent);
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
     }
 }
