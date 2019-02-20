@@ -1,6 +1,5 @@
 package app.biblion.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -17,7 +16,6 @@ import java.util.HashMap;
 
 import app.biblion.R;
 import app.biblion.model.ArticalDetailsModel;
-import app.biblion.model.ArticalModel;
 import app.biblion.model.LikeModel;
 import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Constant;
@@ -25,8 +23,6 @@ import me.biubiubiu.justifytext.library.JustifyTextView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class ArticleClickFragment extends Fragment {
     View mView;
@@ -38,7 +34,7 @@ public class ArticleClickFragment extends Fragment {
     JustifyTextView Article_desc;
     SessionManager sessionManager;
     HashMap<String, String> user;
-    String mLike = "1";
+    int mLike;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,18 +52,6 @@ public class ArticleClickFragment extends Fragment {
     private void init() {
         like_Image = mView.findViewById(R.id.like_image);
 
-        try {
-            SharedPreferences prefs = getActivity().getSharedPreferences("Like", MODE_PRIVATE);
-            String value = prefs.getString("like", null);
-            if (value.equals("1")) {
-                like_Image.setImageResource(R.drawable.heart_liked);
-            } else {
-                like_Image.setImageResource(R.drawable.heart);
-            }
-
-        } catch (Exception e) {
-
-        }
         clicked_Imagel = mView.findViewById(R.id.click_article_image);
         //clicked_Desc_txt = mView.findViewById(R.id.click_articaldesc);
         Clicked_Title_txt = mView.findViewById(R.id.click_article_title);
@@ -84,34 +68,16 @@ public class ArticleClickFragment extends Fragment {
         like_Image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    SharedPreferences prefs = getActivity().getSharedPreferences("Like", MODE_PRIVATE);
-                    String value = prefs.getString("like", null);
-                    if (value.equals("1")) {
-                        like_Image.setImageResource(R.drawable.heart);
-                        mLike = "0";
-                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("Like", MODE_PRIVATE).edit();
-                        editor.putString("like", "0");
-                        editor.apply();
-                    } else {
-                        like_Image.setImageResource(R.drawable.heart_liked);
-                        mLike = "1";
-                        SharedPreferences.Editor editor = getActivity().getSharedPreferences("Like", MODE_PRIVATE).edit();
-                        editor.putString("like", "1");
-                        editor.apply();
 
-                    }
 
-                } catch (Exception e) {
-                    like_Image.setImageResource(R.drawable.heart_liked);
-                    SharedPreferences.Editor editor = getActivity().getSharedPreferences("Like", MODE_PRIVATE).edit();
-                    editor.putString("like", "1");
-                    editor.apply();
-                    e.printStackTrace();
+                if (mLike == 1) {
+                    mLike = 0;
+                    like_Image.setBackgroundResource(R.drawable.heart);
+                } else {
+                    mLike = 1;
+                    like_Image.setBackgroundResource(R.drawable.heart_liked);
                 }
-
-            APICALL_LIKE();
-
+                APICALL_LIKE();
             }
         });
     }
@@ -123,6 +89,7 @@ public class ArticleClickFragment extends Fragment {
             @Override
             public void onResponse(Call<LikeModel> call, Response<LikeModel> response) {
                 like_Count.setText(String.valueOf(response.body().getLikes()));
+
                 Constant.progressBar.dismiss();
             }
 
@@ -150,6 +117,12 @@ public class ArticleClickFragment extends Fragment {
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(clicked_Imagel);
                 like_Count.setText(String.valueOf(response.body().getLike()));
+                mLike = response.body().getLike_status();
+                if (response.body().getLike_status() == 1) {
+                    like_Image.setBackgroundResource(R.drawable.heart_liked);
+                } else {
+                    like_Image.setBackgroundResource(R.drawable.heart);
+                }
                 Constant.progressBar.dismiss();
             }
 

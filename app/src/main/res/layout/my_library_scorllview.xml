@@ -1,76 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollViewMyLibrary"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:statusBarScrim="@android:color/transparent">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/titleMyLiabary"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_below="@id/lianerTital"
-            app:cardElevation="5dp">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap|exitUntilCollapsed">
 
-            <TextView
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="25dp"
-                android:text="My Library"
-                android:textColor="@color/colorAccent" />
-        </android.support.v7.widget.CardView>
+            <LinearLayout
+                android:id="@+id/layoutMyLiabary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <View
-            android:id="@+id/boaderLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/titleMyLiabary"
-            android:background="@color/colorAccent"
-            android:elevation="5dp" />
+                <android.support.v7.widget.CardView
+                    android:id="@+id/titleMyLiabary"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:cardElevation="5dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerviewMyLibrary"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_below="@id/titleMyLiabary"
-            android:layout_marginLeft="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="25dp"
+                        android:text="My Library"
+                        android:textColor="@color/colorAccent"
+                        android:textStyle="bold" />
+                </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/titalTopDownload"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_below="@id/recyclerviewMyLibrary"
-            android:elevation="5dp">
+                <View
+                    android:id="@+id/boaderLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorAccent"
+                    android:elevation="5dp" />
 
-            <TextView
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="25dp"
-                android:text="Top Download"
-                android:textColor="@color/colorAccent" />
-        </android.support.v7.widget.CardView>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerviewMyLibrary"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="10dp" />
+            </LinearLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-        <View
-            android:id="@+id/boaderLine1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/titalTopDownload"
-            android:background="@color/colorAccent"
-            android:elevation="5dp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycleviewTopDownload"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_below="@id/titalTopDownload"
-            android:layout_marginLeft="10dp" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/titalTopDownload"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:elevation="5dp"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="bottom">
 
-    </RelativeLayout>
-</ScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="25dp"
+            android:text="Top Download"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold" />
+    </android.support.v7.widget.CardView>
+
+
+    <include layout="@layout/content_scrolling" />
+</android.support.design.widget.CoordinatorLayout>

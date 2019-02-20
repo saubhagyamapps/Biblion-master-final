@@ -310,12 +310,6 @@ public class HomeBookFragment extends Fragment {
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(devotion_image);
-                Glide.with(getActivity()).load(response.body().getImage())
-                        .thumbnail(0.5f)
-                        .crossFade()
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(ssImagesView);
                 String strinHtml = txtDesc.replace("&amp;nbsp;", "  ");
                 dicription = (Html.fromHtml(strinHtml));
                 //txt_BhaktiDesc.setText(dicription);

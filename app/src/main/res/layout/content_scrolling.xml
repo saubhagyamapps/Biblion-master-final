@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="60dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".fragment.ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling">
+
+ <!--   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/titalTopDownload"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:elevation="5dp"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:text="Top Download"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold" />
+        </android.support.v7.widget.CardView>
+
+        <View
+            android:id="@+id/boaderLine1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"
+            android:elevation="5dp" />
+-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleviewTopDownload"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp" />
+    <!--</LinearLayout>-->
+
+
+</android.support.v4.widget.NestedScrollView>

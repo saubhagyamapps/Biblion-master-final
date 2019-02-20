@@ -4,6 +4,7 @@ package app.biblion.retrofit;
 import app.biblion.model.AllSongListModel;
 import app.biblion.model.ArticalDetailsModel;
 import app.biblion.model.ArticalModel;
+import app.biblion.model.CategoryModel;
 import app.biblion.model.DevotionModel;
 import app.biblion.model.EditProfileModel;
 import app.biblion.model.HomeModel;
@@ -133,5 +134,10 @@ public interface ApiInterface {
     @POST("like")
     Call<LikeModel> getLikes(@Field("user_id") String user_Id,
                              @Field("artical_id") String article_Id,
-                             @Field("likes") String likes);
+                             @Field("likes") int likes);
+
+    @FormUrlEncoded
+    @POST("category_book")
+    Call<CategoryModel> getCategoryBook(@Field("category") String category,
+                                        @Field("page") int page);
 }
