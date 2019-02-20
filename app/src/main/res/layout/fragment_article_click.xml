@@ -5,10 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/artcile_layout_screenshot"
     android:background="@color/white"
     tools:context=".fragment.ArticleClickFragment">
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -72,7 +74,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
-                    android:drawableLeft="@drawable/article_sharelogo"
+                    android:drawableLeft="@drawable/ic_menu_share"
                     android:drawablePadding="10dp"
                     android:text="SHARE"
                     android:textSize="15sp"
