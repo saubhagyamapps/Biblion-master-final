@@ -1,13 +1,11 @@
 package app.biblion.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
@@ -65,6 +62,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     LinearLayout layoutMyLiabary;
     ScrollView scrollViewMyLibrary;
     Button btnOldTestament, btnNewTestament, btnTheology, btnPastoralcareAndCounseling, btnCommunication, btnReligion, btnOther;
+    int mCurCheckPosition;
 
     @Nullable
     @Override
@@ -72,12 +70,21 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         mView = inflater.inflate(R.layout.elibray_fragment, container, false);
         getActivity().setTitle("E Library");
         //init();
+        setRetainInstance(true);
         return mView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().setTitle("E-Library");
         init();
     }
 
@@ -112,9 +119,13 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             @Override
             public void bookClick(String id) {
 
-                Intent intent=new Intent(getActivity(),DetailELibraryFragment.class);
-                intent.putExtra("id",id);
-                startActivity(intent);
+                DetailELibraryFragment fragmentB = new DetailELibraryFragment();
+                Bundle args = new Bundle();
+                args.putString("id", id);
+                fragmentB.setArguments(args);
+                getFragmentManager().beginTransaction().addToBackStack(null)
+                        .add(R.id.contant_frame, fragmentB)
+                        .commit();
             }
 
         });
@@ -157,10 +168,13 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             @Override
             public void bookClick(String id) {
 
-                Intent intent=new Intent(getActivity(),DetailELibraryFragment.class);
-                intent.putExtra("id",id);
-                startActivity(intent);
-
+                DetailELibraryFragment fragmentB = new DetailELibraryFragment();
+                Bundle args = new Bundle();
+                args.putString("id", id);
+                fragmentB.setArguments(args);
+                getFragmentManager().beginTransaction().addToBackStack(null)
+                        .add(R.id.contant_frame, fragmentB)
+                        .commit();
             }
         });
         recycleviewTopDownload.setAdapter(myLibraryBookTopDownloadAdepter);
@@ -199,25 +213,6 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
 
         loadFirstPageMyLibrary();
         loadFirstPageTopDowloadBook();
-        // hideLayout();
-    }
-
-
-
-    private void hideLayout() {
-
-        scrollViewMyLibrary.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                if (scrollViewMyLibrary != null) {
-                    if (scrollViewMyLibrary.getChildAt(0).getBottom() <= (scrollViewMyLibrary.getHeight() + scrollViewMyLibrary.getScrollY())) {
-                        layoutMyLiabary.setVisibility(View.GONE);
-                    } else {
-                        layoutMyLiabary.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        });
     }
 
     private void serrchButtonClick() {
@@ -394,13 +389,16 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setFragment(String CaterogyName) {
+        currentPageMYLiabray = 1;
+        currentPageTopDownloadBook = 1;
         CategoryBookFragment fragmentB = new CategoryBookFragment();
         Bundle args = new Bundle();
         args.putString("CaterogyName", CaterogyName);
         fragmentB.setArguments(args);
         getFragmentManager().beginTransaction().addToBackStack("fragment")
-                .replace(R.id.contant_frame, fragmentB)
+                .add(R.id.contant_frame, fragmentB)
                 .commit();
+
     }
 
 }
