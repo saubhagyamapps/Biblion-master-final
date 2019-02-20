@@ -1,9 +1,12 @@
 package app.biblion.util;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,5 +52,9 @@ public class Constant {
         Intent intent = new Intent(classOne, classTwo);
         classOne.startActivity(intent);
 
+    }
+    public static void hideKeyboard(Activity activity, View viewToHide) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(viewToHide.getWindowToken(), 0);
     }
 }

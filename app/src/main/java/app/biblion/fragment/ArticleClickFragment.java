@@ -9,11 +9,14 @@ import android.os.Parcelable;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -44,6 +47,7 @@ public class ArticleClickFragment extends Fragment {
     SessionManager sessionManager;
     HashMap<String, String> user;
     int mLike;
+    private Spanned dicription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -133,7 +137,10 @@ public class ArticleClickFragment extends Fragment {
             public void onResponse(Call<ArticalDetailsModel> call, Response<ArticalDetailsModel> response) {
 
                 // clicked_Desc_txt.setText(response.body().getResult().get(0).getDescription().replace("\\r\\n",""));
-                Article_desc.setText(response.body().getResult().get(0).getDescription().replace("\\r\\n", ""));
+               // Article_desc.setText(response.body().getResult().get(0).getDescription().replace("\\r\\n", ""));
+
+                String txt_article_desc = response.body().getResult().get(0).getDescription().replace("&lt;", "<").replace("&gt;", ">")
+                        .replace("\\r\\n\\r\\n", "").replace("\\r\\n", "");
                 Clicked_Title_txt.setText(response.body().getResult().get(0).getTitle());
                 Glide.with(getActivity()).load(response.body().getImage())
                         .thumbnail(0.5f)
@@ -141,6 +148,9 @@ public class ArticleClickFragment extends Fragment {
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(clicked_Imagel);
+                String strinHtml = txt_article_desc.replace("&amp;nbsp;", "  ");
+                dicription = (Html.fromHtml(strinHtml));
+                Article_desc.setText(String.valueOf(dicription));
                 like_Count.setText(String.valueOf(response.body().getLike()));
                 mLike = response.body().getLike_status();
                 if (response.body().getLike_status() == 1) {
@@ -161,6 +171,7 @@ public class ArticleClickFragment extends Fragment {
     }
 
     private void takeScreenshot() {
+
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
 
@@ -169,10 +180,10 @@ public class ArticleClickFragment extends Fragment {
             String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
             // create bitmap screen capture
-            View v1 = getActivity().getWindow().getDecorView().findViewById(R.id.artcile_layout_screenshot);
+            View v1 = getActivity().getWindow().getDecorView().findViewById(R.id.click_article_image);
             v1.setDrawingCacheEnabled(true);
             Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-            v1.setDrawingCacheEnabled(false);
+            //v1.setDrawingCacheEnabled(false);
 
             File imageFile = new File(mPath);
 
@@ -194,7 +205,7 @@ public class ArticleClickFragment extends Fragment {
 
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setType("image/*");
-        share.putExtra(Intent.EXTRA_TEXT,  Article_desc +"https://play.google.com/store/apps/dev?id=7665705150185283127");
+        share.putExtra(Intent.EXTRA_TEXT, String.valueOf(dicription) +"https://play.google.com/store/apps/dev?id=7665705150185283127");
         share.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(share, "Share with"));
     }
