@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import app.biblion.R;
 import app.biblion.adpater.CountryLeaderAdapter;
 import app.biblion.adpater.GlobalLeaderAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class GlobalFragment extends Fragment {
@@ -24,6 +25,7 @@ public class GlobalFragment extends Fragment {
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10
             };
     private GlobalLeaderAdapter globalLeaderAdapter;
+    private CircleImageView First_Rank_Image, Second_Rank_Image, Third_Rank_Image;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,6 +36,9 @@ public class GlobalFragment extends Fragment {
     }
     private void init()
     {
+        First_Rank_Image = mView.findViewById(R.id.first_rank_image_global);
+        Second_Rank_Image = mView.findViewById(R.id.second_rank_image_global);
+        Third_Rank_Image = mView.findViewById(R.id.third_rank_image_global);
         recyclerView_global = mView.findViewById(R.id.global_leader_recyclerview);
         globalLeaderAdapter = new GlobalLeaderAdapter(getActivity(),num);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);

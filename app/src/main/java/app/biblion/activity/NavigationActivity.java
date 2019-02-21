@@ -1,5 +1,6 @@
 package app.biblion.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -250,6 +251,14 @@ public class NavigationActivity extends AppCompatActivity
             case R.id.nav_settings:
                 fragment = new SettingFragment();
                 break;
+            case R.id.nav_share:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hey check New app at: https://play.google.com/store/apps/dev?id=7665705150185283127");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                break;
             case R.id.nav_logout:
                 session.logoutUser();
                 finish();
@@ -257,6 +266,7 @@ public class NavigationActivity extends AppCompatActivity
             case R.id.nav_leaderboard:
                 fragment = new LeaderBoardFragment();
                 break;
+
         }
 
         if (fragment != null) {

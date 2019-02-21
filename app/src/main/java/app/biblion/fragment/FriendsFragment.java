@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import app.biblion.R;
 import app.biblion.adpater.CountryLeaderAdapter;
 import app.biblion.adpater.FriendsLeaderAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendsFragment extends Fragment {
 
@@ -22,6 +23,7 @@ public class FriendsFragment extends Fragment {
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10
             };
     private FriendsLeaderAdapter friendsLeaderAdapter;
+    private CircleImageView First_Rank_Image, Second_Rank_Image, Third_Rank_Image;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -33,6 +35,9 @@ public class FriendsFragment extends Fragment {
 
     private void init()
     {
+        First_Rank_Image = mView.findViewById(R.id.first_rank_image_friends);
+        Second_Rank_Image = mView.findViewById(R.id.second_rank_image_friends);
+        Third_Rank_Image = mView.findViewById(R.id.third_rank_image_friends);
         recyclerView_friends = mView.findViewById(R.id.friends_leader_recyclerview);
         friendsLeaderAdapter = new FriendsLeaderAdapter(getActivity(),num);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
