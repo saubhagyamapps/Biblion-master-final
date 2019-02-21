@@ -150,5 +150,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("search")
     Call<SearchModel> getSearchList(@Field("type") String type,
-                                    @Field("value") String value);
+                                    @Field("value") String value,
+                                    @Field("page") int page);
 }

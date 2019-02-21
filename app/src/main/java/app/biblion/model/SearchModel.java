@@ -13,6 +13,17 @@ public class SearchModel {
     private String status;
     private String path;
     private List<ResultBean> result;
+    private int TotalPages;
+
+    public int getTotalPages() {
+        return TotalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        TotalPages = totalPages;
+    }
+
+
 
     public String getStatus() {
         return status;

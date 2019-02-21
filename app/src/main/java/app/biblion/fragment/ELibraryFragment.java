@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -74,6 +76,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     String FilterFlag = "1";
     boolean mKeyBordOpen = true;
     String mSelectType;
+    String mApplyClick="0";
 
     @Nullable
     @Override
@@ -249,6 +252,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void serrchButtonClick() {
+        etSerachView.performClick();
         etSerachView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -256,11 +260,45 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                 final int DRAWABLE_TOP = 1;
                 final int DRAWABLE_RIGHT = 2;
                 final int DRAWABLE_BOTTOM = 3;
-                //etSerachView.setInputType(InputType.TYPE_NULL);
-                Constant.hideKeyboard(getActivity(), mView);
-                //serachView_layout.setVisibility(View.VISIBLE);
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                    if (Flag) {
+                        Flag = false;
+                        serachView_layout.setVisibility(View.VISIBLE);
+                        lianerTital.setClickable(false);
+                        btnOldTestament.setClickable(false);
+                        btnNewTestament.setClickable(false);
+                        btnTheology.setClickable(false);
+                        btnPastoralcareAndCounseling.setClickable(false);
+                        btnCommunication.setClickable(false);
+                        btnReligion.setClickable(false);
+                        btnOther.setClickable(false);
+                        lianerTital.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return true;
+                            }
+                        });
+
+                    } else {
+                        Flag = true;
+                        serachView_layout.setVisibility(View.GONE);
+                        lianerTital.setClickable(true);
+                        btnOldTestament.setClickable(true);
+                        btnNewTestament.setClickable(true);
+                        btnTheology.setClickable(true);
+                        btnPastoralcareAndCounseling.setClickable(true);
+                        btnCommunication.setClickable(true);
+                        btnReligion.setClickable(true);
+                        btnOther.setClickable(true);
+                        lianerTital.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return false;
+                            }
+                        });
+                    }
                     if (event.getRawX() >= (etSerachView.getRight() - etSerachView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         Log.e(TAG, "onTouch: ");
                         if (Flag) {
@@ -455,11 +493,28 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     }
 
     private void onTouchClick() {
+        etSerachView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                serachView_layout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etSerachView.performClick();
         filter_Title.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (mFilter) {
-                    mSelectType=filter_Title.getText().toString();
+                    mSelectType = filter_Title.getText().toString();
                     mFilter = false;
                     mPublisher = true;
                     mYear = true;
@@ -496,7 +551,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (mPublisher) {
-                    mSelectType=filter_Publisher.getText().toString();
+                    mSelectType = filter_Publisher.getText().toString();
                     mFilter = true;
                     mPublisher = false;
                     mYear = true;
@@ -531,7 +586,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (mYear) {
-                    mSelectType=filter_Year.getText().toString();
+                    mSelectType = filter_Year.getText().toString();
                     mFilter = true;
                     mPublisher = true;
                     mYear = false;
@@ -566,7 +621,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (mAuthor) {
-                    mSelectType=filter_Author.getText().toString();
+                    mSelectType = filter_Author.getText().toString();
                     mFilter = true;
                     mPublisher = true;
                     mYear = true;
@@ -601,7 +656,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (mLanguage) {
-                    mSelectType=filter_Language.getText().toString();
+                    mSelectType = filter_Language.getText().toString();
                     mFilter = true;
                     mPublisher = true;
                     mYear = true;
@@ -638,18 +693,15 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             public boolean onTouch(View v, MotionEvent event) {
                 if (!mFilter || !mPublisher || !mYear || !mAuthor || !mLanguage) {
                     FilterFlag = "0";
+                    mApplyClick = "1";
                     etSerachView.setSingleLine();
                     etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
                     etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
                     etSerachView.performClick();
-
-                    /*filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
-                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
-                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
-                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
-                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));*/
+                    serachView_layout.setVisibility(View.GONE);
 
                 } else {
+                    Toast.makeText(getActivity(), "Please select category", Toast.LENGTH_LONG).show();
                     FilterFlag = "1";
                     mLanguage = true;
                     mKeyBordOpen = true;
@@ -664,20 +716,41 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         etSerachView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mApplyClick.equals("1")) {
+                    mApplyClick="0";
+                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            lianerTital.setClickable(true);
+                            btnOldTestament.setClickable(true);
+                            btnNewTestament.setClickable(true);
+                            btnTheology.setClickable(true);
+                            btnPastoralcareAndCounseling.setClickable(true);
+                            btnCommunication.setClickable(true);
+                            btnReligion.setClickable(true);
+                            btnOther.setClickable(true);
+                            lianerTital.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    return false;
+                                }
+                            });
+                        }
+                    }, 2000);
+                }
 
-                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
-                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                etSerachView.setSingleLine();
-                etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-                etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
-              /*  if (FilterFlag.equals("0")) {
+            /*    if (FilterFlag.equals("0")) {
                     mKeyBordOpen = false;
                     FilterFlag = "1";
                     InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
                     inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-                }
-*/
+                }*/
             }
         });
         etSerachView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -685,14 +758,31 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    Constant.hideKeyboard(getActivity(), mView);
+                    mFilter = true;
+                    mPublisher = true;
+                    mYear = true;
+                    mAuthor = true;
+                    mLanguage = true;
+                    if (mKeyBordOpen) {
+                        FilterFlag = "0";
+                    }
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
                     SearchBookFragment fragmentB = new SearchBookFragment();
                     Bundle args = new Bundle();
-                    args.putString("type",mSelectType );
-                    args.putString("value",etSerachView.getText().toString());
+                    args.putString("type", mSelectType);
+                    args.putString("value", etSerachView.getText().toString());
+                    etSerachView.setText("");
                     fragmentB.setArguments(args);
                     getFragmentManager().beginTransaction().addToBackStack(null)
                             .add(R.id.contant_frame, fragmentB)
                             .commit();
+
                     return true;
                 }
                 return false;

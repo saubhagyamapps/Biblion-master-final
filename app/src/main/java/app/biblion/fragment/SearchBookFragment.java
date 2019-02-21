@@ -51,7 +51,7 @@ public class SearchBookFragment extends Fragment {
         Bundle args = getArguments();
         mType = args.getString("type");
         mValue = args.getString("value");
-        getActivity().setTitle("Search");
+        getActivity().setTitle(mType);
         init();
         return mView;
     }
@@ -59,7 +59,6 @@ public class SearchBookFragment extends Fragment {
     public void init() {
 
         recycle_search = mView.findViewById(R.id.recycle_search);
-
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recycle_search.setLayoutManager(layoutManager);
         bookAdepter = new SearchBookAdepter(getActivity(), new BookClick() {
@@ -71,7 +70,7 @@ public class SearchBookFragment extends Fragment {
                 args.putString("id", id);
                 articleClickFragment.setArguments(args);
                 getFragmentManager().beginTransaction().addToBackStack(null)
-                        .replace(R.id.contant_frame, articleClickFragment).commit();
+                        .add(R.id.contant_frame, articleClickFragment).commit();
             }
         });
 
@@ -116,11 +115,11 @@ public class SearchBookFragment extends Fragment {
     private void loadFirstPage() {
         Constant.progressDialog(getActivity());
         Log.d(TAG, "loadFirstPage: ");
-        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue);
+        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue,currentPage);
         modelCall.enqueue(new Callback<SearchModel>() {
             @Override
             public void onResponse(Call<SearchModel> call, Response<SearchModel> response) {
-              //  TOTAL_PAGES = response.body().getTotalPages();
+                TOTAL_PAGES = response.body().getTotalPages();
                 List<SearchModel.ResultBean> results = response.body().getResult();
                 Constant.mImagesPath = response.body().getPath();
                 bookAdepter.addAll(results);
@@ -141,7 +140,7 @@ public class SearchBookFragment extends Fragment {
 
     private void loadNextPage() {
         Log.d(TAG, "loadNextPage: " + currentPage);
-        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue);
+        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue,currentPage);
         modelCall.enqueue(new Callback<SearchModel>() {
             @Override
             public void onResponse(Call<SearchModel> call, Response<SearchModel> response) {
