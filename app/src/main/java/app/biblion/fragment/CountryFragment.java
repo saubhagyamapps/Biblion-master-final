@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import app.biblion.R;
 import app.biblion.adpater.CountryLeaderAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CountryFragment extends Fragment {
@@ -22,6 +23,7 @@ public class CountryFragment extends Fragment {
                     1, 2, 3, 4, 5, 6, 7, 8, 9, 10
             };
     private CountryLeaderAdapter countryLeaderAdapter;
+    private CircleImageView First_Rank_Image, Second_Rank_Image, Third_Rank_Image;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +36,9 @@ public class CountryFragment extends Fragment {
 
     private void init()
     {
+        First_Rank_Image = mView.findViewById(R.id.first_rank_image_country);
+        Second_Rank_Image = mView.findViewById(R.id.second_rank_image_country);
+        Third_Rank_Image = mView.findViewById(R.id.third_rank_image_country);
         recyclerView_country = mView.findViewById(R.id.country_leader_recyclerview);
         countryLeaderAdapter = new CountryLeaderAdapter(getActivity(),num);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
