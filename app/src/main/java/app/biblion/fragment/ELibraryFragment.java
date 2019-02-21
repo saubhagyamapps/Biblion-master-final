@@ -492,58 +492,6 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
-   private void onTouchClick()
-   {
-       filter_Title.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-
-                   etSerachView.setSingleLine();
-                   etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-                   InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
-                   inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                   filter_Title.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-
-               return false;
-           }
-       });
-
-       filter_Publisher.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               return false;
-           }
-       });
-
-       filter_Year.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               return false;
-           }
-       });
-
-       filter_Author.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               return false;
-           }
-       });
-       filter_Language.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               return false;
-           }
-       });
-       filter_Apply.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               return false;
-           }
-       });
-   }
-
     private void onTouchClick() {
         etSerachView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -841,5 +789,4 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
 }
