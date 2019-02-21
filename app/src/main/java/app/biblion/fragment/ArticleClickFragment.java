@@ -52,9 +52,7 @@ public class ArticleClickFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_article_click, container, false);
-//      getActivity().setTitle("Love Your Neighbour"like_count);
         Bundle args = getArguments();
         mArticaleId = args.getString("id");
         init();
@@ -66,7 +64,6 @@ public class ArticleClickFragment extends Fragment {
         like_Image = mView.findViewById(R.id.like_image);
 
         clicked_Imagel = mView.findViewById(R.id.click_article_image);
-        //clicked_Desc_txt = mView.findViewById(R.id.click_articaldesc);
         Clicked_Title_txt = mView.findViewById(R.id.click_article_title);
         Article_desc = mView.findViewById(R.id.click_articaldesc);
         like_Count = mView.findViewById(R.id.like_count);
@@ -136,14 +133,12 @@ public class ArticleClickFragment extends Fragment {
             @Override
             public void onResponse(Call<ArticalDetailsModel> call, Response<ArticalDetailsModel> response) {
 
-                // clicked_Desc_txt.setText(response.body().getResult().get(0).getDescription().replace("\\r\\n",""));
-               // Article_desc.setText(response.body().getResult().get(0).getDescription().replace("\\r\\n", ""));
-
                 String txt_article_desc = response.body().getResult().get(0).getDescription().replace("&lt;", "<").replace("&gt;", ">")
                         .replace("\\r\\n\\r\\n", "").replace("\\r\\n", "");
                 Clicked_Title_txt.setText(response.body().getResult().get(0).getTitle());
                 Glide.with(getActivity()).load(response.body().getImage())
                         .thumbnail(0.5f)
+                        .placeholder(R.drawable.image_loader)
                         .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)

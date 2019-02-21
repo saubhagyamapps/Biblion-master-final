@@ -78,6 +78,7 @@ public class MyLibraryBookTopDownloadAdepter extends RecyclerView.Adapter<Recycl
                 Glide.with(mContext).load("http://frozenkitchen.in/biblion_demo/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
                         .crossFade()
+                        .placeholder(R.drawable.image_loader)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(movieVH.imageViewBook);

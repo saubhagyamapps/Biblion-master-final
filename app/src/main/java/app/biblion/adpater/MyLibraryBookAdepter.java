@@ -85,6 +85,7 @@ public class MyLibraryBookAdepter extends RecyclerView.Adapter<RecyclerView.View
                 Log.e(TAG, "onBindViewHolder: "+dataBean.get(i).getBookname() );
                 Glide.with(mContext).load("http://frozenkitchen.in/biblion_demo/public/images/" + dataBean.get(i).getImage())
                         .thumbnail(0.5f)
+                        .placeholder(R.drawable.image_loader)
                         .crossFade()
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)

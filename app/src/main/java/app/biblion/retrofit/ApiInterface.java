@@ -4,6 +4,7 @@ package app.biblion.retrofit;
 import app.biblion.model.AllSongListModel;
 import app.biblion.model.ArticalDetailsModel;
 import app.biblion.model.ArticalModel;
+import app.biblion.model.BookDetailsModel;
 import app.biblion.model.CategoryModel;
 import app.biblion.model.DevotionModel;
 import app.biblion.model.EditProfileModel;
@@ -13,6 +14,7 @@ import app.biblion.model.LoginModel;
 import app.biblion.model.MyLibraryBookModel;
 import app.biblion.model.RegisterModel;
 import app.biblion.model.ResetPasswordModel;
+import app.biblion.model.SearchModel;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -140,4 +142,14 @@ public interface ApiInterface {
     @POST("category_book")
     Call<CategoryModel> getCategoryBook(@Field("category") String category,
                                         @Field("page") int page);
+
+    @FormUrlEncoded
+    @POST("getbook")
+    Call<BookDetailsModel> getBookDetails(@Field("id") String category);
+
+    @FormUrlEncoded
+    @POST("search")
+    Call<SearchModel> getSearchList(@Field("type") String type,
+                                    @Field("value") String value,
+                                    @Field("page") int page);
 }

@@ -54,7 +54,7 @@ public class Constant {
 
     }
     public static void hideKeyboard(Activity activity, View viewToHide) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(viewToHide.getWindowToken(), 0);
     }
 }

@@ -58,18 +58,18 @@ public class CategoryModel {
          * book : 1550125279.EPUB
          */
 
-        private int id;
+        private String id;
         private String image;
         private String category;
         private String bookname;
         private String description;
         private String book;
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

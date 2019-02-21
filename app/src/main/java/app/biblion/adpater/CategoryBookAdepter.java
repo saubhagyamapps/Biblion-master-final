@@ -85,7 +85,7 @@ public class CategoryBookAdepter extends RecyclerView.Adapter<RecyclerView.ViewH
                 movieVH.imageViewBook.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                    //    bookClick.bookClick(dataBean.get(i).getId());
+                        bookClick.bookClick(dataBean.get(i).getId());
                     }
                 });
             case LOADING:
