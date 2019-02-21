@@ -38,7 +38,7 @@ public class SearchBookFragment extends Fragment {
     private boolean isLastPage = false;
     private static final int PAGE_START = 1;
     private int currentPage = PAGE_START;
-    private int TOTAL_PAGES;
+    private int TOTAL_PAGES=1;
     SearchBookAdepter bookAdepter;
     RecyclerView recycle_search;
     String mType,mValue;
@@ -116,7 +116,7 @@ public class SearchBookFragment extends Fragment {
     private void loadFirstPage() {
         Constant.progressDialog(getActivity());
         Log.d(TAG, "loadFirstPage: ");
-        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue,currentPage);
+        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue);
         modelCall.enqueue(new Callback<SearchModel>() {
             @Override
             public void onResponse(Call<SearchModel> call, Response<SearchModel> response) {
@@ -141,7 +141,7 @@ public class SearchBookFragment extends Fragment {
 
     private void loadNextPage() {
         Log.d(TAG, "loadNextPage: " + currentPage);
-        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue,currentPage);
+        Call<SearchModel> modelCall = Constant.apiService.getSearchList(mType,mValue);
         modelCall.enqueue(new Callback<SearchModel>() {
             @Override
             public void onResponse(Call<SearchModel> call, Response<SearchModel> response) {

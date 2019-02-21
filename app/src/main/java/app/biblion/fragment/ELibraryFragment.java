@@ -1,8 +1,6 @@
 package app.biblion.fragment;
 
-import android.app.Activity;
 import android.content.Context;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -13,21 +11,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -73,8 +69,11 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     Button btnOldTestament, btnNewTestament, btnTheology, btnPastoralcareAndCounseling, btnCommunication, btnReligion, btnOther;
 
     int mCurCheckPosition;
-    TextView filter_Title, filter_Publisher, filter_Year, filter_Author,filter_Language, filter_Apply;
-
+    TextView filter_Title, filter_Publisher, filter_Year, filter_Author, filter_Language, filter_Apply;
+    boolean mFilter = true, mPublisher = true, mYear = true, mAuthor = true, mLanguage = true;
+    String FilterFlag = "1";
+    boolean mKeyBordOpen = true;
+    String mSelectType;
 
     @Nullable
     @Override
@@ -97,7 +96,6 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         getActivity().setTitle("E-Library");
-        Constant.hideKeyboard(getActivity(),mView);
         init();
     }
 
@@ -116,7 +114,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         btnCommunication = mView.findViewById(R.id.btnCommunication);
         btnReligion = mView.findViewById(R.id.btnReligion);
         btnOther = mView.findViewById(R.id.btnOther);
-       /// etSerachView.setInputType(InputType.TYPE_NULL);
+        etSerachView.setInputType(InputType.TYPE_NULL);
 
         btnOldTestament.setOnClickListener(this);
         btnNewTestament.setOnClickListener(this);
@@ -238,10 +236,16 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
         loadFirstPageMyLibrary();
         loadFirstPageTopDowloadBook();
     }
-    private void showKeyBoard()
-    {
-        InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.SHOW_IMPLICIT);
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Constant.hideKeyboard(getActivity(), mView);
+    }
+
+    private void showKeyBoard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.SHOW_IMPLICIT);
     }
 
     private void serrchButtonClick() {
@@ -253,8 +257,8 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                 final int DRAWABLE_RIGHT = 2;
                 final int DRAWABLE_BOTTOM = 3;
                 //etSerachView.setInputType(InputType.TYPE_NULL);
-                Constant.hideKeyboard(getActivity(),mView);
-                serachView_layout.setVisibility(View.VISIBLE);
+                Constant.hideKeyboard(getActivity(), mView);
+                //serachView_layout.setVisibility(View.VISIBLE);
 
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (etSerachView.getRight() - etSerachView.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
@@ -263,6 +267,13 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                             Flag = false;
                             serachView_layout.setVisibility(View.VISIBLE);
                             lianerTital.setClickable(false);
+                            btnOldTestament.setClickable(false);
+                            btnNewTestament.setClickable(false);
+                            btnTheology.setClickable(false);
+                            btnPastoralcareAndCounseling.setClickable(false);
+                            btnCommunication.setClickable(false);
+                            btnReligion.setClickable(false);
+                            btnOther.setClickable(false);
                             lianerTital.setOnTouchListener(new View.OnTouchListener() {
                                 @Override
                                 public boolean onTouch(View v, MotionEvent event) {
@@ -274,6 +285,13 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                             Flag = true;
                             serachView_layout.setVisibility(View.GONE);
                             lianerTital.setClickable(true);
+                            btnOldTestament.setClickable(true);
+                            btnNewTestament.setClickable(true);
+                            btnTheology.setClickable(true);
+                            btnPastoralcareAndCounseling.setClickable(true);
+                            btnCommunication.setClickable(true);
+                            btnReligion.setClickable(true);
+                            btnOther.setClickable(true);
                             lianerTital.setOnTouchListener(new View.OnTouchListener() {
                                 @Override
                                 public boolean onTouch(View v, MotionEvent event) {
@@ -436,18 +454,249 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
 
     }
 
-   private void onTouchClick()
-   {
-       filter_Title.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View v, MotionEvent event) {
-               etSerachView.setSingleLine();
-               etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-               InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
-               inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-               filter_Title.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-               return false;
-           }
-       });
-   }
+    private void onTouchClick() {
+        filter_Title.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mFilter) {
+                    mSelectType=filter_Title.getText().toString();
+                    mFilter = false;
+                    mPublisher = true;
+                    mYear = true;
+                    mAuthor = true;
+                    mLanguage = true;
+                    if (mKeyBordOpen) {
+                        FilterFlag = "0";
+                    }
+               /*     etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                   etSerachView.performClick();*/
+
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+
+                } else {
+                    FilterFlag = "1";
+                    mFilter = true;
+                    mKeyBordOpen = true;
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    Constant.hideKeyboard(getActivity(), mView);
+                }
+
+                return false;
+            }
+        });
+
+        filter_Publisher.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mPublisher) {
+                    mSelectType=filter_Publisher.getText().toString();
+                    mFilter = true;
+                    mPublisher = false;
+                    mYear = true;
+                    mAuthor = true;
+                    mLanguage = true;
+                    if (mKeyBordOpen) {
+                        FilterFlag = "0";
+                    }
+                   /* etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    etSerachView.performClick();*/
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+
+                } else {
+                    FilterFlag = "1";
+                    mPublisher = true;
+                    mKeyBordOpen = true;
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    Constant.hideKeyboard(getActivity(), mView);
+                }
+
+                return false;
+            }
+        });
+        filter_Year.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mYear) {
+                    mSelectType=filter_Year.getText().toString();
+                    mFilter = true;
+                    mPublisher = true;
+                    mYear = false;
+                    mAuthor = true;
+                    mLanguage = true;
+                    if (mKeyBordOpen) {
+                        FilterFlag = "0";
+                    }
+                /*    etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    etSerachView.performClick();*/
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+
+                } else {
+                    FilterFlag = "1";
+                    mYear = true;
+                    mKeyBordOpen = true;
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    Constant.hideKeyboard(getActivity(), mView);
+                }
+
+                return false;
+            }
+        });
+        filter_Author.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mAuthor) {
+                    mSelectType=filter_Author.getText().toString();
+                    mFilter = true;
+                    mPublisher = true;
+                    mYear = true;
+                    mAuthor = false;
+                    mLanguage = true;
+                    if (mKeyBordOpen) {
+                        FilterFlag = "0";
+                    }
+                  /*  etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    etSerachView.performClick();*/
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+
+                } else {
+                    FilterFlag = "1";
+                    mAuthor = true;
+                    mKeyBordOpen = true;
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    Constant.hideKeyboard(getActivity(), mView);
+                }
+
+                return false;
+            }
+        });
+        filter_Language.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mLanguage) {
+                    mSelectType=filter_Language.getText().toString();
+                    mFilter = true;
+                    mPublisher = true;
+                    mYear = true;
+                    mAuthor = true;
+                    mLanguage = false;
+                    if (mKeyBordOpen) {
+                        FilterFlag = "0";
+                    }
+                /*    etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    etSerachView.performClick();*/
+                    filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));
+
+                } else {
+                    FilterFlag = "1";
+                    mLanguage = true;
+                    mKeyBordOpen = true;
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    Constant.hideKeyboard(getActivity(), mView);
+                }
+
+                return false;
+            }
+        });
+
+        filter_Apply.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!mFilter || !mPublisher || !mYear || !mAuthor || !mLanguage) {
+                    FilterFlag = "0";
+                    etSerachView.setSingleLine();
+                    etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                    etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+                    etSerachView.performClick();
+
+                    /*filter_Title.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Publisher.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Year.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Author.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button_color));*/
+
+                } else {
+                    FilterFlag = "1";
+                    mLanguage = true;
+                    mKeyBordOpen = true;
+                    etSerachView.setInputType(InputType.TYPE_NULL);
+                    filter_Language.setBackground(getResources().getDrawable(R.drawable.shadow_effect_button));
+                    Constant.hideKeyboard(getActivity(), mView);
+                }
+                return false;
+            }
+        });
+
+        etSerachView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                etSerachView.setSingleLine();
+                etSerachView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                etSerachView.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT);
+              /*  if (FilterFlag.equals("0")) {
+                    mKeyBordOpen = false;
+                    FilterFlag = "1";
+                    InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+                }
+*/
+            }
+        });
+        etSerachView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
+                    SearchBookFragment fragmentB = new SearchBookFragment();
+                    Bundle args = new Bundle();
+                    args.putString("type",mSelectType );
+                    args.putString("value",etSerachView.getText().toString());
+                    fragmentB.setArguments(args);
+                    getFragmentManager().beginTransaction().addToBackStack(null)
+                            .add(R.id.contant_frame, fragmentB)
+                            .commit();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 }

@@ -3,15 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
     android:id="@+id/artcile_layout_screenshot"
     android:background="@color/white"
-    android:orientation="vertical"
     tools:context=".fragment.ArticleClickFragment">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
