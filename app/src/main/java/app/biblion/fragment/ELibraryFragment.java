@@ -741,7 +741,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
                                 }
                             });
                         }
-                    }, 2000);
+                    }, 1000);
                 }
 
             /*    if (FilterFlag.equals("0")) {

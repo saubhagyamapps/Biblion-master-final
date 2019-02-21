@@ -66,12 +66,12 @@ public class CategoryBookFragment extends Fragment {
             @Override
             public void bookClick(String id) {
 
-                ArticleClickFragment articleClickFragment = new ArticleClickFragment();
+                DetailELibraryFragment articleClickFragment = new DetailELibraryFragment();
                 Bundle args = new Bundle();
                 args.putString("id", id);
                 articleClickFragment.setArguments(args);
                 getFragmentManager().beginTransaction().addToBackStack(null)
-                        .replace(R.id.contant_frame, articleClickFragment).commit();
+                        .add(R.id.contant_frame, articleClickFragment).commit();
             }
         });
 

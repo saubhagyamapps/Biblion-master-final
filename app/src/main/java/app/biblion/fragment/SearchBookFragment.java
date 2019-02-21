@@ -51,7 +51,7 @@ public class SearchBookFragment extends Fragment {
         Bundle args = getArguments();
         mType = args.getString("type");
         mValue = args.getString("value");
-        getActivity().setTitle(mType);
+        getActivity().setTitle(mType +" "+"Books");
         init();
         return mView;
     }
