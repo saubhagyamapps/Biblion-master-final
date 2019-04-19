@@ -73,6 +73,7 @@ public class LoginModel {
         private String country;
         private String state;
         private String city;
+        private String langauge;
 
         public String getId() {
             return id;
@@ -192,6 +193,14 @@ public class LoginModel {
 
         public void setCity(String city) {
             this.city = city;
+        }
+
+        public String getLangauge() {
+            return langauge;
+        }
+
+        public void setLangauge(String langauge) {
+            this.langauge = langauge;
         }
     }
 }

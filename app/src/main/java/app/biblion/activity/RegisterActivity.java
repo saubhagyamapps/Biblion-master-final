@@ -88,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
     private final static int IMAGE_RESULT = 200;
     Call<RegisterModel> modelCall;
     String mIntentImagesPath;
+    String mLanguageName = "English";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -458,17 +459,19 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                 RequestBody.create(MediaType.parse("multipart/form-data"), mState);
         RequestBody city =
                 RequestBody.create(MediaType.parse("multipart/form-data"), mCity);
+        RequestBody language =
+                RequestBody.create(MediaType.parse("multipart/form-data"),mLanguageName);
 
         Constant.progressDialog(RegisterActivity.this);
         if (mGoogleimage.equals("null")) {
             setImages = "local";
 
             modelCall = Constant.apiService.
-                    getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city, body);
+                    getRegisterDetails(Email, Password, firebase_id, Device_id, FullName, Brithdate, Gnder, UserName, Mobile_Number, country, State, city,language, body);
         } else {
             setImages = "google";
             modelCall = Constant.apiService.
-                    getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity, mGoogleimage);
+                    getRegisterDetailsGoogle(mEmail, mPassword, "abcd", mDevice_id, mFullName, mBrithdate, mGnder, mUserName, mMobile_Number, mCountry, mState, mCity, mGoogleimage,mLanguageName);
         }
         modelCall.enqueue(new Callback<RegisterModel>() {
             @Override
@@ -487,7 +490,7 @@ public class RegisterActivity extends AppCompatActivity implements ConnectivityR
                             response.body().getResult().getGender(), response.body().getResult().getDob(),
                             response.body().getResult().getDevice_id(), response.body().getResult().getMobile(),
                             response.body().getResult().getFirebase_id(), response.body().getResult().getCity(),
-                            response.body().getResult().getState(), response.body().getResult().getCountry(), mImagesPath);
+                            response.body().getResult().getState(), response.body().getResult().getCountry(), mImagesPath,mLanguageName);
                     Constant.intent(RegisterActivity.this, NavigationActivity.class);
                     Constant.progressBar.dismiss();
                     finish();

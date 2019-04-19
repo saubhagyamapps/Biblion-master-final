@@ -40,7 +40,7 @@ public class SongBookFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.song_book_fragment, container, false);
-        getActivity().setTitle("Song Book");
+        getActivity().setTitle(R.string.song_book);
         initialization();
         return mView;
     }

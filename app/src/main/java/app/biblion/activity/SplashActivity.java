@@ -14,13 +14,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import java.util.HashMap;
+
 import app.biblion.R;
 import app.biblion.sessionmanager.SessionManager;
+import app.biblion.util.Constant;
 
 public class SplashActivity extends AppCompatActivity {
     Handler handler;
     private final int SPLASH_TIME = 100;
     SessionManager securityManager;
+    public HashMap<String, String> user;
+    private String LanguagetoLoad;
+
     Intent intent;
     int Flag;
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
@@ -30,6 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         securityManager = new SessionManager(SplashActivity.this);
+        user = securityManager.getUserDetails();
         checkLoginSession();
 
         setContentView(R.layout.activity_splash);
@@ -72,6 +79,16 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
+            String selectedLanguage = user.get(securityManager.KEY_LANGUAGE);
+            if (selectedLanguage.equals("English"))
+            {
+                LanguagetoLoad = "en";
+                Constant.changeLanguage(LanguagetoLoad,getApplicationContext());
+            }
+            else{
+                LanguagetoLoad = "gj";
+                Constant.changeLanguage(LanguagetoLoad,getApplicationContext());
+            }
             intent = new Intent(SplashActivity.this, NavigationActivity.class);
             startActivity(intent);
             finish();

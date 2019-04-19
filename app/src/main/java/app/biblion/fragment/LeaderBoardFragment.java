@@ -29,7 +29,7 @@ public class LeaderBoardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_leader_board, container, false);
-        getActivity().setTitle("Leaderboard");
+        getActivity().setTitle(R.string.leaderboard);
         init();
         return mView;
     }

@@ -82,7 +82,7 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.elibray_fragment, container, false);
-        getActivity().setTitle("E Library");
+        getActivity().setTitle(getResources().getString(R.string.elibary));
         //init();
         setRetainInstance(true);
         return mView;
@@ -98,7 +98,6 @@ public class ELibraryFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle("E-Library");
         init();
     }
 

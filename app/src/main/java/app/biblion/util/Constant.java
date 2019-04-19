@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.content.res.Configuration;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -13,16 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.util.LogTime;
-
-import javax.security.auth.login.LoginException;
+import java.util.Locale;
 
 import app.biblion.R;
 import app.biblion.retrofit.ApiClient;
 import app.biblion.retrofit.ApiInterface;
 
 public class Constant {
-
+    public static Context context;
     public static String mBaseUrl = "http://frozenkitchen.in/biblion_demo/";
     public static String mImagesPath;
     public static ProgressDialog progressBar;
@@ -56,5 +55,15 @@ public class Constant {
     public static void hideKeyboard(Activity activity, View viewToHide) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(viewToHide.getWindowToken(), 0);
+    }
+
+    public static void changeLanguage(String langtoload, Context activity)
+    {
+        Locale locale = new Locale(langtoload);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        activity.getResources().
+                updateConfiguration(config,activity.getResources().getDisplayMetrics());
     }
 }

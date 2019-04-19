@@ -82,7 +82,7 @@ public class HomeBookFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.home_fragment, container, false);
-        getActivity().setTitle("Home");
+        getActivity().setTitle(R.string.home);
         init();
         return mView;
     }

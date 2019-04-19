@@ -67,7 +67,9 @@ public class NavigationActivity extends AppCompatActivity
 
 
     }
+     public NavigationActivity(){
 
+    }
     private void initialization(Bundle savedInstanceState) {
         //bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         session = new SessionManager(getApplicationContext());

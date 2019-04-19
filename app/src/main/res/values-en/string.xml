@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name" translatable="false">Biblion</string>
     <string name="title_activity_navigation" translatable="false">NavigationActivity</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
@@ -25,12 +27,12 @@
     <string name="home_devotion">Devotion</string>
     <string name="nav_share">Share</string>
     <string name="nav_logout">LogOut</string>
-    <string name="botom_account">Account</string>
     <string name="frag_elbrary">E Library</string>
+    <string name="botom_account">Account</string>
     <string name="frag_account_setting">Account Setting</string>
     <string name="frag_leader_board">Leader Board</string>
     <string name="frag_reset_password">Reset Password</string>
-    
+
     <string name="mylibrary">My Library</string>
     <string name="top_download">Top Download</string>
     <string name="update_button">UPDATE</string>
@@ -39,11 +41,6 @@
     <string name="reset_button">Reset Password</string>
     <string name="download_book_button">Download Book</string>
     <string name="sypnosis_description">Synopsis/Description</string>
-    <!--<string name="frag_home">Home</string>
-    <string name="frag_bible">Bible</string>
-    <string name="frag_quiz">Quiz</string>
-    <string name="frag_songBook">Song Book</string>
-    <string name="f"-->
 
     <string name="register_links" translatable="false">By Clicking Register Now, You agree to our
         <a href="Terms and Condition links"><b>Terms &amp; Condition</b></a>

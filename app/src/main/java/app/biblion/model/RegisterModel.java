@@ -88,6 +88,7 @@ public class RegisterModel {
         private String country;
         private String state;
         private String city;
+        private String language;
 
 
         public String getGoogleImage() {
@@ -199,6 +200,14 @@ public class RegisterModel {
 
         public void setCity(String city) {
             this.city = city;
+        }
+
+        public String getLanguage() {
+            return language;
+        }
+
+        public void setLanguage(String language) {
+            this.language = language;
         }
     }
 }

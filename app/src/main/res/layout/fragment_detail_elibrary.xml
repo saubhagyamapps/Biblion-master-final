@@ -106,7 +106,7 @@
             android:layout_below="@+id/txt_book_pages"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Synopsis/Description"
+            android:text="@string/sypnosis_description"
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold" />
 
@@ -145,7 +145,7 @@
             android:paddingRight="30dp"
             android:paddingBottom="3dp"
             android:singleLine="true"
-            android:text="Download Book"
+            android:text="@string/download_book_button"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp" />

@@ -25,7 +25,7 @@ public class QuizFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.quiz_fragment, container, false);
-        getActivity().setTitle("Quiz");
+        getActivity().setTitle(R.string.quiz);
 
         init();
         cardClicked();

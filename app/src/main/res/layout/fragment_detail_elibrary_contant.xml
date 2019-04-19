@@ -141,7 +141,7 @@
             android:paddingRight="30dp"
             android:paddingBottom="3dp"
             android:singleLine="true"
-            android:text="Download Book"
+            android:text="@string/download_book_button"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="15sp" />

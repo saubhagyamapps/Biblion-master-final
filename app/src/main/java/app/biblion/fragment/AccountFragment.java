@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.biblion.R;
+import app.biblion.activity.NavigationActivity;
 import app.biblion.model.EditProfileModel;
 import app.biblion.sessionmanager.SessionManager;
 import app.biblion.util.Constant;
@@ -63,7 +64,8 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     View mView;
     private static final String TAG = "Accountfragment";
     Context mContext;
-    EditText edtPFullname, edtPUsername, edtPBirtthdate, edtPEmail, edtPpwd, edtPConfPwd, edtPMobileno, edtPCountry, edtPState, edtPCity;
+    EditText edtPFullname, edtPUsername, edtPBirtthdate, edtPEmail, edtPpwd, edtPConfPwd, edtPMobileno,
+            edtPCountry, edtPState, edtPCity, edtLanguage;
     Button btnUpdate;
     Calendar myCalendar;
     ImageView camera_image;
@@ -72,6 +74,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     RadioGroup prof_radio_group;
     String filePath = "null";
     String mGoogleimage = "null";
+    Fragment fragment = null;
     String mDevice_id;
     String mGnder;
     String profselectedCountry, profselectedState, profselectedCity;
@@ -80,21 +83,24 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
     int togglePosition = 0;
     private SessionManager sessionManager;
     String pUserName, pFullName, pFirebase_id, pEmail, pBrithdate, pMobile_Number, pCountry, pState, pCity;
-    String A_Name, A_Email, A_MobileNo, A_DOB, A_Gender, A_DeviceId, A_FirebaseID, A_Password, A_Id, A_City, A_State, A_Country;
+    String A_Name, A_Email, A_MobileNo, A_DOB, A_Gender, A_DeviceId, A_FirebaseID, A_Password,
+            A_Id, A_City, A_State, A_Country,A_Language;
     private DatePickerDialog profDatePickerDialog;
-    private AlertDialog prof_alertDialogObjectCountry, prof_alertDialogObjectState, prof_alertDialogObjectCity;
+    private AlertDialog prof_alertDialogObjectCountry, prof_alertDialogObjectState,
+            prof_alertDialogObjectCity, prof_alertDialogueObjectLanguage;
     Call<EditProfileModel> editProfileModelCall;
     private final static int IMAGE_RESULT = 200;
     CircleImageView imageView;
     Uri picUri;
     String mImagesPath;
+    String mLanguageCode, mLanguageName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_account, container, false);
-        getActivity().setTitle("Account Setting");
+        getActivity().setTitle(R.string.frag_account_setting);
         sessionManager = new SessionManager(getActivity());
         initialization();
         getDataFromSession();
@@ -113,6 +119,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edtPState = mView.findViewById(R.id.edt_profstate);
         edtPCity = mView.findViewById(R.id.edt_profcity);
         btnUpdate = mView.findViewById(R.id.btn_profupdate);
+        edtLanguage = mView.findViewById(R.id.edt_proflanguage);
 
        /* prof_radioMale = mView.findViewById(R.id.profradiobtn_male);
         prof_radioFemale = mView.findViewById(R.id.profradiobtn_female);
@@ -141,6 +148,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         ShowProfileCountryList();
         ShowProfileStateList();
         ShowProfileCityList();
+        showLanguageList();
         // getCemaraImages();
         updateClicked();
         getCemaraImages();
@@ -179,6 +187,9 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         A_City = user.get(sessionManager.KEY_CITY);
         A_State = user.get(sessionManager.KEY_STATE);
         A_Country = user.get(sessionManager.KEY_COUNTRY);
+        A_Language = user.get(sessionManager.KEY_LANGUAGE);
+
+
 
         edtPUsername.setText(A_Name);
         edtPEmail.setText(A_Email);
@@ -187,6 +198,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         edtPCity.setText(A_City);
         edtPState.setText(A_State);
         edtPCountry.setText(A_Country);
+        edtLanguage.setText(A_Language);
         mGnder = A_Gender;
         if (mGnder.equals("Male")) {
             toggleSwitch.setCheckedTogglePosition(0);
@@ -259,6 +271,13 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 prof_alertDialogObjectCity.show();
+                return false;
+            }
+        });
+        edtLanguage.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                prof_alertDialogueObjectLanguage.show();
                 return false;
             }
         });
@@ -507,15 +526,17 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                 RequestBody.create(MediaType.parse("multipart/form-data"), pState);
         RequestBody u_City =
                 RequestBody.create(MediaType.parse("multipart/form-data"), pCity);
+        RequestBody u_Language =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mLanguageName);
 
         Constant.progressDialog(getActivity());
 
         if (!filePath.equals("null")) {
             editProfileModelCall = Constant.apiService.
-                    getEditDetailsWithImag(u_Id, u_Username, u_Email, u_Gender, u_Birthdate, u_MobileNo, u_Country, u_State, u_City, body);
+                    getEditDetailsWithImag(u_Id, u_Username, u_Email, u_Gender, u_Birthdate, u_MobileNo, u_Country, u_State, u_City,u_Language, body);
 
         } else {
-            editProfileModelCall = Constant.apiService.getEditDetails(A_Id, pUserName, A_Email, mGnder, pBrithdate, pMobile_Number, pCountry, pState, pCity);
+            editProfileModelCall = Constant.apiService.getEditDetails(A_Id, pUserName, A_Email, mGnder, pBrithdate, pMobile_Number, pCountry, pState, pCity,mLanguageName);
         }
 
         editProfileModelCall.enqueue(new Callback<EditProfileModel>() {
@@ -535,17 +556,21 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
                             response.body().getResult().get(0).getFirebase_id(), response.body().getResult().get(0).getCity(),
-                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), mImagesPath);
+                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), mImagesPath,mLanguageName);
                     Constant.progressBar.dismiss();
+                    Log.e(TAG, "LANGUAGE>>>>>: "+mLanguageName );
                     getFragmentManager()
                             .beginTransaction()
                             .detach(AccountFragment.this)
                             .attach(AccountFragment.this)
                             .commit();
                     Toast.makeText(getActivity(), "Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent=new Intent(getActivity(),NavigationActivity.class);
+                    startActivity(intent);
 
-
+                    Log.e(TAG, "Tstingggggggggggggg" );
                 }
+
 
             }
 
@@ -640,6 +665,48 @@ public class AccountFragment extends Fragment implements View.OnClickListener {
         //Show the dialog
         //alertDialogObject.show();
     }
+
+    public void showLanguageList()
+    {
+        List<String> mLanguageList = new ArrayList<>();
+        mLanguageList.add("English");
+        mLanguageList.add("Gujarati");
+        final CharSequence[] lists = mLanguageList.toArray(new String[mLanguageList.size()]);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        dialogBuilder.setTitle("Language");
+        dialogBuilder.setItems(lists, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                mLanguageName = lists[item].toString();
+                edtLanguage.setText(mLanguageName);
+
+                switch (mLanguageName){
+
+                    case "Gujarati":
+                        mLanguageCode = "gj";
+                        Constant.changeLanguage(mLanguageCode, getActivity());
+                        /*Locale locale = new Locale(mLanguageCode);
+                        Locale.setDefault(locale);
+                        Configuration config = new Configuration();
+                        config.locale = locale;
+                        getActivity().getResources().
+                                updateConfiguration(config,getActivity().getResources().getDisplayMetrics());*/
+                        break;
+                    case "English":
+                        mLanguageCode = "en";
+                        Constant.changeLanguage(mLanguageCode,getActivity());
+                       /* locale = new Locale(mLanguageCode);
+                        Locale.setDefault(locale);
+                        config = new Configuration();
+                        config.locale = locale;
+                        getActivity().getResources().
+                                updateConfiguration(config,getActivity().getResources().getDisplayMetrics());*/
+                }
+            }
+        });
+        prof_alertDialogueObjectLanguage= dialogBuilder.create();
+    }
+
 
 
 }

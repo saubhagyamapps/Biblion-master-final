@@ -212,7 +212,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             response.body().getResult().get(0).getGender(), response.body().getResult().get(0).getDob(),
                             response.body().getResult().get(0).getDevice_id(), response.body().getResult().get(0).getMobile(),
                             response.body().getResult().get(0).getFirebase_id(), response.body().getResult().get(0).getCity(),
-                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(), mImagesPath);
+                            response.body().getResult().get(0).getState(), response.body().getResult().get(0).getCountry(),
+                            mImagesPath,response.body().getResult().get(0).getLangauge());
                     Constant.intent(LoginActivity.this, NavigationActivity.class);
                     finish();
                 }

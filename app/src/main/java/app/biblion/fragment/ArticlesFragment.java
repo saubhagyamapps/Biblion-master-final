@@ -46,7 +46,7 @@ public class ArticlesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.articals_fragment, container, false);
-        getActivity().setTitle("Articles");
+        getActivity().setTitle(R.string.articles);
         init();
         return mView;
     }

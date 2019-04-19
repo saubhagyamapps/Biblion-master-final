@@ -30,6 +30,7 @@ public class SessionManager {
     public static final String KEY_COUNTRY = "country";
     public static final String KEY_STATE = "state";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_LANGUAGE = "language";
 
     public SessionManager(Context context) {
         this._context = context;
@@ -39,7 +40,8 @@ public class SessionManager {
 
     public void createLoginSession(String id, String mEmail, String mPassword, String name,
                                    String gender, String dob, String device_id, String mobile,
-                                   String firebase_id, String city, String state, String country,String images) {
+                                   String firebase_id, String city, String state, String country,
+                                   String images, String language) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_ID, id);
         editor.putString(KEY_EMAIL, mEmail);
@@ -54,6 +56,7 @@ public class SessionManager {
         editor.putString(KEY_COUNTRY, country);
         editor.putString(KEY_STATE, state);
         editor.putString(KEY_IMAGE, images);
+        editor.putString(KEY_LANGUAGE, language);
         editor.apply();
     }
 
@@ -82,6 +85,7 @@ public class SessionManager {
         user.put(KEY_COUNTRY, pref.getString(KEY_COUNTRY, null));
         user.put(KEY_STATE, pref.getString(KEY_STATE, null));
         user.put(KEY_IMAGE, pref.getString(KEY_IMAGE, null));
+        user.put(KEY_LANGUAGE, pref.getString(KEY_LANGUAGE,null));
         return user;
     }
 

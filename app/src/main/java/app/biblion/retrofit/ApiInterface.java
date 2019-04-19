@@ -44,6 +44,7 @@ public interface ApiInterface {
                                            @Part("country") RequestBody country,
                                            @Part("state") RequestBody state,
                                            @Part("city") RequestBody city,
+                                           @Part("language") RequestBody language,
                                            @Part MultipartBody.Part file);
 
     @FormUrlEncoded
@@ -60,7 +61,8 @@ public interface ApiInterface {
                                                  @Field("country") String country,
                                                  @Field("state") String state,
                                                  @Field("city") String city,
-                                                 @Field("googleimage") String googleimage);
+                                                 @Field("googleimage") String googleimage,
+                                                 @Field("language") String language);
 
 
     @FormUrlEncoded
@@ -107,6 +109,7 @@ public interface ApiInterface {
                                                   @Part("country") RequestBody country,
                                                   @Part("state") RequestBody state,
                                                   @Part("city") RequestBody city,
+                                                  @Part("language") RequestBody language,
                                                   @Part MultipartBody.Part file);
 
     @FormUrlEncoded
@@ -119,7 +122,8 @@ public interface ApiInterface {
                                           @Field("mobile") String mobile,
                                           @Field("country") String country,
                                           @Field("state") String state,
-                                          @Field("city") String city);
+                                          @Field("city") String city,
+                                          @Field("language") String language);
 
     @FormUrlEncoded
     @POST("allsonglist")

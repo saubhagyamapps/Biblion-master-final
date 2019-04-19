@@ -1,55 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name" translatable="false">Biblion</string>
-    <string name="title_activity_navigation" translatable="false">NavigationActivity</string>
+    <string name="title_activity_navigation" translatable="false">નેવિગેશન એક્ટિવિટી</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="nav_header_title" translatable="false">Android Studio</string>
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
-    <string name="action_settings" translatable="false">Settings</string>
-    <string name="action_logout" translatable="false">Logout</string>
-    <string name="home" translatable="false">Home</string>
-    <string name="bible_book" translatable="false">Bible</string>
-    <string name="quiz" translatable="false">Quiz</string>
-    <string name="song_book" translatable="false">Song Book</string>
-    <string name="elibary" translatable="false">E Liabary</string>
-    <string name="articles" translatable="false">Articles</string>
-    <string name="leaderboard" translatable="false">Leaderboard</string>
-    <string name="settings" translatable="false">Reset Password</string>
-    <string name="progress_dialog_msg" translatable="false">Please Wait...</string>
-    <string name="progress_dialog_tital" translatable="false">Loading</string>
-    <string name="password_is_not_matched" translatable="false">password is not matched</string>
-    <string name="email_or_password_dont_matched" translatable="false">Email or Password Don\'t matched</string>
+    <string name="action_settings" translatable="false">સેટિંગ્સ</string>
+    <string name="action_logout" translatable="false">લૉગ આઉટ</string>
+    <string name="home" translatable="false">હોમ</string>
+    <string name="bible_book" translatable="false">બાઇબલ</string>
+    <string name="quiz" translatable="false">ક્વિઝ</string>
+    <string name="song_book" translatable="false">ગીત પુસ્તક</string>
+    <string name="elibary" translatable="false">ઇ લાઇબ્રેરી</string>
+    <string name="articles" translatable="false">લેખ</string>
+    <string name="leaderboard" translatable="false">લીડરબોર્ડ</string>
+    <string name="settings" translatable="false">પાસવર્ડ ફરીથી સેટ કરો</string>
+    <string name="progress_dialog_msg" translatable="false">મહેરબાની કરી રાહ જુવો...</string>
+    <string name="progress_dialog_tital" translatable="false">લોડ કરી રહ્યું છે</string>
+    <string name="password_is_not_matched" translatable="false">પાસવર્ડ મેળ ખાતો નથી</string>
+    <string name="email_or_password_dont_matched" translatable="false">ઇમેઇલ અથવા પાસવર્ડ મેળ ખાતા નથી</string>
 
-    <string name="home_news">News</string>
-    <string name="home_devotion">Devotion</string>
-    <string name="nav_share">Share</string>
-    <string name="nav_logout">LogOut</string>
-    <string name="botom_account">Account</string>
-    <string name="frag_elbrary">E Library</string>
-    <string name="frag_account_setting">Account Setting</string>
-    <string name="frag_leader_board">Leader Board</string>
-    <string name="frag_reset_password">Reset Password</string>
-    
-    <string name="mylibrary">My Library</string>
-    <string name="top_download">Top Download</string>
-    <string name="update_button">UPDATE</string>
-    <string name="toogle_male">Male</string>
-    <string name="toogle_female">Female</string>
-    <string name="reset_button">Reset Password</string>
-    <string name="download_book_button">Download Book</string>
-    <string name="sypnosis_description">Synopsis/Description</string>
-    <!--<string name="frag_home">Home</string>
-    <string name="frag_bible">Bible</string>
-    <string name="frag_quiz">Quiz</string>
-    <string name="frag_songBook">Song Book</string>
-    <string name="f"-->
+    <string name="home_news">સમાચાર</string>
+    <string name="home_devotion">ભક્તિ</string>
+    <string name="nav_share">શેર કરો</string>
+    <string name="nav_logout">લૉગ આઉટ</string>
+    <string name="frag_elbrary">ઇ લાઇબ્રેરી</string>
+    <string name="botom_account">ખાતું</string>
+    <string name="frag_account_setting">એકાઉન્ટ સેટિંગ</string>
+    <string name="frag_reset_password">પાસવર્ડ ફરીથી સેટ કરો</string>
+    <string name="frag_leader_board">લિડર બોર્ડ</string>
+
+    <string name="mylibrary">મારી લાયબ્રેરી</string>
+    <string name="top_download">ટોચના ડાઉનલોડ</string>
+    <string name="update_button">અપડેટ</string>
+    <string name="toogle_male">પુરુષ</string>
+    <string name="toogle_female">સ્ત્રી</string>
+    <string name="reset_button">પાસવર્ડ ફરીથી સેટ કરો</string>
+    <string name="download_book_button">પુસ્તક ડાઉનલોડ કરો</string>
+    <string name="sypnosis_description">સારાંશ/વર્ણન</string>
+
+
 
     <string name="register_links" translatable="false">By Clicking Register Now, You agree to our
         <a href="Terms and Condition links"><b>Terms &amp; Condition</b></a>
         and <a href="Privacy policy links"><b>Privacy Policy</b></a></string>
-    <string name="login_links" translatable="false">Already have an account? <a href="login link"><b><u>Log in</u></b></a></string>
-    <string name="signup_links" translatable="false">Don\'t have an account? <a href="Signup link"><b><u>Signup</u></b></a></string>
+    <string name="login_links" translatable="false">પહેલેથી જ ખાતું છે? <a href="login link"><b><u>લૉગિન</u></b></a></string>
+    <string name="signup_links" translatable="false">શું તમારી પાસે એકાઉન્ટ નથી?<a href="Signup link"><b><u>સાઇન અપ કરો</u></b></a></string>
     <string name="long_desc" translatable="false">From the#1 New York times bestselling author of Zealot
 comes a though-provoking look at the human desire to
 understand the divine.A book that will prompt reflection
@@ -58,16 +57,16 @@ five star Goodreads ratings and all that</string>
 
 
     <string name="slide_1_title" translatable="false">Biblion Android App!</string>
-    <string name="slide_1_desc" translatable="false">The easiest way to read bible in your phone!</string>
+    <string name="slide_1_desc" translatable="false">તમારા ફોનમાં બાઇબલ વાંચવાનો સૌથી સહેલો રસ્તો!</string>
 
-    <string name="slide_2_title" translatable="false">Quiz</string>
-    <string name="slide_2_desc" translatable="false">Start the quiz in the mobile app!</string>
+    <string name="slide_2_title" translatable="false">ક્વિઝ</string>
+    <string name="slide_2_desc" translatable="false">મોબાઇલ એપ્લિકેશનમાં ક્વિઝ પ્રારંભ કરો!</string>
 
     <string name="slide_3_title" translatable="false">Song Book</string>
-    <string name="slide_3_desc" translatable="false">view list of all songs in the mobile app!</string>
+    <string name="slide_3_desc" translatable="false">મોબાઇલ એપ્લિકેશનમાં બધા ગીતોની સૂચિ જુઓ!</string>
 
-    <string name="slide_4_title" translatable="false">E Library</string>
-    <string name="slide_4_desc" translatable="false">Download e books from the mobile app!</string>
+    <string name="slide_4_title" translatable="false">ઇ લાઇબ્રેરી</string>
+    <string name="slide_4_desc" translatable="false">મોબાઇલ એપ્લિકેશનમાંથી ઇ પુસ્તકો ડાઉનલોડ કરો!</string>
     <string name="description" translatable="false">"From the#1 New York times bestselling author of Zealotcomes a though-provoking look at the human desire tounderstand the divine.A book that will prompt reflectionand shatter assumptions(Bart d.Ehrman). with nearly 700five star Goodreads ratings and thats all...From the#1 New York times bestselling author of Zealotcomes a though-provoking look at the human desire tounderstand the divine.A book that will prompt reflectionand shatter assumptions(Bart d.Ehrman). with nearly 700five star Goodreads ratings and thats all..."</string>
     <string name="bhaktiyoga" translatable="false">
          <u>Bhakti Yoga</u>.
@@ -78,7 +77,7 @@ five star Goodreads ratings and all that</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="back" translatable="false"><u>Back to login</u></string>
+    <string name="back" translatable="false"><u>લૉગિન પર પાછા જાઓ</u></string>
 
     <string name="nice_html"><![CDATA[<h1>This is</h1>]]></string>
     <string name="title_activity_scrolling">ScrollingActivity</string>

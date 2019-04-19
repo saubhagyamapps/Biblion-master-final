@@ -89,7 +89,7 @@
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/loginbutton"
                 android:padding="15dp"
-                android:text="Reset Password"
+                android:text="@string/reset_button"
                 android:textAllCaps="false"
                 android:textColor="#ffffff" />
 

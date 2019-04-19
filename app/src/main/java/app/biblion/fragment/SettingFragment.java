@@ -30,7 +30,7 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_setting, container, false);
-        getActivity().setTitle("Reset Password");
+        getActivity().setTitle(R.string.frag_reset_password);
 
         initialization();
         return mView;
